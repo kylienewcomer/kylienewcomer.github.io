@@ -1,0 +1,8 @@
+---
+title: "Kylie Newcomer"
+about:
+  template: trestles
+  image: knewcomer_photo.jpg
+---
+
+Hello
