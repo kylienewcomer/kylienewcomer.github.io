@@ -5,4 +5,15 @@ about:
   image: knewcomer_photo.jpg
 ---
 
-Hello
+## Education
+
+Bren School of Environmental Science & Management 
+University of California, Santa Barbara| Santa Barbara, CA
+Master of Environmental Data Science | Aug 2025 - June 2026 (expected)
+
+University of California, Santa Barbara | Santa Barbara, CA
+Bachelor of Science | Sept 2020 - June 2024
+
+## Experience
+
+Scientific Aid | California Department of Fish and Wildlife | Santa Barbara, CA
