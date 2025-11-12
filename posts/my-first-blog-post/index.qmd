@@ -1,0 +1,23 @@
+---
+title: "My first blog post :)"
+description: "Welcome to my first blog post"
+date: 2025-11-12
+categories: [MEDS, R]
+citation: 
+  url: https://kylienewcomer.github.io/posts/my-first-blog-post/
+bibliography: references.bib
+draft: true
+draft-mode: linked
+---
+
+This is where the body of my blog post begins. I'm going to add a footnote here[^1]
+
+[^1]: additional context
+
+Here's an inline footnote[^2]
+
+[^2]: this should be an inline note
+
+I'm going to give credit to Sam [@shanny-csik2022]
+
+Let's cite a paper using its DOI [@krumhansl2016]

@@ -1,9 +1,10 @@
 ---
 title: "About"
+about:
+  template: trestles
+format:
+  html:
+    theme: Solar
+    css: styles.css
 ---
 
-About this site
-
-```{r}
-1 + 1
-```

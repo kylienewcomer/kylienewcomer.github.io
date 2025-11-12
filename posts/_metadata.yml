@@ -1,0 +1,13 @@
+# Any options specified here will apply to all posts in the posts/ folder
+
+author: 
+  - name: Kylie Newcomer
+    url: https://kylienewcomer.github.io/
+    affiliation: Master's of Environmental Data Science Program- The Bren School of Environmental Science & Managment
+    affiliation-url: https://bren.ucsb.edu/masters-programs/master-environmental-data-science
+    
+    
+title-block-banner: true
+title-block-banner-color: light
+
+freeze: auto
