@@ -1,8 +1,8 @@
 ---
 title: "Kylie Newcomer"
 about:
-  template: trestles
-  image: knewcomer_photo.jpg
+  template: jolla
+  image: kn.jpg
 format:
   html:
     theme: Solar
