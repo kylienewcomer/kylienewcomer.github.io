@@ -359,15 +359,3 @@ aquaculture_zones(species = "Red Abalone", min_depth = -24, max_depth = 0, min_t
 ```
 
 There are some limitations to the map. While it does provide areas of suitable habitat, it does not factor in species natural habitat, as my results show that Washington has the most suitable habitat for Red Abalone but are not part of Red Abalone’s natural range. It should also be pointed out that these are a subtidal species, and the temperature data used was sea surface temperature. This means that the temperature data may not be representative of true habitat ranges for species, especially those that live at deeper depths.
-
-Hall, S. J., Delaporte, A., Phillips, M. J., Beveridge, M. & O’Keefe, M. Blue Frontiers: Managing the Environmental Costs of Aquaculture (The WorldFish Center, Penang, Malaysia, 2011).↩︎
-
-Gentry, R. R., Froehlich, H. E., Grimm, D., Kareiva, P., Parke, M., Rust, M., Gaines, S. D., & Halpern, B. S. Mapping the global potential for marine aquaculture. Nature Ecology & Evolution, 1, 1317-1324 (2017).↩︎
-
-Palomares, M.L.D. and D. Pauly. Editors. 2025. SeaLifeBase. World Wide Web electronic publication. www.sealifebase.org, version (04/2025). \[Accessed Novemeber 29, 2025\]↩︎
-
-NOAA Coral Reef Watch. 2019, updated daily. NOAA Coral Reef Watch Version 3.1 Daily 5km Satellite Regional Virtual Station Time Series Data for Southeast Florida, Mar. 12, 2013-Mar. 11, 2014. College Park, Maryland, USA: NOAA Coral Reef Watch. Data set accessed 2020-02-05 at https://coralreefwatch.noaa.gov/product/vs/data.php.↩︎
-
-Bathymetry data was obtained through open access on November 29, 2025 from the GEBCO Grid↩︎
-
-Flanders Marine Institute (2025): MarineRegions.org. Available online at www.marineregions.org. Consulted on 2025-11-29.↩︎

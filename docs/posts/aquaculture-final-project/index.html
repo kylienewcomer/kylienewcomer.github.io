@@ -216,7 +216,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#data-processing" id="toc-data-processing" class="nav-link" data-scroll-target="#data-processing">Data Processing</a>
   <ul class="collapse">
   <li><a href="#cleaning" id="toc-cleaning" class="nav-link" data-scroll-target="#cleaning">Cleaning</a></li>
-  <li><a href="#read-in-data" id="toc-read-in-data" class="nav-link" data-scroll-target="#read-in-data">Read in data</a></li>
   <li><a href="#process-data" id="toc-process-data" class="nav-link" data-scroll-target="#process-data">Process data</a></li>
   <li><a href="#find-suitable-locations" id="toc-find-suitable-locations" class="nav-link" data-scroll-target="#find-suitable-locations">Find suitable locations</a></li>
   </ul></li>
@@ -240,25 +239,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><img src="images/oyst.jpeg" class="img-fluid"></p>
 <section id="background" class="level1">
 <h1>Background</h1>
-<p>Marine aquaculture is a growing source of food in many areas around the world, yet remains wildly under-utilized in the United States. The U.S. imports between 70% and 85% of its seafood, with more than half of that comes from aquaculture1. By increasing production of aquaculture in the U.S., we can find economic benefit and meet growing seafood demands. It has the capability of producing more sustainable protein options than land-based meat2. A study by Gentry et al.&nbsp;mapped the potential for marine aquaculture globally based on multiple constraints, including ship traffic, dissolved oxygen, and bottom depth. They found that global seafood demand could be met using less than 0.015% of the global ocean area3.</p>
+<p>Marine aquaculture is a growing source of food in many areas around the world, yet remains wildly under-utilized in the United States. The U.S. imports between 70% and 85% of its seafood, with more than half of that comes from aquaculture<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. By increasing production of aquaculture in the U.S., we can find economic benefit and meet growing seafood demands. It has the capability of producing more sustainable protein options than land-based meat<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. A study by Gentry et al.&nbsp;mapped the potential for marine aquaculture globally based on multiple constraints, including ship traffic, dissolved oxygen, and bottom depth. They found that global seafood demand could be met using less than 0.015% of the global ocean area<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>.</p>
 <p>In this project, I aim to visualize suitable areas for aquaculture of Oysters and Red Abalone along the west coast. Additionally, I created a function that will produce a suitability map for any species with habitat depth and temperature ranges.</p>
 <section id="data" class="level2">
 <h2 class="anchored" data-anchor-id="data">Data</h2>
 <section id="suitable-growing-conditions" class="level3">
 <h3 class="anchored" data-anchor-id="suitable-growing-conditions">Suitable growing conditions</h3>
-<p>Information for both Oysters and Red Abalone temperature and depth ranges come from SeaLifeBase4.</p>
+<p>Information for both Oysters and Red Abalone temperature and depth ranges come from SeaLifeBase<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>.</p>
 </section>
 <section id="sea-surface-temperature" class="level3">
 <h3 class="anchored" data-anchor-id="sea-surface-temperature">Sea Surface Temperature</h3>
-<p>To determine the average seat surface temperature across the west coast an average from 2008-2012 data was calculated. Rasters were created by NOAA using satellite data from Coral Reef Watch5.</p>
+<p>To determine the average seat surface temperature across the west coast an average from 2008-2012 data was calculated. Rasters were created by NOAA using satellite data from Coral Reef Watch<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>.</p>
 </section>
 <section id="bathymetry" class="level3">
 <h3 class="anchored" data-anchor-id="bathymetry">Bathymetry</h3>
-<p>Depth data comes from General Bathymetric Chart of the Oceans (GEBCO)6</p>
+<p>Depth data comes from General Bathymetric Chart of the Oceans (GEBCO)<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>.</p>
 </section>
 <section id="exclusive-economic-zones" class="level3">
 <h3 class="anchored" data-anchor-id="exclusive-economic-zones">Exclusive Economic Zones</h3>
-<p>The West Coast Exclusive Economic Zone data is maritime boundaries come marineregions.org7</p>
+<p>The West Coast Exclusive Economic Zone data is maritime boundaries come marineregions.org<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a>.</p>
 </section>
 </section>
 </section>
@@ -268,9 +267,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="cleaning">Cleaning</h2>
 <p>Because I am working with geospatial data, there is a lot data wrangling and transforming that needs to be done. I have to ensure that the raster data is compatible to be stacked. This includes matching the projections, resolution and extent. Additionally, the non-raster data needs to transformed so it can be used with the temperature and depth rasters.</p>
 <p>Find suitable habitat Suitability was determined using depth and temperature ranges for species. These values were taken from the Sea Surface Temperature (SST) and Bathymetry rasters. This was done by assigning 0’s and 1’s to the original depth and temperature rasters based on suitable ranges.</p>
-</section>
-<section id="read-in-data" class="level2">
-<h2 class="anchored" data-anchor-id="read-in-data">Read in data</h2>
 </section>
 <section id="process-data" class="level2">
 <h2 class="anchored" data-anchor-id="process-data">Process data</h2>
@@ -303,7 +299,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="find-suitable-habitat-in-eezs" class="level1">
 <h1>Find suitable habitat in EEZ’s</h1>
 <p>While I found the cells within the raster that have suitable habitat, raster data is in a cell by cell format, which does not give an actual size of suitable habitat. I want to see the bigger picture of these suitable cells and how that reflects in the Exclusive Economic Zones (EEZ) on the coast. This can be done through combining the EEZ data with the suitability raster and calculating the number of suitable cells in each region. Once the amount of cells per region is quantified, I can calculate the total area of the suitable by finding the cell size in km^2 and multiplying that by the number of cells.</p>
-<p>Now that there is a calculated area of suitable habitat for each region, I can visualize it. My results show that the Central California region, followed by Southern California is the most suitable for Oyster aquaculture.</p>
 <div class="cell">
 <div class="cell-output-display">
 <table class="table table-striped caption-top table-sm small">
@@ -347,6 +342,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="map-suitable-area-by-west-coast-eezs" class="level1">
 <h1>Map suitable area by west coast EEZ’s</h1>
+<p>Now that there is a calculated area of suitable habitat for each region, I can visualize it. My results show that the Central California region, followed by Southern California is the most suitable for Oyster aquaculture.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -358,6 +354,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <section id="create-function" class="level2">
 <h2 class="anchored" data-anchor-id="create-function">Create function</h2>
+<p>After successfully determining aquaculture habitats for Oysters, I can generalize my code into a function, which will produce a habitat suitability map for any species with specified depth and temperature ranges.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -454,11 +451,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
+<p>There are some limitations to the map. While it does provide areas of suitable habitat, it does not factor in species natural habitat, as my results show that Washington has the most suitable habitat for Red Abalone but are not part of Red Abalone’s natural range. It should also be pointed out that these are a subtidal species, and the temperature data used was sea surface temperature. This means that the temperature data may not be representative of true habitat ranges for species, especially those that live at deeper depths.</p>
 
 
 </section>
 
-</main> <!-- /main -->
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>National Oceanic and Atmospheric Administration. (2022). U.S. Aquaculture. NOAA Fisheries. <a href="https://www.fisheries.noaa.gov/national/aquaculture/us-aquaculture." class="uri">https://www.fisheries.noaa.gov/national/aquaculture/us-aquaculture.</a> [Accessed Dec.&nbsp;6, 2025]<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Hall, S. J., Delaporte, A., Phillips, M. J., Beveridge, M. &amp; O’Keefe, M. Blue Frontiers: Managing the Environmental Costs of Aquaculture (The WorldFish Center, Penang, Malaysia, 2011).<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Gentry, R. R., Froehlich, H. E., Grimm, D., Kareiva, P., Parke, M., Rust, M., Gaines, S. D., &amp; Halpern, B. S. Mapping the global potential for marine aquaculture. Nature Ecology &amp; Evolution, 1, 1317-1324 (2017).<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>Palomares, M.L.D. and D. Pauly. Editors. 2025. SeaLifeBase. World Wide Web electronic publication. www.sealifebase.org, version (04/2025). [Accessed Novemeber 29, 2025]<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>NOAA Coral Reef Watch. 2019, updated daily. NOAA Coral Reef Watch Version 3.1 Daily 5km Satellite Regional Virtual Station Time Series Data for Southeast Florida, Mar.&nbsp;12, 2013-Mar.&nbsp;11, 2014. College Park, Maryland, USA: NOAA Coral Reef Watch. Data set accessed 2020-02-05 at https://coralreefwatch.noaa.gov/product/vs/data.php.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>Bathymetry data was obtained through open access on November 29, 2025 from the GEBCO Grid<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>Flanders Marine Institute (2025): MarineRegions.org. Available online at www.marineregions.org. Consulted on 2025-11-29.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
