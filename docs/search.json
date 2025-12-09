@@ -4,7 +4,7 @@
     "href": "posts.html",
     "title": "Blog Posts",
     "section": "",
-    "text": "Kylie Newcomer\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nKylie Newcomer\n\n\n\n\n\n\n\n\n\n\n\n\nDeterming Aquaculture Habitat on the West Coast\n\n\n\n\n\n\n\n\nDec 6, 2025\n\n\nKylie Newcomer\n\n\n\n\n\n\n\n\n\n\n\n\nAnalyzing the impacts of temperature on rockfish recruitment in the Channel Islands\n\n\n\n\n\n\n\n\nDec 4, 2025\n\n\nKylie Newcomer\n\n\n\n\n\n\n\n\n\n\n\n\nVisualizing fire scars from the 2025 Eaton and Palisades fires\n\n\n\n\n\n\n\n\nDec 3, 2025\n\n\nKylie Newcomer\n\n\n\n\n\nNo matching items"
+    "text": "Kylie Newcomer\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nKylie Newcomer\n\n\n\n\n\n\n\n\n\n\n\n\nEEZs for Aquaculture\n\n\n\n\n\n\n\n\nDec 8, 2025\n\n\nKylie Newcomer\n\n\n\n\n\n\n\n\n\n\n\n\nAnalyzing the impacts of temperature on rockfish recruitment in the Channel Islands\n\n\n\n\n\n\n\n\nDec 4, 2025\n\n\nKylie Newcomer\n\n\n\n\n\n\n\n\n\n\n\n\nVisualizing fire scars from the 2025 Eaton and Palisades fires\n\n\n\n\n\n\n\n\nDec 3, 2025\n\n\nKylie Newcomer\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "index.html",
@@ -154,45 +154,52 @@
     "text": "Data Cleaning\nBefore I can start working on my statistical modelings, I need to do some cleaning and filtering to get the data ready to be analyzed. I first subset my data to include only my species of interest. I chose Copper, Kelp, Gopher, Grass, and Brown rockfish, because they have similar PLDs and are difficult to differentiate at a small size. I chose to look at data between 2012-2019 to include before, during, and after the Blob. I also narrowed the window of sampling by year to only include sampling during the months of recruitment to avoid a seasonal pattern from emerging. I chose to only look at the two most consistently sampled sites, which were locatied at Santa Cruz island.\n\nrecruits &lt;- left_join(smurf, smurf_sp)\n\nJoining with `by = join_by(classcode)`\n\nrecruits$Date &lt;- as.Date(paste(recruits$year, recruits$month, recruits$day, sep = \"/\"))\nocean$Date &lt;- as.Date(ocean$Date, format = \"%m/%d/%Y\")\n\nrecruit_ocean &lt;- left_join(recruits, ocean)\n\nJoining with `by = join_by(Date)`\n\nrf_yoy &lt;- recruit_ocean %&gt;% \n  filter(year &gt;= 2012  &\n        (month &gt;= 2 & month &lt;= 7)) %&gt;% \n  filter(str_detect(site_code, \"HAZ\")| # Filter data for on Pelican and Hazards sample sites\n            str_detect(site_code, \"PEL\")) %&gt;% \n  filter(classcode == \"KGBC\" | classcode == \"SCAR/SCAU\" | classcode == \"SATR\") #KGB - SCAR/SCAU - SATR \n      \n  \nsummarized_yoy &lt;- rf_yoy %&gt;% \n  group_by(classcode, year) %&gt;% \n  summarise(count = sum(total_fish_collected))\n\n`summarise()` has grouped output by 'classcode'. You can override using the\n`.groups` argument.\n\nhighest_rf &lt;- recruits %&gt;% \n  filter(genus == \"Sebastes\") %&gt;% \n  group_by(classcode) %&gt;% \n  summarise(count = sum(total_fish_collected)) %&gt;% \n  filter(count &gt;= 1000)\n\nmost_yoy &lt;- highest_rf$classcode\n\n\nrf_yoy_av &lt;- rf_yoy %&gt;% \n  group_by(classcode, year) %&gt;% \n  summarise(av_fish = mean(total_fish_collected)) %&gt;% \n  ungroup()\n\n`summarise()` has grouped output by 'classcode'. You can override using the\n`.groups` argument.\n\n\n\nggplot(rf_yoy_av, aes(year, av_fish)) +\n  geom_line(aes(color = classcode)) +\n  scale_color_manual(values = c(\"darkgreen\", \"brown4\", \"lightblue\")) +\n  labs(x = \"Year\",\n       y = \"Annual total fish collected\") +\n  theme_light()"
   },
   {
-    "objectID": "posts/eds223-final-project/index.html",
-    "href": "posts/eds223-final-project/index.html",
-    "title": "Determing Aquaculture Habitat on the West Coast",
-    "section": "",
-    "text": "Photo from the Choptank Oyster Company"
-  },
-  {
-    "objectID": "posts/eds223-final-project/index.html#data",
-    "href": "posts/eds223-final-project/index.html#data",
-    "title": "Determing Aquaculture Habitat on the West Coast",
+    "objectID": "posts/aquaculture-final-project/index.html#data",
+    "href": "posts/aquaculture-final-project/index.html#data",
+    "title": "EEZs for Aquaculture",
     "section": "Data",
     "text": "Data\n\nSuitable growing conditions\nInformation for both Oysters and Red Abalone temperature and depth ranges come from SeaLifeBase4.\n\n\nSea Surface Temperature\nTo determine the average seat surface temperature across the west coast an average from 2008-2012 data was calculated. Rasters were created by NOAA using satellite data from Coral Reef Watch5.\n\n\nBathymetry\nDepth data comes from General Bathymetric Chart of the Oceans (GEBCO)6\n\n\nExclusive Economic Zones\nThe West Coast Exclusive Economic Zone data is maritime boundaries come marineregions.org7"
   },
   {
-    "objectID": "posts/eds223-final-project/index.html#cleaning",
-    "href": "posts/eds223-final-project/index.html#cleaning",
-    "title": "Determing Aquaculture Habitat on the West Coast",
+    "objectID": "posts/aquaculture-final-project/index.html#cleaning",
+    "href": "posts/aquaculture-final-project/index.html#cleaning",
+    "title": "EEZs for Aquaculture",
     "section": "Cleaning",
-    "text": "Cleaning\nBecause I am working with geospatial data, there is a lot data wrangling and transforming that needs to be done. I have to ensure that the raster data is compatible to be stacked. This includes matching the projections, resolution and extent. Additionally, the non-raster data needs to transformed so it can be used with the temperature and depth rasters."
+    "text": "Cleaning\nBecause I am working with geospatial data, there is a lot data wrangling and transforming that needs to be done. I have to ensure that the raster data is compatible to be stacked. This includes matching the projections, resolution and extent. Additionally, the non-raster data needs to transformed so it can be used with the temperature and depth rasters.\nFind suitable habitat Suitability was determined using depth and temperature ranges for species. These values were taken from the Sea Surface Temperature (SST) and Bathymetry rasters. This was done by assigning 0’s and 1’s to the original depth and temperature rasters based on suitable ranges."
   },
   {
-    "objectID": "posts/eds223-final-project/index.html#find-suitable-habitat",
-    "href": "posts/eds223-final-project/index.html#find-suitable-habitat",
-    "title": "Determing Aquaculture Habitat on the West Coast",
-    "section": "Find suitable habitat",
-    "text": "Find suitable habitat\nSuitability was determined using depth and temperature ranges for species. These values were taken from the Sea Surface Temperature (SST) and Bathymetry rasters. This was done by assigning 0’s and 1’s to the original depth and temperature rasters based on suitable ranges.\n\n# Reclassifaction matrix\nrcl_temp &lt;- matrix(c(-Inf, 11, 0,\n         11, 30, 1,\n         30, Inf, 0),\n       ncol = 3, byrow = TRUE)\n\nTo determine the suitable habitat, the temperature and depth rasters of 0’s and 1’s are multiplied, resulting in 1’s only in cells that had a suitable depth and temperature range and 0’s in all other cells."
+    "objectID": "posts/aquaculture-final-project/index.html#read-in-data",
+    "href": "posts/aquaculture-final-project/index.html#read-in-data",
+    "title": "EEZs for Aquaculture",
+    "section": "Read in data",
+    "text": "Read in data"
   },
   {
-    "objectID": "posts/eds223-final-project/index.html#find-suitable-habitat-in-eezs",
-    "href": "posts/eds223-final-project/index.html#find-suitable-habitat-in-eezs",
-    "title": "Determing Aquaculture Habitat on the West Coast",
-    "section": "Find suitable habitat in EEZ’s",
-    "text": "Find suitable habitat in EEZ’s\nWhile I found the cells within the raster that have suitable habitat, raster data is in a cell by cell format, which does not give an actual size of suitable habitat. I want to see the bigger picture of these suitable cells and how that reflects in the Exclusive Economic Zones (EEZ) on the coast. This can be done through combining the EEZ data with the suitability raster and calculating the number of suitable cells in each region. Once the amount of cells per region is quantified, I can calculate the total area of the suitable by finding the cell size in km^2 and multiplying that by the number of cells.\n\n\n\nSuitable habitat by EEZ\n\n\nRegion\nNumber of cells with suitable habitat\nArea of suitable habitat (km^2)\n\n\n\n\nCentral California\n238\n3296.1331\n\n\nSouthern California\n211\n2922.2021\n\n\nWashington\n162\n2243.5864\n\n\nOregon\n71\n983.3002\n\n\nNorthern California\n11\n152.3423"
+    "objectID": "posts/aquaculture-final-project/index.html#process-data",
+    "href": "posts/aquaculture-final-project/index.html#process-data",
+    "title": "EEZs for Aquaculture",
+    "section": "Process data",
+    "text": "Process data\nAll temperature rasters from 2008 to 2012 are stacked. The mean of all temperature rasters is taken to determine the average sea surface temperature. The temperature is converted from Kelvins to degrees celsius."
   },
   {
-    "objectID": "posts/eds223-final-project/index.html#footnotes",
-    "href": "posts/eds223-final-project/index.html#footnotes",
-    "title": "Determing Aquaculture Habitat on the West Coast",
-    "section": "Footnotes",
-    "text": "Footnotes\n\n\nNational Oceanic and Atmospheric Administration. (2022). U.S. Aquaculture. NOAA Fisheries. https://www.fisheries.noaa.gov/national/aquaculture/us-aquaculture. [Accessed Dec. 6, 2025]↩︎\nHall, S. J., Delaporte, A., Phillips, M. J., Beveridge, M. & O’Keefe, M. Blue Frontiers: Managing the Environmental Costs of Aquaculture (The WorldFish Center, Penang, Malaysia, 2011).↩︎\nGentry, R. R., Froehlich, H. E., Grimm, D., Kareiva, P., Parke, M., Rust, M., Gaines, S. D., & Halpern, B. S. Mapping the global potential for marine aquaculture. Nature Ecology & Evolution, 1, 1317-1324 (2017).↩︎\nPalomares, M.L.D. and D. Pauly. Editors. 2025. SeaLifeBase. World Wide Web electronic publication. www.sealifebase.org, version (04/2025). [Accessed Novemeber 29, 2025]↩︎\nNOAA Coral Reef Watch. 2019, updated daily. NOAA Coral Reef Watch Version 3.1 Daily 5km Satellite Regional Virtual Station Time Series Data for Southeast Florida, Mar. 12, 2013-Mar. 11, 2014. College Park, Maryland, USA: NOAA Coral Reef Watch. Data set accessed 2020-02-05 at https://coralreefwatch.noaa.gov/product/vs/data.php.↩︎\nBathymetry data was obtained through open access on November 29, 2025 from the GEBCO Grid↩︎\nFlanders Marine Institute (2025): MarineRegions.org. Available online at www.marineregions.org. Consulted on 2025-11-29.↩︎"
+    "objectID": "posts/aquaculture-final-project/index.html#find-suitable-locations",
+    "href": "posts/aquaculture-final-project/index.html#find-suitable-locations",
+    "title": "EEZs for Aquaculture",
+    "section": "Find suitable locations",
+    "text": "Find suitable locations\nIn order to determine suitable areas of habitat, reclassification matrices are created to assign 1’s to areas within the suitable temperature and depth ranges for Oysters. Areas without suitable depth and temperature ranges get assigned a 0. The CRS, extent, and resolution of the reclassified depth raster are updated to match the reclassified temperature raster. The updated depth and temperature rasters are multiplied together to determine which areas are suitable in both temperature and depth requirements. Any cell with a 1 in both temperature and depth will remain 1, while any cell without suitable depth or temperature ranges, or both, will be 0.\n\n\nCode\n# Reclassify temperature data\nrcl_temp &lt;- matrix(c(-Inf, 11, 0,\n         11, 30, 1,\n         30, Inf, 0),\n       ncol = 3, byrow = TRUE)\n\n\ntemp_reclass &lt;- classify(mean_sst, rcl = rcl_temp)\n\n\nTo determine the suitable habitat, the temperature and depth rasters of 0’s and 1’s are multiplied, resulting in 1’s only in cells that had a suitable depth and temperature range and 0’s in all other cells.\nNeed to update depth raster to match temperature raster"
+  },
+  {
+    "objectID": "posts/aquaculture-final-project/index.html#find-suitable-cells-within-raster",
+    "href": "posts/aquaculture-final-project/index.html#find-suitable-cells-within-raster",
+    "title": "EEZs for Aquaculture",
+    "section": "Find suitable cells within raster",
+    "text": "Find suitable cells within raster\nIn order to determine suitable habitat cells within each region of west coast EEZ’s, the CRS of the eez data must be updated to match the ocean raster. An ocean raster mask based on the eez data is created to exclude any cells outside of the west coast EEZ’s. The eez data is rasterized based on the ocean mask raster to use algebra on the data for finding the total number of suitable cells within each EEZ. The area of an individual cell is calculated and multiplied with the number of cells to determine the area of suitable habitat in each EEZ. The suitable habitat areas are then joined with the eez data map the total area of suitable habitat per region.\n\n\n\n\n\nRegion\nNumber of cells with suitable habitat\nArea of suitable habitat\n\n\n\n\nCentral California\n238\n3296.1331\n\n\nSouthern California\n211\n2922.2021\n\n\nWashington\n162\n2243.5864\n\n\nOregon\n71\n983.3002\n\n\nNorthern California\n11\n152.3423"
+  },
+  {
+    "objectID": "posts/aquaculture-final-project/index.html#create-function",
+    "href": "posts/aquaculture-final-project/index.html#create-function",
+    "title": "EEZs for Aquaculture",
+    "section": "Create function",
+    "text": "Create function\n\n\nCode\naquaculture_zones &lt;- function(species, min_depth, max_depth, min_temp, max_temp){\n  # Temp reclassification\n  rcl_temp &lt;- matrix(c(-Inf, min_temp, 0,\n         min_temp, max_temp, 1,\n         max_temp, Inf, 0),\n       ncol = 3, byrow = TRUE)\n    \n  temp_reclass &lt;- classify(mean_sst, rcl = rcl_temp)\n  \n  # Depth reclassification\n  rcl_depth &lt;- matrix(c(-Inf, min_depth, 0,\n         min_depth, max_depth, 1,\n         max_depth, Inf, 0),\n       ncol = 3, byrow = TRUE)\n  depth_reclass &lt;- classify(depth, rcl = rcl_depth)\n\n  # Adjust CRS to match\n  crs(depth_reclass) &lt;- crs(temp_reclass)\n \n  # Match resolutions of rasters\n  depth_resample &lt;- resample(depth_reclass, temp_reclass, method = \"near\")\n\n  # Match extents of depth and temp rasters\n  cropped_depth &lt;- crop(depth_resample, temp_reclass)\n\n  # Create raster denoting suitable depth AND temperature ranges\n  ocean &lt;- cropped_depth * temp_reclass\n  \n  # Change EEZ CRS\n  st_crs(eez) &lt;- crs(ocean)\n  \n  # Mask ocean data outside of EEZ regions\n  ocean_mask &lt;- mask(ocean, eez)\n\n  # Rasterize eez data based on ocean mask\n  eez_raster &lt;- rasterize(eez, ocean_mask,\n                          field = \"rgn\")\n\n  # Add up number of suitable cells per region\n  suitable_cells &lt;- zonal(ocean_mask, eez_raster, fun = \"sum\", na.rm = TRUE)\n\n  # Determine cell size\n  cell_area &lt;- cellSize(ocean_mask, unit=\"km\")[1]\n\n  # Calulcate area of suiable habitat based on number of suitable cells and cell size\n  suitable_cell_area &lt;- suitable_cells %&gt;%\n    rename(cells = depth) %&gt;%\n    mutate(cell_area = cell_area$area,\n          suitable_habitat = cells * cell_area) %&gt;% \n    select(-cell_area)\n  \n  # Join EEZ regions and suitable area\n  suitable_habitat &lt;- left_join(eez, suitable_cell_area, by = \"rgn\")\n  \n  # Create map\n  tm_shape(ocean) +                                      \n    tm_raster(col.legend = tm_legend(show = FALSE)) +\n    tm_shape(suitable_habitat) +\n    tm_polygons(fill = \"suitable_habitat\", \n                fill.scale = tm_scale(values =  \"viridis\"),\n                                    #breaks = c(0,200,1000,2500,3000, Inf)),\n                fill.legend = tm_legend(title  = \"Suitable habitat (sq km)\")) + \n    tm_text(text = \"rgn\",\n            col = \"white\",\n            size = 0.35,\n            xmod = 4,\n            ymod = 1,\n            bgcol = \"black\",\n            bgcol_alpha = 0.75)+\n    tm_grid(alpha = 0.5) +\n    tm_title(paste(\"Suitable Aquaculture Zones for\", species))\n}"
   }
 ]
