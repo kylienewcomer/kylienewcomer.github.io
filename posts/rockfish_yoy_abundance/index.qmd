@@ -225,102 +225,98 @@ modelsummary(rf_abundance_model)
 ```
 
 ## Generating the predictions with the data
+## Hurdle model Application
+After completing a simulation of data and running a hurdle model, I can apply it to my data. I will add my upwelling variable back in to test my hypothesis
 ```{r}
+true_hurdle_model <- hurdle(total_fish_collected ~ SST_D30 * beuti_30, 
+                            data = rf_yoy,
+                            dist = "negbin",
+                            zero.dist = "binomial")
 
+modelsummary(true_hurdle_model)
+```
+
+
+```{r}
 pred_grid <- expand_grid(SST_D30 = seq(min(rf_yoy$SST_D30, na.rm = TRUE),
                                            max(rf_yoy$SST_D30, na.rm = TRUE),
-                                           length.out = 100),
-                         beuti_30 = seq(min(rf_yoy$beuti_30, na.rm = TRUE),
-                                           max(rf_yoy$beuti_30, na.rm = TRUE),
-                                           length.out = 100))
+                                           length.out = 1000),
+                         beuti_30 = mean(rf_yoy$beuti_30))
 
-true_pres_abs_model <- glm(success ~ SST_D30 * beuti_30,
-                     data = rf_yoy, # data remains unchanged
-                     family = binomial(link = "logit")
-                   )
-
-
-true_pres_abs_pred <- pred_grid %>%  
-  mutate(predict = predict(object = true_pres_abs_model,
+# reiterate through the boot 1000 times
+boot <-  map_dfr(1:1000, \(i) {
+  # sample with replacement
+  boot_sample <- slice_sample(rf_yoy, n=432, replace = TRUE)
+  # run a beta regression on every single boot sample
+  boot_mod <- hurdle(total_fish_collected ~ SST_D30 * beuti_30, 
+                            data = rf_yoy,
+                            dist = "negbin",
+                            zero.dist = "binomial")
+    # predict the boots values (the outcomes are best fit lines)
+  mutate(pred_grid,
+         count = predict(object = boot_mod,
                           newdata = pred_grid,
-                          type = "response"))
+                          type = "response"),
+         boot = i)
+})
 
 
-rf_presence_model_se <- predict(true_pres_abs_model, newdata = true_pres_abs_pred, type = "link", se.fit = TRUE)
-
-
-linkinv <- family(true_pres_abs_model)$linkinv
-
-pres_abs_pred <- true_pres_abs_pred %>% 
-  mutate(
-    logit_p = rf_presence_model_se$fit,
-    # 95% CI in link space
-    logit_p_se = rf_presence_model_se$se.fit,
-    logit_p_lwr = qnorm(0.025, mean = logit_p, sd = logit_p_se),
-    logit_p_upr = qnorm(0.975, mean = logit_p, sd = logit_p_se),
-    # undo the link function using linkinv
-    p = linkinv(logit_p),
-    p_lwr = linkinv(logit_p_lwr),
-    p_upr = linkinv(logit_p_upr)
-  )
-
-ggplot(pres_abs_pred, aes(SST_D30, logit_p)) +
-  geom_line() +
-  geom_ribbon(aes(ymin = logit_p_lwr, ymax = logit_p_upr), alpha = 0.2) +
-  labs(c = "SST") +
-  theme_light()
+boot %>% 
+  summarise(count_lwr = quantile(count, 0.025),
+            count_upr = quantile(count, 0.975)) %>% 
+  kableExtra::kable(caption = "Confidence intervals of predictions",
+                    )
 ```
-## Abundance model
+
+
 ```{r}
-no_zero_yoy <- rf_yoy %>% 
-  filter(success == 1)
+pred_grid <- expand_grid(SST_D30 = seq(min(rf_yoy$SST_D30, na.rm = TRUE),
+                                           max(rf_yoy$SST_D30, na.rm = TRUE),
+                                           length.out = 1000),
+                         beuti_30 = mean(rf_yoy$beuti_30))
 
-rf_abundance_model <- glm.nb(total_fish_collected ~ SST_D30 * beuti_30,  # formula: response ~ resp
-                   data = no_zero_yoy)
-
-
-true_abu_pred <- pres_abs_pred %>%
-  mutate(predict = predict(object = rf_abundance_model,
+# reiterate through the boot 1000 times
+boot <-  map_dfr(1:1000, \(i) {
+  # sample with replacement
+  boot_sample <- slice_sample(rf_yoy, n=432, replace = TRUE)
+  # run a beta regression on every single boot sample
+  boot_mod <- hurdle(total_fish_collected ~ SST_D30 * beuti_30, 
+                            data = rf_yoy,
+                            dist = "negbin",
+                            zero.dist = "binomial")
+    # predict the boots values (the outcomes are best fit lines)
+  mutate(pred_grid,
+         count = predict(object = boot_mod,
                           newdata = pred_grid,
-                          type = "response"))
+                          type = "response"),
+         boot = i)
+})
 
-rf_abundance_model_se <- predict(rf_abundance_model, 
-                          newdata = true_abu_pred,
-                          type = "link", # stay in link space
-                          se.fit = TRUE)
 
-linkinv <- family(rf_abundance_model)$linkinv
+boot %>% 
+  summarise(count_lwr = quantile(count, 0.025),
+            count_upr = quantile(count, 0.975)) %>% 
+  kableExtra::kable()
+```
 
-hurdle_pred <- true_abu_pred %>% 
-  mutate(
-    log_mu = rf_abundance_model_se$fit,
-    # 95% CI in link space
-    log_mu_se = rf_abundance_model_se$se.fit,
-    log_mu_lwr = qnorm(0.025, mean = log_mu, sd = log_mu_se),
-    log_mu_upr = qnorm(0.975, mean = log_mu, sd = log_mu_se),
-    # undo the link function using linkinv
-    mu = exp(log_mu),
-    mu_lwr = exp(log_mu_lwr),
-    mu_upr = exp(log_mu_upr)
-  )
+```{r}
+count_lwr = quantile(boot$count, 0.025)
+count_upr = quantile(boot$count, 0.975)
 
-ggplot(hurdle_pred, aes(SST_D30, mu)) +
-  geom_ribbon(aes(ymin = mu_lwr, ymax = mu_upr), alpha = 0.2) +
-  geom_line() +
-  labs(c = "SST") +
+ggplot(boot, aes(count)) +
+  geom_histogram() +
+  geom_vline(xintercept = count_lwr, 
+             color = "firebrick",
+             linetype = "dotted",
+             linewidth = 1.5) +
+   geom_vline(xintercept = count_upr, 
+             color = "firebrick",
+             linetype = "dotted",
+             linewidth = 1.5) +
+  labs(x = "Predicted fish count")
   theme_light()
-
-
 ```
 ```{r}
-hurdle_pred %>% 
-  mutate(
-    fit = log_mu * logit_p,
-    upper_ci = log_mu_upr * logit_p_upr,
-    lower_ci = log_mu_lwr * logit_p_lwr) %>% 
-    ggplot(aes(SST_D30, fit)) +
-  geom_ribbon(aes(ymin = lower_ci, ymax = upper_ci), alpha = 0.2) +
-  geom_line() +
-  labs(c = "SST") +
-  theme_light()
+
 ```
+
