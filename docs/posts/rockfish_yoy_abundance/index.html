@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Kylie Newcomer">
-<meta name="dcterms.date" content="2025-12-11">
+<meta name="dcterms.date" content="2025-12-12">
 
 <title>Analyzing the impacts of temperature on rockfish recruitment in the Channel Islands – Kylie Newcomer</title>
 <style>
@@ -223,7 +223,7 @@ window.Quarto = {
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">December 11, 2025</p>
+        <p class="date">December 12, 2025</p>
       </div>
     </div>
     
@@ -249,13 +249,9 @@ window.Quarto = {
   <ul class="collapse">
   <li><a href="#hurdle-model" id="toc-hurdle-model" class="nav-link" data-scroll-target="#hurdle-model">Hurdle Model</a></li>
   </ul></li>
-  <li><a href="#hurdle-model-application" id="toc-hurdle-model-application" class="nav-link" data-scroll-target="#hurdle-model-application">Hurdle model Application</a></li>
-  <li><a href="#generate-pred" id="toc-generate-pred" class="nav-link" data-scroll-target="#generate-pred">Generate pred</a>
-  <ul class="collapse">
-  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
-  <li><a href="#generating-the-predictions-with-the-data" id="toc-generating-the-predictions-with-the-data" class="nav-link" data-scroll-target="#generating-the-predictions-with-the-data">Generating the predictions with the data</a></li>
-  <li><a href="#hurdle-model-application-1" id="toc-hurdle-model-application-1" class="nav-link" data-scroll-target="#hurdle-model-application-1">Hurdle model Application</a></li>
-  </ul></li>
+  <li><a href="#hurdle-model-application" id="toc-hurdle-model-application" class="nav-link" data-scroll-target="#hurdle-model-application">Hurdle Model Application</a></li>
+  <li><a href="#generate-predictions-with-hurdle-model" id="toc-generate-predictions-with-hurdle-model" class="nav-link" data-scroll-target="#generate-predictions-with-hurdle-model">Generate predictions with hurdle model</a></li>
+  <li><a href="#using-a-hurdle-model-without-upwelling-predictor-variable" id="toc-using-a-hurdle-model-without-upwelling-predictor-variable" class="nav-link" data-scroll-target="#using-a-hurdle-model-without-upwelling-predictor-variable">Using a hurdle model without upwelling predictor variable</a></li>
   </ul>
 </nav>
     </div>
@@ -278,7 +274,7 @@ window.Quarto = {
 </section>
 <section id="about-the-data" class="level2">
 <h2 class="anchored" data-anchor-id="about-the-data">About the data</h2>
-<p>The data quantifying Rockfish recruitment comes from the Partnership of Interdiscpilnary Sciences of Coastal Oceans (PISCO) long-term fish recruitment monitoring in the Channel Islands. The YOYs were collected using Standardized Monitoring Units for the Recruitment of Fishes (SMURFs) that were placed just off the coast of the Northern Channel Islands in an attempt to collect recruit fish as they swam to structure. Monitoring took place from 2000-2018, with collections occuring year round starting in 2012.</p>
+<p>The data quantifying Rockfish recruitment comes from the Partnership of Interdisciplinary Sciences of Coastal Oceans (PISCO) long-term fish recruitment monitoring in the Channel Islands. The YOYs were collected using Standardized Monitoring Units for the Recruitment of Fishes (SMURFs) that were placed just off the coast of the Northern Channel Islands in an attempt to collect recruit fish as they swam to structure. Monitoring took place from 2000-2018, with collections occuring year round starting in 2012.</p>
 <p>NOAA data is used to quantify temperature with Sea Surface Temperature (SST) lag 30 days from time of collection to predict SST during PLD. Upwelling was quanitified using the Biological Effective Upwelling Transport Index (BEUTI) lag 30 days.</p>
 </section>
 <section id="hypotheses" class="level2">
@@ -288,7 +284,7 @@ window.Quarto = {
 </section>
 <section id="directed-acyclic-graph-dag" class="level2">
 <h2 class="anchored" data-anchor-id="directed-acyclic-graph-dag">Directed Acyclic Graph (DAG)</h2>
-<p><img src="images/dag.png" class="img-fluid"> Upwelling is the result of moving water, often bringing cold, nutrient rich water from the deep up to the surface. This impacts the SST, decreasing temperature during mass upwelling. Additionally, the nutrients supplied in upwelling have a direct impact on YOY development, providing necessary nutrients during the PLD. The temprature also impacts fish development in the PLD, with faster development occuring at warmer temperatures.</p>
+<p><img src="images/dag.png" class="img-fluid"> Upwelling is the result of moving water, often bringing cold, nutrient rich water from the deep up to the surface. This impacts the SST, decreasing temperature during mass upwelling. Additionally, the nutrients supplied in upwelling have a direct impact on YOY development, providing necessary nutrients during the PLD. Temperature also impacts fish development in the PLD, with faster development occurring at warmer temperatures.</p>
 </section>
 <section id="load-necessary-packages-and-data" class="level2">
 <h2 class="anchored" data-anchor-id="load-necessary-packages-and-data">Load necessary packages and data</h2>
@@ -366,11 +362,14 @@ window.Quarto = {
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(rf_yoy_av, <span class="fu">aes</span>(year, av_fish)) <span class="sc">+</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">color =</span> classcode)) <span class="sc">+</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"darkgreen"</span>, <span class="st">"brown4"</span>, <span class="st">"lightblue"</span>)) <span class="sc">+</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Year"</span>,</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Annual total fish collected"</span>,</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Recruit Rockfish counts over time"</span>) <span class="sc">+</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_light</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">2014</span>, <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">2016</span>, <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"darkgreen"</span>, <span class="st">"brown4"</span>, <span class="st">"lightblue"</span>)) <span class="sc">+</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Year"</span>,</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Annual total fish collected"</span>,</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Recruit Rockfish counts over time"</span>,</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">"Species"</span>) <span class="sc">+</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_light</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -380,41 +379,18 @@ window.Quarto = {
 </div>
 </div>
 </div>
+<p>The red-dashed lines denote the beginning and end of the blob. Rockfish YOY abundance began increasing in the years leading up to the blob while the waters gradually warmed. Naturally the abundance dipped after reaching a peak, but began to climb again during the marine heat wave, suggesting that the warmer waters were beneficial</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(rf_yoy, <span class="fu">aes</span>(classcode, total_fish_collected)) <span class="sc">+</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="fu">aes</span>(<span class="at">color =</span> classcode)) <span class="sc">+</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"darkgreen"</span>, <span class="st">"brown4"</span>, <span class="st">"lightblue"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-<details class="code-fold">
-<summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Species"</span>,</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Total fish collected"</span>) <span class="sc">+</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_light</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>NULL</code></pre>
-</div>
-</div>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(rf_yoy)){</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (rf_yoy<span class="sc">$</span>total_fish_collected[i] <span class="sc">&gt;</span> <span class="dv">0</span>){</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    rf_yoy<span class="sc">$</span>success[i] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">else</span>{</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    rf_yoy<span class="sc">$</span>success[i] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(rf_yoy)){</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (rf_yoy<span class="sc">$</span>total_fish_collected[i] <span class="sc">&gt;</span> <span class="dv">0</span>){</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    rf_yoy<span class="sc">$</span>success[i] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">else</span>{</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    rf_yoy<span class="sc">$</span>success[i] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </section>
@@ -422,38 +398,36 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="statistical-analysis">Statistical analysis</h2>
 <section id="hurdle-model" class="level3">
 <h3 class="anchored" data-anchor-id="hurdle-model">Hurdle Model</h3>
-<p>In order to analyze this data, I selected a hurdle model because the data contains many 0’s. Hurdle models are a type of hierarchical model that first tests presence and absence (0 and 1) with a predictor variable, then tests abundance. For these steps <span class="math display">\[FishPresence \sim Binomial(1, p) \\
-logit(p) = \beta_0 + \beta_1 SST + \beta_2 BEUTI\]</span></p>
-<p><span class="math display">\[Fishcount \sim NegativeBinomial(\mu, \theta) \\
-log(\mu) = \beta_3 + \beta_4 SST + \beta_5 BEUTI\]</span></p>
-<p>For simplicity in understanding the model, I only selected temperature as predictor variable to simulate data and get my beta values returned to me. To begin simulating data, I need to generate x values based on the SST lag 30 days variable from the original data. From there I can use those temperatures and beta values I selected to run the binomial equation to find <code>logit(p)</code>. I think take the inverse logit of those values to generate p which represents the probability of success. Using that probability, I simulated a success variable with <code>rbinom()</code> to generate 0’s and 1’s.</p>
+<p>In order to analyze this data, I selected a hurdle model because the data contains many 0’s. Hurdle models are a type of hierarchical model that first tests presence and absence (0 and 1) with a predictor variable, then tests abundance. The presence-absence model is written using a Binomial model: <span class="math display">\[FishPresence \sim Binomial(1, p) \]</span></p>
+<p><span class="math display">\[logit(p) = \beta_0 + \beta_1 SST + \beta_2 BEUTI\]</span> The abundance uses a Negative Binomial model: <span class="math display">\[YOYcount \sim NegativeBinomial(\mu, \theta)\]</span> <span class="math display">\[log(\mu) = \beta_3 + \beta_4 SST + \beta_5 BEUTI\]</span></p>
+<p>For simplicity in understanding the model, I only selected temperature as predictor variable to simulate data and return my selected beta values. To begin simulating data, I need to generate x values based on the SST lag 30 days variable from the original data. From there I can use those temperatures and beta values I selected to run the binomial equation to find <code>logit(p)</code>. I think take the inverse logit of those values to generate p which represents the probability of success. Using that probability, I simulated a success variable with <code>rbinom()</code> to generate 0’s and 1’s.</p>
 <p>Similar to the binomial step, I chose new beta values for the equation and used the same generated temperature data. The output of the negative binomial equation gives log of mu, or the mean. By applying an exponential to that, the mean of the data is found, which is then used to simulate count data using <code>rnbinom()</code>.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>B0 <span class="ot">&lt;-</span> <span class="dv">3</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>B1 <span class="ot">&lt;-</span> <span class="sc">-</span><span class="fl">0.1</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>B2 <span class="ot">&lt;-</span> <span class="dv">2</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>B3 <span class="ot">&lt;-</span> <span class="fl">0.1</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>new_recruits <span class="ot">&lt;-</span> <span class="fu">expand_grid</span>(<span class="at">mean_sst =</span> <span class="fu">seq</span>(<span class="fu">min</span>(rf_yoy<span class="sc">$</span>SST_D30, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>                                           <span class="fu">max</span>(rf_yoy<span class="sc">$</span>SST_D30, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>                                           <span class="at">length.out =</span> <span class="dv">1000</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">logit_p =</span> B0 <span class="sc">+</span> B1 <span class="sc">*</span> mean_sst,</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>         <span class="at">p =</span> <span class="fu">exp</span>(logit_p) <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">+</span> <span class="fu">exp</span>(logit_p)),</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>         <span class="at">success =</span> <span class="fu">rbinom</span>(<span class="at">n =</span> <span class="dv">1000</span>, <span class="at">size =</span> <span class="dv">1</span>, <span class="at">prob =</span> p),</span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>         <span class="at">log_mu =</span> B2 <span class="sc">+</span> B3 <span class="sc">*</span> mean_sst,</span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>         <span class="at">mu =</span> <span class="fu">exp</span>(log_mu),</span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>         <span class="at">count =</span> <span class="fu">rnbinom</span>(<span class="at">n =</span> <span class="dv">1000</span>, <span class="at">size =</span> <span class="fl">1.5</span>, <span class="at">mu =</span> mu),</span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>         <span class="at">actual_abu =</span> success <span class="sc">*</span> count)</span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>sim_hurdle_model <span class="ot">&lt;-</span> <span class="fu">hurdle</span>(actual_abu <span class="sc">~</span> mean_sst,  <span class="co"># formula: response ~ resp</span></span>
-<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>                   <span class="at">data =</span> new_recruits, <span class="co"># data remains unchanged</span></span>
-<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>                   <span class="at">zero.dist =</span> <span class="st">"binomial"</span>,</span>
-<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>                   <span class="at">dist =</span> <span class="st">"negbin"</span></span>
-<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>                   )</span>
-<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a><span class="fu">modelsummary</span>(sim_hurdle_model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>B0 <span class="ot">&lt;-</span> <span class="dv">3</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>B1 <span class="ot">&lt;-</span> <span class="sc">-</span><span class="fl">0.1</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>B2 <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>B3 <span class="ot">&lt;-</span> <span class="fl">0.1</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>new_recruits <span class="ot">&lt;-</span> <span class="fu">expand_grid</span>(<span class="at">mean_sst =</span> <span class="fu">seq</span>(<span class="fu">min</span>(rf_yoy<span class="sc">$</span>SST_D30, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>                                           <span class="fu">max</span>(rf_yoy<span class="sc">$</span>SST_D30, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>                                           <span class="at">length.out =</span> <span class="dv">1000</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">logit_p =</span> B0 <span class="sc">+</span> B1 <span class="sc">*</span> mean_sst,</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>         <span class="at">p =</span> <span class="fu">exp</span>(logit_p) <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">+</span> <span class="fu">exp</span>(logit_p)),</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>         <span class="at">success =</span> <span class="fu">rbinom</span>(<span class="at">n =</span> <span class="dv">1000</span>, <span class="at">size =</span> <span class="dv">1</span>, <span class="at">prob =</span> p),</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>         <span class="at">log_mu =</span> B2 <span class="sc">+</span> B3 <span class="sc">*</span> mean_sst,</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>         <span class="at">mu =</span> <span class="fu">exp</span>(log_mu),</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>         <span class="at">count =</span> <span class="fu">rnbinom</span>(<span class="at">n =</span> <span class="dv">1000</span>, <span class="at">size =</span> <span class="fl">1.5</span>, <span class="at">mu =</span> mu),</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>         <span class="at">actual_abu =</span> success <span class="sc">*</span> count)</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>sim_hurdle_model <span class="ot">&lt;-</span> <span class="fu">hurdle</span>(actual_abu <span class="sc">~</span> mean_sst,  <span class="co"># formula: response ~ resp</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>                   <span class="at">data =</span> new_recruits, <span class="co"># data remains unchanged</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>                   <span class="at">zero.dist =</span> <span class="st">"binomial"</span>,</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>                   <span class="at">dist =</span> <span class="st">"negbin"</span></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>                   )</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a><span class="fu">modelsummary</span>(sim_hurdle_model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <!-- preamble start -->
@@ -462,25 +436,25 @@ log(\mu) = \beta_3 + \beta_4 SST + \beta_5 BEUTI\]</span></p>
 
     <script>
       // Create table-specific functions using external factory
-      const tableFns_kykp5j456gxhz71pz8gv = TinyTable.createTableFunctions("tinytable_kykp5j456gxhz71pz8gv");
+      const tableFns_kqajsavvcad27jqaa32w = TinyTable.createTableFunctions("tinytable_kqajsavvcad27jqaa32w");
       // tinytable span after
       window.addEventListener('load', function () {
           var cellsToStyle = [
             // tinytable style arrays after
-          { positions: [ { i: '14', j: 2 } ], css_id: 'tinytable_css_33fubabzqv97qlwhfano',}, 
-          { positions: [ { i: '8', j: 2 } ], css_id: 'tinytable_css_fzbicldwpwqi0150c5pj',}, 
-          { positions: [ { i: '1', j: 2 }, { i: '2', j: 2 }, { i: '3', j: 2 }, { i: '4', j: 2 }, { i: '5', j: 2 }, { i: '6', j: 2 }, { i: '7', j: 2 }, { i: '9', j: 2 }, { i: '10', j: 2 }, { i: '11', j: 2 }, { i: '12', j: 2 }, { i: '13', j: 2 } ], css_id: 'tinytable_css_uzu0mnd1qsgtfsqfr9xe',}, 
-          { positions: [ { i: '0', j: 2 } ], css_id: 'tinytable_css_j8iaewjda25okxe6get4',}, 
-          { positions: [ { i: '14', j: 1 } ], css_id: 'tinytable_css_w76bzjsgy449iyeohvmo',}, 
-          { positions: [ { i: '8', j: 1 } ], css_id: 'tinytable_css_gi811js1y6b83uqqmcoi',}, 
-          { positions: [ { i: '1', j: 1 }, { i: '2', j: 1 }, { i: '3', j: 1 }, { i: '4', j: 1 }, { i: '5', j: 1 }, { i: '6', j: 1 }, { i: '7', j: 1 }, { i: '9', j: 1 }, { i: '10', j: 1 }, { i: '11', j: 1 }, { i: '12', j: 1 }, { i: '13', j: 1 } ], css_id: 'tinytable_css_vbswahqhznxa6momr5mg',}, 
-          { positions: [ { i: '0', j: 1 } ], css_id: 'tinytable_css_jkj4e3m1z7tzsalopo9u',}, 
+          { positions: [ { i: '14', j: 2 } ], css_id: 'tinytable_css_4p4ba4vlvg7fzjkud3jw',}, 
+          { positions: [ { i: '8', j: 2 } ], css_id: 'tinytable_css_ro638h4bbt9dwh43jcr3',}, 
+          { positions: [ { i: '1', j: 2 }, { i: '2', j: 2 }, { i: '3', j: 2 }, { i: '4', j: 2 }, { i: '5', j: 2 }, { i: '6', j: 2 }, { i: '7', j: 2 }, { i: '9', j: 2 }, { i: '10', j: 2 }, { i: '11', j: 2 }, { i: '12', j: 2 }, { i: '13', j: 2 } ], css_id: 'tinytable_css_wbvpzi0s630z3403zhaz',}, 
+          { positions: [ { i: '0', j: 2 } ], css_id: 'tinytable_css_9p1dr43606o50j83qb7i',}, 
+          { positions: [ { i: '14', j: 1 } ], css_id: 'tinytable_css_j8z87dlielh15lwd3jfy',}, 
+          { positions: [ { i: '8', j: 1 } ], css_id: 'tinytable_css_a7xq9628calvsaa0mcld',}, 
+          { positions: [ { i: '1', j: 1 }, { i: '2', j: 1 }, { i: '3', j: 1 }, { i: '4', j: 1 }, { i: '5', j: 1 }, { i: '6', j: 1 }, { i: '7', j: 1 }, { i: '9', j: 1 }, { i: '10', j: 1 }, { i: '11', j: 1 }, { i: '12', j: 1 }, { i: '13', j: 1 } ], css_id: 'tinytable_css_5x0vazpz6ho01mhx3veg',}, 
+          { positions: [ { i: '0', j: 1 } ], css_id: 'tinytable_css_gr5pigeo6qjhb7bppn19',}, 
           ];
 
           // Loop over the arrays to style the cells
           cellsToStyle.forEach(function (group) {
               group.positions.forEach(function (cell) {
-                  tableFns_kykp5j456gxhz71pz8gv.styleCell(cell.i, cell.j, group.css_id);
+                  tableFns_kqajsavvcad27jqaa32w.styleCell(cell.i, cell.j, group.css_id);
               });
           });
       });
@@ -489,17 +463,17 @@ log(\mu) = \beta_3 + \beta_4 SST + \beta_5 BEUTI\]</span></p>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.css">
     <style>
     /* tinytable css entries after */
-    #tinytable_kykp5j456gxhz71pz8gv td.tinytable_css_33fubabzqv97qlwhfano, #tinytable_kykp5j456gxhz71pz8gv th.tinytable_css_33fubabzqv97qlwhfano {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: black; --line-color-left: black; --line-color-right: black; --line-color-top: black; --line-width-bottom: 0.1em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
-    #tinytable_kykp5j456gxhz71pz8gv td.tinytable_css_fzbicldwpwqi0150c5pj, #tinytable_kykp5j456gxhz71pz8gv th.tinytable_css_fzbicldwpwqi0150c5pj {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: black; --line-color-left: black; --line-color-right: black; --line-color-top: black; --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
-    #tinytable_kykp5j456gxhz71pz8gv td.tinytable_css_uzu0mnd1qsgtfsqfr9xe, #tinytable_kykp5j456gxhz71pz8gv th.tinytable_css_uzu0mnd1qsgtfsqfr9xe { text-align: center }
-    #tinytable_kykp5j456gxhz71pz8gv td.tinytable_css_j8iaewjda25okxe6get4, #tinytable_kykp5j456gxhz71pz8gv th.tinytable_css_j8iaewjda25okxe6get4 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: black; --line-color-left: black; --line-color-right: black; --line-color-top: black; --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
-    #tinytable_kykp5j456gxhz71pz8gv td.tinytable_css_w76bzjsgy449iyeohvmo, #tinytable_kykp5j456gxhz71pz8gv th.tinytable_css_w76bzjsgy449iyeohvmo {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: black; --line-color-left: black; --line-color-right: black; --line-color-top: black; --line-width-bottom: 0.1em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
-    #tinytable_kykp5j456gxhz71pz8gv td.tinytable_css_gi811js1y6b83uqqmcoi, #tinytable_kykp5j456gxhz71pz8gv th.tinytable_css_gi811js1y6b83uqqmcoi {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: black; --line-color-left: black; --line-color-right: black; --line-color-top: black; --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
-    #tinytable_kykp5j456gxhz71pz8gv td.tinytable_css_vbswahqhznxa6momr5mg, #tinytable_kykp5j456gxhz71pz8gv th.tinytable_css_vbswahqhznxa6momr5mg { text-align: left }
-    #tinytable_kykp5j456gxhz71pz8gv td.tinytable_css_jkj4e3m1z7tzsalopo9u, #tinytable_kykp5j456gxhz71pz8gv th.tinytable_css_jkj4e3m1z7tzsalopo9u {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: black; --line-color-left: black; --line-color-right: black; --line-color-top: black; --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
+    #tinytable_kqajsavvcad27jqaa32w td.tinytable_css_4p4ba4vlvg7fzjkud3jw, #tinytable_kqajsavvcad27jqaa32w th.tinytable_css_4p4ba4vlvg7fzjkud3jw {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: black; --line-color-left: black; --line-color-right: black; --line-color-top: black; --line-width-bottom: 0.1em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+    #tinytable_kqajsavvcad27jqaa32w td.tinytable_css_ro638h4bbt9dwh43jcr3, #tinytable_kqajsavvcad27jqaa32w th.tinytable_css_ro638h4bbt9dwh43jcr3 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: black; --line-color-left: black; --line-color-right: black; --line-color-top: black; --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+    #tinytable_kqajsavvcad27jqaa32w td.tinytable_css_wbvpzi0s630z3403zhaz, #tinytable_kqajsavvcad27jqaa32w th.tinytable_css_wbvpzi0s630z3403zhaz { text-align: center }
+    #tinytable_kqajsavvcad27jqaa32w td.tinytable_css_9p1dr43606o50j83qb7i, #tinytable_kqajsavvcad27jqaa32w th.tinytable_css_9p1dr43606o50j83qb7i {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: black; --line-color-left: black; --line-color-right: black; --line-color-top: black; --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+    #tinytable_kqajsavvcad27jqaa32w td.tinytable_css_j8z87dlielh15lwd3jfy, #tinytable_kqajsavvcad27jqaa32w th.tinytable_css_j8z87dlielh15lwd3jfy {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: black; --line-color-left: black; --line-color-right: black; --line-color-top: black; --line-width-bottom: 0.1em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
+    #tinytable_kqajsavvcad27jqaa32w td.tinytable_css_a7xq9628calvsaa0mcld, #tinytable_kqajsavvcad27jqaa32w th.tinytable_css_a7xq9628calvsaa0mcld {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: black; --line-color-left: black; --line-color-right: black; --line-color-top: black; --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
+    #tinytable_kqajsavvcad27jqaa32w td.tinytable_css_5x0vazpz6ho01mhx3veg, #tinytable_kqajsavvcad27jqaa32w th.tinytable_css_5x0vazpz6ho01mhx3veg { text-align: left }
+    #tinytable_kqajsavvcad27jqaa32w td.tinytable_css_gr5pigeo6qjhb7bppn19, #tinytable_kqajsavvcad27jqaa32w th.tinytable_css_gr5pigeo6qjhb7bppn19 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: black; --line-color-left: black; --line-color-right: black; --line-color-top: black; --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
     </style>
     <div class="container">
-      <table class="tinytable" id="tinytable_kykp5j456gxhz71pz8gv" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+      <table class="tinytable" id="tinytable_kqajsavvcad27jqaa32w" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
         
         <thead>
               <tr>
@@ -511,15 +485,15 @@ log(\mu) = \beta_3 + \beta_4 SST + \beta_5 BEUTI\]</span></p>
         <tbody>
                 <tr>
                   <td data-row="1" data-col="1">count_(Intercept)</td>
-                  <td data-row="1" data-col="2">1.945</td>
+                  <td data-row="1" data-col="2">1.744</td>
                 </tr>
                 <tr>
                   <td data-row="2" data-col="1"></td>
-                  <td data-row="2" data-col="2">(0.289)</td>
+                  <td data-row="2" data-col="2">(0.281)</td>
                 </tr>
                 <tr>
                   <td data-row="3" data-col="1">count_mean_sst</td>
-                  <td data-row="3" data-col="2">0.102</td>
+                  <td data-row="3" data-col="2">0.119</td>
                 </tr>
                 <tr>
                   <td data-row="4" data-col="1"></td>
@@ -527,19 +501,19 @@ log(\mu) = \beta_3 + \beta_4 SST + \beta_5 BEUTI\]</span></p>
                 </tr>
                 <tr>
                   <td data-row="5" data-col="1">zero_(Intercept)</td>
-                  <td data-row="5" data-col="2">2.222</td>
+                  <td data-row="5" data-col="2">1.603</td>
                 </tr>
                 <tr>
                   <td data-row="6" data-col="1"></td>
-                  <td data-row="6" data-col="2">(0.804)</td>
+                  <td data-row="6" data-col="2">(0.754)</td>
                 </tr>
                 <tr>
                   <td data-row="7" data-col="1">zero_mean_sst</td>
-                  <td data-row="7" data-col="2">-0.046</td>
+                  <td data-row="7" data-col="2">-0.015</td>
                 </tr>
                 <tr>
                   <td data-row="8" data-col="1"></td>
-                  <td data-row="8" data-col="2">(0.057)</td>
+                  <td data-row="8" data-col="2">(0.053)</td>
                 </tr>
                 <tr>
                   <td data-row="9" data-col="1">Num.Obs.</td>
@@ -547,23 +521,23 @@ log(\mu) = \beta_3 + \beta_4 SST + \beta_5 BEUTI\]</span></p>
                 </tr>
                 <tr>
                   <td data-row="10" data-col="1">R2</td>
-                  <td data-row="10" data-col="2">0.924</td>
+                  <td data-row="10" data-col="2">0.948</td>
                 </tr>
                 <tr>
                   <td data-row="11" data-col="1">R2 Adj.</td>
-                  <td data-row="11" data-col="2">0.924</td>
+                  <td data-row="11" data-col="2">0.948</td>
                 </tr>
                 <tr>
                   <td data-row="12" data-col="1">AIC</td>
-                  <td data-row="12" data-col="2">8161.7</td>
+                  <td data-row="12" data-col="2">8017.7</td>
                 </tr>
                 <tr>
                   <td data-row="13" data-col="1">BIC</td>
-                  <td data-row="13" data-col="2">8186.2</td>
+                  <td data-row="13" data-col="2">8042.2</td>
                 </tr>
                 <tr>
                   <td data-row="14" data-col="1">RMSE</td>
-                  <td data-row="14" data-col="2">26.29</td>
+                  <td data-row="14" data-col="2">26.38</td>
                 </tr>
         </tbody>
       </table>
@@ -575,17 +549,17 @@ log(\mu) = \beta_3 + \beta_4 SST + \beta_5 BEUTI\]</span></p>
 </section>
 </section>
 <section id="hurdle-model-application" class="level2">
-<h2 class="anchored" data-anchor-id="hurdle-model-application">Hurdle model Application</h2>
+<h2 class="anchored" data-anchor-id="hurdle-model-application">Hurdle Model Application</h2>
 <p>After completing a simulation of data and running a hurdle model, I can apply it to my data. I will add my upwelling variable back in to test my hypothesis</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>true_hurdle_model <span class="ot">&lt;-</span> <span class="fu">hurdle</span>(total_fish_collected <span class="sc">~</span> SST_D30 <span class="sc">*</span> beuti_30, </span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>                            <span class="at">data =</span> rf_yoy,</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>                            <span class="at">dist =</span> <span class="st">"negbin"</span>,</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>                            <span class="at">zero.dist =</span> <span class="st">"binomial"</span>)</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="fu">modelsummary</span>(true_hurdle_model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>true_hurdle_model <span class="ot">&lt;-</span> <span class="fu">hurdle</span>(total_fish_collected <span class="sc">~</span> SST_D30 <span class="sc">*</span> beuti_30, </span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>                            <span class="at">data =</span> rf_yoy,</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>                            <span class="at">dist =</span> <span class="st">"negbin"</span>,</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>                            <span class="at">zero.dist =</span> <span class="st">"binomial"</span>)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="fu">modelsummary</span>(true_hurdle_model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <!-- preamble start -->
@@ -594,25 +568,25 @@ log(\mu) = \beta_3 + \beta_4 SST + \beta_5 BEUTI\]</span></p>
 
     <script>
       // Create table-specific functions using external factory
-      const tableFns_ah8cb8zzbro2tzta294x = TinyTable.createTableFunctions("tinytable_ah8cb8zzbro2tzta294x");
+      const tableFns_hk12gvaino4s3ru85xhb = TinyTable.createTableFunctions("tinytable_hk12gvaino4s3ru85xhb");
       // tinytable span after
       window.addEventListener('load', function () {
           var cellsToStyle = [
             // tinytable style arrays after
-          { positions: [ { i: '22', j: 2 } ], css_id: 'tinytable_css_pe8y8cd1fymzpqc91ut2',}, 
-          { positions: [ { i: '16', j: 2 } ], css_id: 'tinytable_css_deh4plr0ox704b3cp8yq',}, 
-          { positions: [ { i: '1', j: 2 }, { i: '2', j: 2 }, { i: '3', j: 2 }, { i: '4', j: 2 }, { i: '5', j: 2 }, { i: '6', j: 2 }, { i: '7', j: 2 }, { i: '8', j: 2 }, { i: '9', j: 2 }, { i: '10', j: 2 }, { i: '11', j: 2 }, { i: '12', j: 2 }, { i: '13', j: 2 }, { i: '14', j: 2 }, { i: '15', j: 2 }, { i: '17', j: 2 }, { i: '18', j: 2 }, { i: '19', j: 2 }, { i: '20', j: 2 }, { i: '21', j: 2 } ], css_id: 'tinytable_css_l77qsu8x88wfx2r6yzec',}, 
-          { positions: [ { i: '0', j: 2 } ], css_id: 'tinytable_css_xgn6oz3fry2o35oidgxy',}, 
-          { positions: [ { i: '22', j: 1 } ], css_id: 'tinytable_css_zd7o822p0l5ftfymdrll',}, 
-          { positions: [ { i: '16', j: 1 } ], css_id: 'tinytable_css_iew0j8pdeg69mo1v4prh',}, 
-          { positions: [ { i: '1', j: 1 }, { i: '2', j: 1 }, { i: '3', j: 1 }, { i: '4', j: 1 }, { i: '5', j: 1 }, { i: '6', j: 1 }, { i: '7', j: 1 }, { i: '8', j: 1 }, { i: '9', j: 1 }, { i: '10', j: 1 }, { i: '11', j: 1 }, { i: '12', j: 1 }, { i: '13', j: 1 }, { i: '14', j: 1 }, { i: '15', j: 1 }, { i: '17', j: 1 }, { i: '18', j: 1 }, { i: '19', j: 1 }, { i: '20', j: 1 }, { i: '21', j: 1 } ], css_id: 'tinytable_css_jet6oene407go0s3p4yz',}, 
-          { positions: [ { i: '0', j: 1 } ], css_id: 'tinytable_css_wwlnzf3nwgq71znzt6ec',}, 
+          { positions: [ { i: '22', j: 2 } ], css_id: 'tinytable_css_chb7wykys8kq21jgjsrz',}, 
+          { positions: [ { i: '16', j: 2 } ], css_id: 'tinytable_css_djac1n5izy08sjz2zvhs',}, 
+          { positions: [ { i: '1', j: 2 }, { i: '2', j: 2 }, { i: '3', j: 2 }, { i: '4', j: 2 }, { i: '5', j: 2 }, { i: '6', j: 2 }, { i: '7', j: 2 }, { i: '8', j: 2 }, { i: '9', j: 2 }, { i: '10', j: 2 }, { i: '11', j: 2 }, { i: '12', j: 2 }, { i: '13', j: 2 }, { i: '14', j: 2 }, { i: '15', j: 2 }, { i: '17', j: 2 }, { i: '18', j: 2 }, { i: '19', j: 2 }, { i: '20', j: 2 }, { i: '21', j: 2 } ], css_id: 'tinytable_css_xhytyujyvu7vpjd6ulda',}, 
+          { positions: [ { i: '0', j: 2 } ], css_id: 'tinytable_css_xqnennp8azikyabcnost',}, 
+          { positions: [ { i: '22', j: 1 } ], css_id: 'tinytable_css_3wytm1umvhf709fmt8q7',}, 
+          { positions: [ { i: '16', j: 1 } ], css_id: 'tinytable_css_234hte4kgtyvgpmgkb3w',}, 
+          { positions: [ { i: '1', j: 1 }, { i: '2', j: 1 }, { i: '3', j: 1 }, { i: '4', j: 1 }, { i: '5', j: 1 }, { i: '6', j: 1 }, { i: '7', j: 1 }, { i: '8', j: 1 }, { i: '9', j: 1 }, { i: '10', j: 1 }, { i: '11', j: 1 }, { i: '12', j: 1 }, { i: '13', j: 1 }, { i: '14', j: 1 }, { i: '15', j: 1 }, { i: '17', j: 1 }, { i: '18', j: 1 }, { i: '19', j: 1 }, { i: '20', j: 1 }, { i: '21', j: 1 } ], css_id: 'tinytable_css_mmv9uqalqjb7bw9390sd',}, 
+          { positions: [ { i: '0', j: 1 } ], css_id: 'tinytable_css_mztrzia5ewlxasf0w910',}, 
           ];
 
           // Loop over the arrays to style the cells
           cellsToStyle.forEach(function (group) {
               group.positions.forEach(function (cell) {
-                  tableFns_ah8cb8zzbro2tzta294x.styleCell(cell.i, cell.j, group.css_id);
+                  tableFns_hk12gvaino4s3ru85xhb.styleCell(cell.i, cell.j, group.css_id);
               });
           });
       });
@@ -621,17 +595,17 @@ log(\mu) = \beta_3 + \beta_4 SST + \beta_5 BEUTI\]</span></p>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.css">
     <style>
     /* tinytable css entries after */
-    #tinytable_ah8cb8zzbro2tzta294x td.tinytable_css_pe8y8cd1fymzpqc91ut2, #tinytable_ah8cb8zzbro2tzta294x th.tinytable_css_pe8y8cd1fymzpqc91ut2 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: black; --line-color-left: black; --line-color-right: black; --line-color-top: black; --line-width-bottom: 0.1em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
-    #tinytable_ah8cb8zzbro2tzta294x td.tinytable_css_deh4plr0ox704b3cp8yq, #tinytable_ah8cb8zzbro2tzta294x th.tinytable_css_deh4plr0ox704b3cp8yq {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: black; --line-color-left: black; --line-color-right: black; --line-color-top: black; --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
-    #tinytable_ah8cb8zzbro2tzta294x td.tinytable_css_l77qsu8x88wfx2r6yzec, #tinytable_ah8cb8zzbro2tzta294x th.tinytable_css_l77qsu8x88wfx2r6yzec { text-align: center }
-    #tinytable_ah8cb8zzbro2tzta294x td.tinytable_css_xgn6oz3fry2o35oidgxy, #tinytable_ah8cb8zzbro2tzta294x th.tinytable_css_xgn6oz3fry2o35oidgxy {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: black; --line-color-left: black; --line-color-right: black; --line-color-top: black; --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
-    #tinytable_ah8cb8zzbro2tzta294x td.tinytable_css_zd7o822p0l5ftfymdrll, #tinytable_ah8cb8zzbro2tzta294x th.tinytable_css_zd7o822p0l5ftfymdrll {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: black; --line-color-left: black; --line-color-right: black; --line-color-top: black; --line-width-bottom: 0.1em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
-    #tinytable_ah8cb8zzbro2tzta294x td.tinytable_css_iew0j8pdeg69mo1v4prh, #tinytable_ah8cb8zzbro2tzta294x th.tinytable_css_iew0j8pdeg69mo1v4prh {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: black; --line-color-left: black; --line-color-right: black; --line-color-top: black; --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
-    #tinytable_ah8cb8zzbro2tzta294x td.tinytable_css_jet6oene407go0s3p4yz, #tinytable_ah8cb8zzbro2tzta294x th.tinytable_css_jet6oene407go0s3p4yz { text-align: left }
-    #tinytable_ah8cb8zzbro2tzta294x td.tinytable_css_wwlnzf3nwgq71znzt6ec, #tinytable_ah8cb8zzbro2tzta294x th.tinytable_css_wwlnzf3nwgq71znzt6ec {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: black; --line-color-left: black; --line-color-right: black; --line-color-top: black; --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
+    #tinytable_hk12gvaino4s3ru85xhb td.tinytable_css_chb7wykys8kq21jgjsrz, #tinytable_hk12gvaino4s3ru85xhb th.tinytable_css_chb7wykys8kq21jgjsrz {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: black; --line-color-left: black; --line-color-right: black; --line-color-top: black; --line-width-bottom: 0.1em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+    #tinytable_hk12gvaino4s3ru85xhb td.tinytable_css_djac1n5izy08sjz2zvhs, #tinytable_hk12gvaino4s3ru85xhb th.tinytable_css_djac1n5izy08sjz2zvhs {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: black; --line-color-left: black; --line-color-right: black; --line-color-top: black; --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+    #tinytable_hk12gvaino4s3ru85xhb td.tinytable_css_xhytyujyvu7vpjd6ulda, #tinytable_hk12gvaino4s3ru85xhb th.tinytable_css_xhytyujyvu7vpjd6ulda { text-align: center }
+    #tinytable_hk12gvaino4s3ru85xhb td.tinytable_css_xqnennp8azikyabcnost, #tinytable_hk12gvaino4s3ru85xhb th.tinytable_css_xqnennp8azikyabcnost {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: black; --line-color-left: black; --line-color-right: black; --line-color-top: black; --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+    #tinytable_hk12gvaino4s3ru85xhb td.tinytable_css_3wytm1umvhf709fmt8q7, #tinytable_hk12gvaino4s3ru85xhb th.tinytable_css_3wytm1umvhf709fmt8q7 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: black; --line-color-left: black; --line-color-right: black; --line-color-top: black; --line-width-bottom: 0.1em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
+    #tinytable_hk12gvaino4s3ru85xhb td.tinytable_css_234hte4kgtyvgpmgkb3w, #tinytable_hk12gvaino4s3ru85xhb th.tinytable_css_234hte4kgtyvgpmgkb3w {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: black; --line-color-left: black; --line-color-right: black; --line-color-top: black; --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
+    #tinytable_hk12gvaino4s3ru85xhb td.tinytable_css_mmv9uqalqjb7bw9390sd, #tinytable_hk12gvaino4s3ru85xhb th.tinytable_css_mmv9uqalqjb7bw9390sd { text-align: left }
+    #tinytable_hk12gvaino4s3ru85xhb td.tinytable_css_mztrzia5ewlxasf0w910, #tinytable_hk12gvaino4s3ru85xhb th.tinytable_css_mztrzia5ewlxasf0w910 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: black; --line-color-left: black; --line-color-right: black; --line-color-top: black; --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
     </style>
     <div class="container">
-      <table class="tinytable" id="tinytable_ah8cb8zzbro2tzta294x" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+      <table class="tinytable" id="tinytable_hk12gvaino4s3ru85xhb" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
         
         <thead>
               <tr>
@@ -736,530 +710,280 @@ log(\mu) = \beta_3 + \beta_4 SST + \beta_5 BEUTI\]</span></p>
 </div>
 </div>
 </section>
-<section id="generate-pred" class="level1">
-<h1>Generate pred</h1>
-<section id="references" class="level2">
-<h2 class="anchored" data-anchor-id="references">References</h2>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>B0 <span class="ot">&lt;-</span> <span class="dv">3</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>B1 <span class="ot">&lt;-</span> <span class="sc">-</span><span class="fl">0.1</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>B2 <span class="ot">&lt;-</span> <span class="dv">2</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>B3 <span class="ot">&lt;-</span> <span class="fl">0.1</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>pres_abs <span class="ot">&lt;-</span> <span class="fu">expand_grid</span>(<span class="at">mean_sst =</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">40</span>, <span class="at">length.out =</span> <span class="dv">1000</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">logit_p =</span> B0 <span class="sc">+</span> B1 <span class="sc">*</span> mean_sst,</span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">p =</span> <span class="fu">exp</span>(logit_p) <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">+</span> <span class="fu">exp</span>(logit_p)),</span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>         <span class="at">success =</span> <span class="fu">rbinom</span>(<span class="at">n =</span> <span class="dv">1000</span>, <span class="at">size =</span> <span class="dv">1</span>, <span class="at">prob =</span> p), </span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>         <span class="at">log_mu =</span> B2 <span class="sc">+</span> B3 <span class="sc">*</span> mean_sst,</span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>         <span class="at">mu =</span> <span class="fu">exp</span>(log_mu),</span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>         <span class="at">count =</span> <span class="fu">rnbinom</span>(<span class="at">n =</span> <span class="dv">1000</span>, <span class="at">size =</span> <span class="fl">1.5</span>, <span class="at">mu =</span> mu))</span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>rf_presence_model <span class="ot">&lt;-</span> <span class="fu">glm</span>(success <span class="sc">~</span> mean_sst,  <span class="co"># formula: response ~ resp</span></span>
-<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>                   <span class="at">data =</span> pres_abs, <span class="co"># data remains unchanged</span></span>
-<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>                   <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">"logit"</span>)</span>
-<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>                   )</span>
-<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a><span class="fu">modelsummary</span>(rf_presence_model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-<div class="cell-output-display">
-<!-- preamble start -->
-
-    <script src="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.js"></script>
-
-    <script>
-      // Create table-specific functions using external factory
-      const tableFns_tmxftj5l0shsa7qdqtto = TinyTable.createTableFunctions("tinytable_tmxftj5l0shsa7qdqtto");
-      // tinytable span after
-      window.addEventListener('load', function () {
-          var cellsToStyle = [
-            // tinytable style arrays after
-          { positions: [ { i: '10', j: 2 } ], css_id: 'tinytable_css_ee3ql81zi2k0uo4lj28n',}, 
-          { positions: [ { i: '4', j: 2 } ], css_id: 'tinytable_css_ikhdyvhu4spdzoljiyzz',}, 
-          { positions: [ { i: '1', j: 2 }, { i: '2', j: 2 }, { i: '3', j: 2 }, { i: '5', j: 2 }, { i: '6', j: 2 }, { i: '7', j: 2 }, { i: '8', j: 2 }, { i: '9', j: 2 } ], css_id: 'tinytable_css_x7v2vwp3rewo9o0s8e7y',}, 
-          { positions: [ { i: '0', j: 2 } ], css_id: 'tinytable_css_6sqt9zzuf26p60deu2hd',}, 
-          { positions: [ { i: '10', j: 1 } ], css_id: 'tinytable_css_6luf3you5zk9rkwiloq3',}, 
-          { positions: [ { i: '4', j: 1 } ], css_id: 'tinytable_css_dog6mjf3hpvy1vdofbia',}, 
-          { positions: [ { i: '1', j: 1 }, { i: '2', j: 1 }, { i: '3', j: 1 }, { i: '5', j: 1 }, { i: '6', j: 1 }, { i: '7', j: 1 }, { i: '8', j: 1 }, { i: '9', j: 1 } ], css_id: 'tinytable_css_70z53svdihkcy5mvyzfq',}, 
-          { positions: [ { i: '0', j: 1 } ], css_id: 'tinytable_css_4jrbz6rk3x701nrhe6ml',}, 
-          ];
-
-          // Loop over the arrays to style the cells
-          cellsToStyle.forEach(function (group) {
-              group.positions.forEach(function (cell) {
-                  tableFns_tmxftj5l0shsa7qdqtto.styleCell(cell.i, cell.j, group.css_id);
-              });
-          });
-      });
-    </script>
-
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.css">
-    <style>
-    /* tinytable css entries after */
-    #tinytable_tmxftj5l0shsa7qdqtto td.tinytable_css_ee3ql81zi2k0uo4lj28n, #tinytable_tmxftj5l0shsa7qdqtto th.tinytable_css_ee3ql81zi2k0uo4lj28n {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: black; --line-color-left: black; --line-color-right: black; --line-color-top: black; --line-width-bottom: 0.1em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
-    #tinytable_tmxftj5l0shsa7qdqtto td.tinytable_css_ikhdyvhu4spdzoljiyzz, #tinytable_tmxftj5l0shsa7qdqtto th.tinytable_css_ikhdyvhu4spdzoljiyzz {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: black; --line-color-left: black; --line-color-right: black; --line-color-top: black; --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
-    #tinytable_tmxftj5l0shsa7qdqtto td.tinytable_css_x7v2vwp3rewo9o0s8e7y, #tinytable_tmxftj5l0shsa7qdqtto th.tinytable_css_x7v2vwp3rewo9o0s8e7y { text-align: center }
-    #tinytable_tmxftj5l0shsa7qdqtto td.tinytable_css_6sqt9zzuf26p60deu2hd, #tinytable_tmxftj5l0shsa7qdqtto th.tinytable_css_6sqt9zzuf26p60deu2hd {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: black; --line-color-left: black; --line-color-right: black; --line-color-top: black; --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
-    #tinytable_tmxftj5l0shsa7qdqtto td.tinytable_css_6luf3you5zk9rkwiloq3, #tinytable_tmxftj5l0shsa7qdqtto th.tinytable_css_6luf3you5zk9rkwiloq3 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: black; --line-color-left: black; --line-color-right: black; --line-color-top: black; --line-width-bottom: 0.1em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
-    #tinytable_tmxftj5l0shsa7qdqtto td.tinytable_css_dog6mjf3hpvy1vdofbia, #tinytable_tmxftj5l0shsa7qdqtto th.tinytable_css_dog6mjf3hpvy1vdofbia {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: black; --line-color-left: black; --line-color-right: black; --line-color-top: black; --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
-    #tinytable_tmxftj5l0shsa7qdqtto td.tinytable_css_70z53svdihkcy5mvyzfq, #tinytable_tmxftj5l0shsa7qdqtto th.tinytable_css_70z53svdihkcy5mvyzfq { text-align: left }
-    #tinytable_tmxftj5l0shsa7qdqtto td.tinytable_css_4jrbz6rk3x701nrhe6ml, #tinytable_tmxftj5l0shsa7qdqtto th.tinytable_css_4jrbz6rk3x701nrhe6ml {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: black; --line-color-left: black; --line-color-right: black; --line-color-top: black; --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
-    </style>
-    <div class="container">
-      <table class="tinytable" id="tinytable_tmxftj5l0shsa7qdqtto" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
-        
-        <thead>
-              <tr>
-                <th scope="col" data-row="0" data-col="1"> </th>
-                <th scope="col" data-row="0" data-col="2">(1)</th>
-              </tr>
-        </thead>
-        
-        <tbody>
-                <tr>
-                  <td data-row="1" data-col="1">(Intercept)</td>
-                  <td data-row="1" data-col="2">3.096</td>
-                </tr>
-                <tr>
-                  <td data-row="2" data-col="1"></td>
-                  <td data-row="2" data-col="2">(0.206)</td>
-                </tr>
-                <tr>
-                  <td data-row="3" data-col="1">mean_sst</td>
-                  <td data-row="3" data-col="2">-0.105</td>
-                </tr>
-                <tr>
-                  <td data-row="4" data-col="1"></td>
-                  <td data-row="4" data-col="2">(0.008)</td>
-                </tr>
-                <tr>
-                  <td data-row="5" data-col="1">Num.Obs.</td>
-                  <td data-row="5" data-col="2">1000</td>
-                </tr>
-                <tr>
-                  <td data-row="6" data-col="1">AIC</td>
-                  <td data-row="6" data-col="2">1018.7</td>
-                </tr>
-                <tr>
-                  <td data-row="7" data-col="1">BIC</td>
-                  <td data-row="7" data-col="2">1028.5</td>
-                </tr>
-                <tr>
-                  <td data-row="8" data-col="1">Log.Lik.</td>
-                  <td data-row="8" data-col="2">-507.346</td>
-                </tr>
-                <tr>
-                  <td data-row="9" data-col="1">F</td>
-                  <td data-row="9" data-col="2">178.515</td>
-                </tr>
-                <tr>
-                  <td data-row="10" data-col="1">RMSE</td>
-                  <td data-row="10" data-col="2">0.41</td>
-                </tr>
-        </tbody>
-      </table>
-    </div>
-<!-- hack to avoid NA insertion in last line -->
-</div>
-<details class="code-fold">
-<summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>no_zero <span class="ot">&lt;-</span> pres_abs <span class="sc">%&gt;%</span> </span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(count <span class="sc">&gt;</span> <span class="dv">0</span>)</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>rf_abundance_model <span class="ot">&lt;-</span> <span class="fu">glm.nb</span>(count <span class="sc">~</span> mean_sst,  <span class="co"># formula: response ~ resp</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>                   <span class="at">data =</span> no_zero)</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>                  </span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="fu">modelsummary</span>(rf_abundance_model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-<div class="cell-output-display">
-<!-- preamble start -->
-
-    <script src="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.js"></script>
-
-    <script>
-      // Create table-specific functions using external factory
-      const tableFns_j0zjxbgcw4nckhvcwmt7 = TinyTable.createTableFunctions("tinytable_j0zjxbgcw4nckhvcwmt7");
-      // tinytable span after
-      window.addEventListener('load', function () {
-          var cellsToStyle = [
-            // tinytable style arrays after
-          { positions: [ { i: '10', j: 2 } ], css_id: 'tinytable_css_til7avmsq81krr48aq71',}, 
-          { positions: [ { i: '4', j: 2 } ], css_id: 'tinytable_css_99va4vspmuv24d0slc2w',}, 
-          { positions: [ { i: '1', j: 2 }, { i: '2', j: 2 }, { i: '3', j: 2 }, { i: '5', j: 2 }, { i: '6', j: 2 }, { i: '7', j: 2 }, { i: '8', j: 2 }, { i: '9', j: 2 } ], css_id: 'tinytable_css_pi0wvgx0y6skk9o62omj',}, 
-          { positions: [ { i: '0', j: 2 } ], css_id: 'tinytable_css_ms1gkhyuhk2yj9ordnqk',}, 
-          { positions: [ { i: '10', j: 1 } ], css_id: 'tinytable_css_uqdr8nf4v3ll9kyxfutk',}, 
-          { positions: [ { i: '4', j: 1 } ], css_id: 'tinytable_css_sp0j9s5grcjv5ysuvz3q',}, 
-          { positions: [ { i: '1', j: 1 }, { i: '2', j: 1 }, { i: '3', j: 1 }, { i: '5', j: 1 }, { i: '6', j: 1 }, { i: '7', j: 1 }, { i: '8', j: 1 }, { i: '9', j: 1 } ], css_id: 'tinytable_css_ob3z1zlicoshc0en9ztg',}, 
-          { positions: [ { i: '0', j: 1 } ], css_id: 'tinytable_css_66iy9bnmzzu4eijoob54',}, 
-          ];
-
-          // Loop over the arrays to style the cells
-          cellsToStyle.forEach(function (group) {
-              group.positions.forEach(function (cell) {
-                  tableFns_j0zjxbgcw4nckhvcwmt7.styleCell(cell.i, cell.j, group.css_id);
-              });
-          });
-      });
-    </script>
-
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.css">
-    <style>
-    /* tinytable css entries after */
-    #tinytable_j0zjxbgcw4nckhvcwmt7 td.tinytable_css_til7avmsq81krr48aq71, #tinytable_j0zjxbgcw4nckhvcwmt7 th.tinytable_css_til7avmsq81krr48aq71 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: black; --line-color-left: black; --line-color-right: black; --line-color-top: black; --line-width-bottom: 0.1em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
-    #tinytable_j0zjxbgcw4nckhvcwmt7 td.tinytable_css_99va4vspmuv24d0slc2w, #tinytable_j0zjxbgcw4nckhvcwmt7 th.tinytable_css_99va4vspmuv24d0slc2w {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: black; --line-color-left: black; --line-color-right: black; --line-color-top: black; --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
-    #tinytable_j0zjxbgcw4nckhvcwmt7 td.tinytable_css_pi0wvgx0y6skk9o62omj, #tinytable_j0zjxbgcw4nckhvcwmt7 th.tinytable_css_pi0wvgx0y6skk9o62omj { text-align: center }
-    #tinytable_j0zjxbgcw4nckhvcwmt7 td.tinytable_css_ms1gkhyuhk2yj9ordnqk, #tinytable_j0zjxbgcw4nckhvcwmt7 th.tinytable_css_ms1gkhyuhk2yj9ordnqk {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: black; --line-color-left: black; --line-color-right: black; --line-color-top: black; --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
-    #tinytable_j0zjxbgcw4nckhvcwmt7 td.tinytable_css_uqdr8nf4v3ll9kyxfutk, #tinytable_j0zjxbgcw4nckhvcwmt7 th.tinytable_css_uqdr8nf4v3ll9kyxfutk {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: black; --line-color-left: black; --line-color-right: black; --line-color-top: black; --line-width-bottom: 0.1em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
-    #tinytable_j0zjxbgcw4nckhvcwmt7 td.tinytable_css_sp0j9s5grcjv5ysuvz3q, #tinytable_j0zjxbgcw4nckhvcwmt7 th.tinytable_css_sp0j9s5grcjv5ysuvz3q {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: black; --line-color-left: black; --line-color-right: black; --line-color-top: black; --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
-    #tinytable_j0zjxbgcw4nckhvcwmt7 td.tinytable_css_ob3z1zlicoshc0en9ztg, #tinytable_j0zjxbgcw4nckhvcwmt7 th.tinytable_css_ob3z1zlicoshc0en9ztg { text-align: left }
-    #tinytable_j0zjxbgcw4nckhvcwmt7 td.tinytable_css_66iy9bnmzzu4eijoob54, #tinytable_j0zjxbgcw4nckhvcwmt7 th.tinytable_css_66iy9bnmzzu4eijoob54 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: black; --line-color-left: black; --line-color-right: black; --line-color-top: black; --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
-    </style>
-    <div class="container">
-      <table class="tinytable" id="tinytable_j0zjxbgcw4nckhvcwmt7" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
-        
-        <thead>
-              <tr>
-                <th scope="col" data-row="0" data-col="1"> </th>
-                <th scope="col" data-row="0" data-col="2">(1)</th>
-              </tr>
-        </thead>
-        
-        <tbody>
-                <tr>
-                  <td data-row="1" data-col="1">(Intercept)</td>
-                  <td data-row="1" data-col="2">2.047</td>
-                </tr>
-                <tr>
-                  <td data-row="2" data-col="1"></td>
-                  <td data-row="2" data-col="2">(0.054)</td>
-                </tr>
-                <tr>
-                  <td data-row="3" data-col="1">mean_sst</td>
-                  <td data-row="3" data-col="2">0.098</td>
-                </tr>
-                <tr>
-                  <td data-row="4" data-col="1"></td>
-                  <td data-row="4" data-col="2">(0.002)</td>
-                </tr>
-                <tr>
-                  <td data-row="5" data-col="1">Num.Obs.</td>
-                  <td data-row="5" data-col="2">984</td>
-                </tr>
-                <tr>
-                  <td data-row="6" data-col="1">AIC</td>
-                  <td data-row="6" data-col="2">9858.5</td>
-                </tr>
-                <tr>
-                  <td data-row="7" data-col="1">BIC</td>
-                  <td data-row="7" data-col="2">9873.1</td>
-                </tr>
-                <tr>
-                  <td data-row="8" data-col="1">Log.Lik.</td>
-                  <td data-row="8" data-col="2">-4926.229</td>
-                </tr>
-                <tr>
-                  <td data-row="9" data-col="1">F</td>
-                  <td data-row="9" data-col="2">1852.334</td>
-                </tr>
-                <tr>
-                  <td data-row="10" data-col="1">RMSE</td>
-                  <td data-row="10" data-col="2">118.36</td>
-                </tr>
-        </tbody>
-      </table>
-    </div>
-<!-- hack to avoid NA insertion in last line -->
-</div>
-</div>
-</section>
-<section id="generating-the-predictions-with-the-data" class="level2">
-<h2 class="anchored" data-anchor-id="generating-the-predictions-with-the-data">Generating the predictions with the data</h2>
-</section>
-<section id="hurdle-model-application-1" class="level2">
-<h2 class="anchored" data-anchor-id="hurdle-model-application-1">Hurdle model Application</h2>
+<section id="generate-predictions-with-hurdle-model" class="level2">
+<h2 class="anchored" data-anchor-id="generate-predictions-with-hurdle-model">Generate predictions with hurdle model</h2>
 <p>After completing a simulation of data and running a hurdle model, I can apply it to my data. I will add my upwelling variable back in to test my hypothesis</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>true_hurdle_model <span class="ot">&lt;-</span> <span class="fu">hurdle</span>(total_fish_collected <span class="sc">~</span> SST_D30 <span class="sc">*</span> beuti_30, </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>true_hurdle_model <span class="ot">&lt;-</span> <span class="fu">hurdle</span>(total_fish_collected <span class="sc">~</span> SST_D30 <span class="sc">*</span> beuti_30, </span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>                            <span class="at">data =</span> rf_yoy,</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>                            <span class="at">dist =</span> <span class="st">"negbin"</span>,</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>                            <span class="at">zero.dist =</span> <span class="st">"binomial"</span>)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="fu">modelsummary</span>(true_hurdle_model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<!-- preamble start -->
+
+    <script src="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.js"></script>
+
+    <script>
+      // Create table-specific functions using external factory
+      const tableFns_qmh3egolmulql10bwmg5 = TinyTable.createTableFunctions("tinytable_qmh3egolmulql10bwmg5");
+      // tinytable span after
+      window.addEventListener('load', function () {
+          var cellsToStyle = [
+            // tinytable style arrays after
+          { positions: [ { i: '22', j: 2 } ], css_id: 'tinytable_css_fbjf1tg4v68sqlbvgooc',}, 
+          { positions: [ { i: '16', j: 2 } ], css_id: 'tinytable_css_rabp1rd986fq9br9hc3w',}, 
+          { positions: [ { i: '1', j: 2 }, { i: '2', j: 2 }, { i: '3', j: 2 }, { i: '4', j: 2 }, { i: '5', j: 2 }, { i: '6', j: 2 }, { i: '7', j: 2 }, { i: '8', j: 2 }, { i: '9', j: 2 }, { i: '10', j: 2 }, { i: '11', j: 2 }, { i: '12', j: 2 }, { i: '13', j: 2 }, { i: '14', j: 2 }, { i: '15', j: 2 }, { i: '17', j: 2 }, { i: '18', j: 2 }, { i: '19', j: 2 }, { i: '20', j: 2 }, { i: '21', j: 2 } ], css_id: 'tinytable_css_jotxravga6fjyp2sha5c',}, 
+          { positions: [ { i: '0', j: 2 } ], css_id: 'tinytable_css_ks800xd9aylni9plee1g',}, 
+          { positions: [ { i: '22', j: 1 } ], css_id: 'tinytable_css_uox6mm9lxgbsax6cjkw4',}, 
+          { positions: [ { i: '16', j: 1 } ], css_id: 'tinytable_css_mfswaxhtmmeljqb093rc',}, 
+          { positions: [ { i: '1', j: 1 }, { i: '2', j: 1 }, { i: '3', j: 1 }, { i: '4', j: 1 }, { i: '5', j: 1 }, { i: '6', j: 1 }, { i: '7', j: 1 }, { i: '8', j: 1 }, { i: '9', j: 1 }, { i: '10', j: 1 }, { i: '11', j: 1 }, { i: '12', j: 1 }, { i: '13', j: 1 }, { i: '14', j: 1 }, { i: '15', j: 1 }, { i: '17', j: 1 }, { i: '18', j: 1 }, { i: '19', j: 1 }, { i: '20', j: 1 }, { i: '21', j: 1 } ], css_id: 'tinytable_css_ahty9xsihefmlvtbgam5',}, 
+          { positions: [ { i: '0', j: 1 } ], css_id: 'tinytable_css_5g2by7xbyg6udloew640',}, 
+          ];
+
+          // Loop over the arrays to style the cells
+          cellsToStyle.forEach(function (group) {
+              group.positions.forEach(function (cell) {
+                  tableFns_qmh3egolmulql10bwmg5.styleCell(cell.i, cell.j, group.css_id);
+              });
+          });
+      });
+    </script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.css">
+    <style>
+    /* tinytable css entries after */
+    #tinytable_qmh3egolmulql10bwmg5 td.tinytable_css_fbjf1tg4v68sqlbvgooc, #tinytable_qmh3egolmulql10bwmg5 th.tinytable_css_fbjf1tg4v68sqlbvgooc {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: black; --line-color-left: black; --line-color-right: black; --line-color-top: black; --line-width-bottom: 0.1em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+    #tinytable_qmh3egolmulql10bwmg5 td.tinytable_css_rabp1rd986fq9br9hc3w, #tinytable_qmh3egolmulql10bwmg5 th.tinytable_css_rabp1rd986fq9br9hc3w {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: black; --line-color-left: black; --line-color-right: black; --line-color-top: black; --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+    #tinytable_qmh3egolmulql10bwmg5 td.tinytable_css_jotxravga6fjyp2sha5c, #tinytable_qmh3egolmulql10bwmg5 th.tinytable_css_jotxravga6fjyp2sha5c { text-align: center }
+    #tinytable_qmh3egolmulql10bwmg5 td.tinytable_css_ks800xd9aylni9plee1g, #tinytable_qmh3egolmulql10bwmg5 th.tinytable_css_ks800xd9aylni9plee1g {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: black; --line-color-left: black; --line-color-right: black; --line-color-top: black; --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+    #tinytable_qmh3egolmulql10bwmg5 td.tinytable_css_uox6mm9lxgbsax6cjkw4, #tinytable_qmh3egolmulql10bwmg5 th.tinytable_css_uox6mm9lxgbsax6cjkw4 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: black; --line-color-left: black; --line-color-right: black; --line-color-top: black; --line-width-bottom: 0.1em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
+    #tinytable_qmh3egolmulql10bwmg5 td.tinytable_css_mfswaxhtmmeljqb093rc, #tinytable_qmh3egolmulql10bwmg5 th.tinytable_css_mfswaxhtmmeljqb093rc {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: black; --line-color-left: black; --line-color-right: black; --line-color-top: black; --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
+    #tinytable_qmh3egolmulql10bwmg5 td.tinytable_css_ahty9xsihefmlvtbgam5, #tinytable_qmh3egolmulql10bwmg5 th.tinytable_css_ahty9xsihefmlvtbgam5 { text-align: left }
+    #tinytable_qmh3egolmulql10bwmg5 td.tinytable_css_5g2by7xbyg6udloew640, #tinytable_qmh3egolmulql10bwmg5 th.tinytable_css_5g2by7xbyg6udloew640 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: black; --line-color-left: black; --line-color-right: black; --line-color-top: black; --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
+    </style>
+    <div class="container">
+      <table class="tinytable" id="tinytable_qmh3egolmulql10bwmg5" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+        
+        <thead>
+              <tr>
+                <th scope="col" data-row="0" data-col="1"> </th>
+                <th scope="col" data-row="0" data-col="2">(1)</th>
+              </tr>
+        </thead>
+        
+        <tbody>
+                <tr>
+                  <td data-row="1" data-col="1">count_(Intercept)</td>
+                  <td data-row="1" data-col="2">-4.012</td>
+                </tr>
+                <tr>
+                  <td data-row="2" data-col="1"></td>
+                  <td data-row="2" data-col="2">(47.037)</td>
+                </tr>
+                <tr>
+                  <td data-row="3" data-col="1">count_SST_D30</td>
+                  <td data-row="3" data-col="2">0.002</td>
+                </tr>
+                <tr>
+                  <td data-row="4" data-col="1"></td>
+                  <td data-row="4" data-col="2">(0.196)</td>
+                </tr>
+                <tr>
+                  <td data-row="5" data-col="1">count_beuti_30</td>
+                  <td data-row="5" data-col="2">0.912</td>
+                </tr>
+                <tr>
+                  <td data-row="6" data-col="1"></td>
+                  <td data-row="6" data-col="2">(0.498)</td>
+                </tr>
+                <tr>
+                  <td data-row="7" data-col="1">count_SST_D30 × beuti_30</td>
+                  <td data-row="7" data-col="2">-0.068</td>
+                </tr>
+                <tr>
+                  <td data-row="8" data-col="1"></td>
+                  <td data-row="8" data-col="2">(0.037)</td>
+                </tr>
+                <tr>
+                  <td data-row="9" data-col="1">zero_(Intercept)</td>
+                  <td data-row="9" data-col="2">4.380</td>
+                </tr>
+                <tr>
+                  <td data-row="10" data-col="1"></td>
+                  <td data-row="10" data-col="2">(1.741)</td>
+                </tr>
+                <tr>
+                  <td data-row="11" data-col="1">zero_SST_D30</td>
+                  <td data-row="11" data-col="2">-0.289</td>
+                </tr>
+                <tr>
+                  <td data-row="12" data-col="1"></td>
+                  <td data-row="12" data-col="2">(0.123)</td>
+                </tr>
+                <tr>
+                  <td data-row="13" data-col="1">zero_beuti_30</td>
+                  <td data-row="13" data-col="2">0.022</td>
+                </tr>
+                <tr>
+                  <td data-row="14" data-col="1"></td>
+                  <td data-row="14" data-col="2">(0.225)</td>
+                </tr>
+                <tr>
+                  <td data-row="15" data-col="1">zero_SST_D30 × beuti_30</td>
+                  <td data-row="15" data-col="2">0.001</td>
+                </tr>
+                <tr>
+                  <td data-row="16" data-col="1"></td>
+                  <td data-row="16" data-col="2">(0.017)</td>
+                </tr>
+                <tr>
+                  <td data-row="17" data-col="1">Num.Obs.</td>
+                  <td data-row="17" data-col="2">432</td>
+                </tr>
+                <tr>
+                  <td data-row="18" data-col="1">R2</td>
+                  <td data-row="18" data-col="2">0.999</td>
+                </tr>
+                <tr>
+                  <td data-row="19" data-col="1">R2 Adj.</td>
+                  <td data-row="19" data-col="2">0.999</td>
+                </tr>
+                <tr>
+                  <td data-row="20" data-col="1">AIC</td>
+                  <td data-row="20" data-col="2">2934.1</td>
+                </tr>
+                <tr>
+                  <td data-row="21" data-col="1">BIC</td>
+                  <td data-row="21" data-col="2">2970.7</td>
+                </tr>
+                <tr>
+                  <td data-row="22" data-col="1">RMSE</td>
+                  <td data-row="22" data-col="2">121.09</td>
+                </tr>
+        </tbody>
+      </table>
+    </div>
+<!-- hack to avoid NA insertion in last line -->
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>pred_grid <span class="ot">&lt;-</span> <span class="fu">expand_grid</span>(<span class="at">SST_D30 =</span> <span class="fu">seq</span>(<span class="fu">min</span>(rf_yoy<span class="sc">$</span>SST_D30, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>                                           <span class="fu">max</span>(rf_yoy<span class="sc">$</span>SST_D30, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>                                           <span class="at">length.out =</span> <span class="dv">1000</span>),</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>                         <span class="at">beuti_30 =</span> <span class="fu">mean</span>(rf_yoy<span class="sc">$</span>beuti_30))</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co"># reiterate through the boot 1000 times</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>boot <span class="ot">&lt;-</span>  <span class="fu">map_dfr</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">1000</span>, \(i) {</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># sample with replacement</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  boot_sample <span class="ot">&lt;-</span> <span class="fu">slice_sample</span>(rf_yoy, <span class="at">n=</span><span class="dv">432</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># run a beta regression on every single boot sample</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  boot_mod <span class="ot">&lt;-</span> <span class="fu">hurdle</span>(total_fish_collected <span class="sc">~</span> SST_D30 <span class="sc">*</span> beuti_30, </span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>                            <span class="at">data =</span> boot_sample,</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>                            <span class="at">dist =</span> <span class="st">"negbin"</span>,</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>                            <span class="at">zero.dist =</span> <span class="st">"binomial"</span>)</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># predict the boots values (the outcomes are best fit lines)</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(pred_grid,</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>         <span class="at">count =</span> <span class="fu">predict</span>(<span class="at">object =</span> boot_mod,</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>                          <span class="at">newdata =</span> pred_grid,</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>                          <span class="at">type =</span> <span class="st">"response"</span>),</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>         </span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>         <span class="at">boot =</span> i)</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>pred_hurdle_model <span class="ot">&lt;-</span> <span class="fu">mutate</span>(pred_grid,</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>                            <span class="at">count =</span> <span class="fu">predict</span>(<span class="at">object =</span> true_hurdle_model,</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>                                            <span class="at">newdata =</span> pred_grid,</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>                                            <span class="at">type =</span> <span class="st">"response"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(boot, <span class="fu">aes</span>(SST_D30, count)) <span class="sc">+</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">color =</span> <span class="st">"lightblue"</span>, <span class="at">alpha =</span> <span class="fl">0.05</span>) <span class="sc">+</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">data =</span> pred_hurdle_model, <span class="fu">aes</span>(SST_D30, count), <span class="at">color =</span> <span class="st">"navy"</span>) <span class="sc">+</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"SST degrees C"</span>,</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Rockfish YOY abundance"</span>,</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Hurdle model prediction of YOY abundance"</span>) <span class="sc">+</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_light</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The confidence intervals are visualized through the bootstrapped values. According to the predictions, at an SST of 11.5 degrees C, we 95% confident the mean count of YOY’s would fall between 25 and 175. On the higher end of the temperature range, around 16.5 degrees C, we are 95% confident the mean abundance of YOY’s would fall between 0 and 60. The narrowest CI occurs around 14 degrees C, where we are 95% confident the mean value falls between 20 and 45 YOY. Additionally, there appears to be a negative relationship between SST and rockfish YOY abundance, leading me to fail to reject my null hypothesis.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>pred_grid2 <span class="ot">&lt;-</span> <span class="fu">expand_grid</span>(<span class="at">SST_D30 =</span> <span class="fu">seq</span>(<span class="fu">min</span>(rf_yoy<span class="sc">$</span>SST_D30, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>                                           <span class="fu">max</span>(rf_yoy<span class="sc">$</span>SST_D30, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>                                           <span class="at">length.out =</span> <span class="dv">1000</span>))</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co"># reiterate through the boot 1000 times</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>boot2 <span class="ot">&lt;-</span>  <span class="fu">map_dfr</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">1000</span>, \(i) {</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># sample with replacement</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  boot_sample <span class="ot">&lt;-</span> <span class="fu">slice_sample</span>(rf_yoy, <span class="at">n=</span><span class="dv">432</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># run a beta regression on every single boot sample</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  boot_mod <span class="ot">&lt;-</span> <span class="fu">hurdle</span>(total_fish_collected <span class="sc">~</span> SST_D30, </span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>                            <span class="at">data =</span> boot_sample,</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>                            <span class="at">dist =</span> <span class="st">"negbin"</span>,</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>                            <span class="at">zero.dist =</span> <span class="st">"binomial"</span>)</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># predict the boots values (the outcomes are best fit lines)</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(pred_grid2,</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>         <span class="at">count =</span> <span class="fu">predict</span>(<span class="at">object =</span> boot_mod,</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>                          <span class="at">newdata =</span> pred_grid2,</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>                          <span class="at">type =</span> <span class="st">"response"</span>),</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>         <span class="at">boot =</span> i)</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+<section id="using-a-hurdle-model-without-upwelling-predictor-variable" class="level2">
+<h2 class="anchored" data-anchor-id="using-a-hurdle-model-without-upwelling-predictor-variable">Using a hurdle model without upwelling predictor variable</h2>
+<p>Because of the hurdle model structure it is hard to visualize how confounding variables influence the response. I removed upwelling from the model and bootstrapped to determine how upwelling impacts the relationship between SST and YOY abundance.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>true_hurdle_model2 <span class="ot">&lt;-</span> <span class="fu">hurdle</span>(total_fish_collected <span class="sc">~</span> SST_D30, </span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>                            <span class="at">data =</span> rf_yoy,</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>                            <span class="at">dist =</span> <span class="st">"negbin"</span>,</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>                            <span class="at">zero.dist =</span> <span class="st">"binomial"</span>)</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="fu">modelsummary</span>(true_hurdle_model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-<div class="cell-output-display">
-<!-- preamble start -->
-
-    <script src="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.js"></script>
-
-    <script>
-      // Create table-specific functions using external factory
-      const tableFns_6mbbci97yzhyd8xx2e7k = TinyTable.createTableFunctions("tinytable_6mbbci97yzhyd8xx2e7k");
-      // tinytable span after
-      window.addEventListener('load', function () {
-          var cellsToStyle = [
-            // tinytable style arrays after
-          { positions: [ { i: '22', j: 2 } ], css_id: 'tinytable_css_etvhsz2tifenj1ixybfs',}, 
-          { positions: [ { i: '16', j: 2 } ], css_id: 'tinytable_css_oeerdmc7l1edsm6lz9cj',}, 
-          { positions: [ { i: '1', j: 2 }, { i: '2', j: 2 }, { i: '3', j: 2 }, { i: '4', j: 2 }, { i: '5', j: 2 }, { i: '6', j: 2 }, { i: '7', j: 2 }, { i: '8', j: 2 }, { i: '9', j: 2 }, { i: '10', j: 2 }, { i: '11', j: 2 }, { i: '12', j: 2 }, { i: '13', j: 2 }, { i: '14', j: 2 }, { i: '15', j: 2 }, { i: '17', j: 2 }, { i: '18', j: 2 }, { i: '19', j: 2 }, { i: '20', j: 2 }, { i: '21', j: 2 } ], css_id: 'tinytable_css_hnmao99d700dupdh3iho',}, 
-          { positions: [ { i: '0', j: 2 } ], css_id: 'tinytable_css_he32dh6xxgwxc2pd1ty1',}, 
-          { positions: [ { i: '22', j: 1 } ], css_id: 'tinytable_css_e5yfnnhdy4gb6udz9xm6',}, 
-          { positions: [ { i: '16', j: 1 } ], css_id: 'tinytable_css_rot26wrtfe4bjlcx2ipb',}, 
-          { positions: [ { i: '1', j: 1 }, { i: '2', j: 1 }, { i: '3', j: 1 }, { i: '4', j: 1 }, { i: '5', j: 1 }, { i: '6', j: 1 }, { i: '7', j: 1 }, { i: '8', j: 1 }, { i: '9', j: 1 }, { i: '10', j: 1 }, { i: '11', j: 1 }, { i: '12', j: 1 }, { i: '13', j: 1 }, { i: '14', j: 1 }, { i: '15', j: 1 }, { i: '17', j: 1 }, { i: '18', j: 1 }, { i: '19', j: 1 }, { i: '20', j: 1 }, { i: '21', j: 1 } ], css_id: 'tinytable_css_qfah182mjuysnxnv712p',}, 
-          { positions: [ { i: '0', j: 1 } ], css_id: 'tinytable_css_bx8t8zexl1gxpqrm7l0v',}, 
-          ];
-
-          // Loop over the arrays to style the cells
-          cellsToStyle.forEach(function (group) {
-              group.positions.forEach(function (cell) {
-                  tableFns_6mbbci97yzhyd8xx2e7k.styleCell(cell.i, cell.j, group.css_id);
-              });
-          });
-      });
-    </script>
-
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.css">
-    <style>
-    /* tinytable css entries after */
-    #tinytable_6mbbci97yzhyd8xx2e7k td.tinytable_css_etvhsz2tifenj1ixybfs, #tinytable_6mbbci97yzhyd8xx2e7k th.tinytable_css_etvhsz2tifenj1ixybfs {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: black; --line-color-left: black; --line-color-right: black; --line-color-top: black; --line-width-bottom: 0.1em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
-    #tinytable_6mbbci97yzhyd8xx2e7k td.tinytable_css_oeerdmc7l1edsm6lz9cj, #tinytable_6mbbci97yzhyd8xx2e7k th.tinytable_css_oeerdmc7l1edsm6lz9cj {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: black; --line-color-left: black; --line-color-right: black; --line-color-top: black; --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
-    #tinytable_6mbbci97yzhyd8xx2e7k td.tinytable_css_hnmao99d700dupdh3iho, #tinytable_6mbbci97yzhyd8xx2e7k th.tinytable_css_hnmao99d700dupdh3iho { text-align: center }
-    #tinytable_6mbbci97yzhyd8xx2e7k td.tinytable_css_he32dh6xxgwxc2pd1ty1, #tinytable_6mbbci97yzhyd8xx2e7k th.tinytable_css_he32dh6xxgwxc2pd1ty1 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: black; --line-color-left: black; --line-color-right: black; --line-color-top: black; --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
-    #tinytable_6mbbci97yzhyd8xx2e7k td.tinytable_css_e5yfnnhdy4gb6udz9xm6, #tinytable_6mbbci97yzhyd8xx2e7k th.tinytable_css_e5yfnnhdy4gb6udz9xm6 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: black; --line-color-left: black; --line-color-right: black; --line-color-top: black; --line-width-bottom: 0.1em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
-    #tinytable_6mbbci97yzhyd8xx2e7k td.tinytable_css_rot26wrtfe4bjlcx2ipb, #tinytable_6mbbci97yzhyd8xx2e7k th.tinytable_css_rot26wrtfe4bjlcx2ipb {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: black; --line-color-left: black; --line-color-right: black; --line-color-top: black; --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
-    #tinytable_6mbbci97yzhyd8xx2e7k td.tinytable_css_qfah182mjuysnxnv712p, #tinytable_6mbbci97yzhyd8xx2e7k th.tinytable_css_qfah182mjuysnxnv712p { text-align: left }
-    #tinytable_6mbbci97yzhyd8xx2e7k td.tinytable_css_bx8t8zexl1gxpqrm7l0v, #tinytable_6mbbci97yzhyd8xx2e7k th.tinytable_css_bx8t8zexl1gxpqrm7l0v {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: black; --line-color-left: black; --line-color-right: black; --line-color-top: black; --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
-    </style>
-    <div class="container">
-      <table class="tinytable" id="tinytable_6mbbci97yzhyd8xx2e7k" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
-        
-        <thead>
-              <tr>
-                <th scope="col" data-row="0" data-col="1"> </th>
-                <th scope="col" data-row="0" data-col="2">(1)</th>
-              </tr>
-        </thead>
-        
-        <tbody>
-                <tr>
-                  <td data-row="1" data-col="1">count_(Intercept)</td>
-                  <td data-row="1" data-col="2">-4.012</td>
-                </tr>
-                <tr>
-                  <td data-row="2" data-col="1"></td>
-                  <td data-row="2" data-col="2">(47.037)</td>
-                </tr>
-                <tr>
-                  <td data-row="3" data-col="1">count_SST_D30</td>
-                  <td data-row="3" data-col="2">0.002</td>
-                </tr>
-                <tr>
-                  <td data-row="4" data-col="1"></td>
-                  <td data-row="4" data-col="2">(0.196)</td>
-                </tr>
-                <tr>
-                  <td data-row="5" data-col="1">count_beuti_30</td>
-                  <td data-row="5" data-col="2">0.912</td>
-                </tr>
-                <tr>
-                  <td data-row="6" data-col="1"></td>
-                  <td data-row="6" data-col="2">(0.498)</td>
-                </tr>
-                <tr>
-                  <td data-row="7" data-col="1">count_SST_D30 × beuti_30</td>
-                  <td data-row="7" data-col="2">-0.068</td>
-                </tr>
-                <tr>
-                  <td data-row="8" data-col="1"></td>
-                  <td data-row="8" data-col="2">(0.037)</td>
-                </tr>
-                <tr>
-                  <td data-row="9" data-col="1">zero_(Intercept)</td>
-                  <td data-row="9" data-col="2">4.380</td>
-                </tr>
-                <tr>
-                  <td data-row="10" data-col="1"></td>
-                  <td data-row="10" data-col="2">(1.741)</td>
-                </tr>
-                <tr>
-                  <td data-row="11" data-col="1">zero_SST_D30</td>
-                  <td data-row="11" data-col="2">-0.289</td>
-                </tr>
-                <tr>
-                  <td data-row="12" data-col="1"></td>
-                  <td data-row="12" data-col="2">(0.123)</td>
-                </tr>
-                <tr>
-                  <td data-row="13" data-col="1">zero_beuti_30</td>
-                  <td data-row="13" data-col="2">0.022</td>
-                </tr>
-                <tr>
-                  <td data-row="14" data-col="1"></td>
-                  <td data-row="14" data-col="2">(0.225)</td>
-                </tr>
-                <tr>
-                  <td data-row="15" data-col="1">zero_SST_D30 × beuti_30</td>
-                  <td data-row="15" data-col="2">0.001</td>
-                </tr>
-                <tr>
-                  <td data-row="16" data-col="1"></td>
-                  <td data-row="16" data-col="2">(0.017)</td>
-                </tr>
-                <tr>
-                  <td data-row="17" data-col="1">Num.Obs.</td>
-                  <td data-row="17" data-col="2">432</td>
-                </tr>
-                <tr>
-                  <td data-row="18" data-col="1">R2</td>
-                  <td data-row="18" data-col="2">0.999</td>
-                </tr>
-                <tr>
-                  <td data-row="19" data-col="1">R2 Adj.</td>
-                  <td data-row="19" data-col="2">0.999</td>
-                </tr>
-                <tr>
-                  <td data-row="20" data-col="1">AIC</td>
-                  <td data-row="20" data-col="2">2934.1</td>
-                </tr>
-                <tr>
-                  <td data-row="21" data-col="1">BIC</td>
-                  <td data-row="21" data-col="2">2970.7</td>
-                </tr>
-                <tr>
-                  <td data-row="22" data-col="1">RMSE</td>
-                  <td data-row="22" data-col="2">121.09</td>
-                </tr>
-        </tbody>
-      </table>
-    </div>
-<!-- hack to avoid NA insertion in last line -->
-</div>
-</div>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>pred_grid <span class="ot">&lt;-</span> <span class="fu">expand_grid</span>(<span class="at">SST_D30 =</span> <span class="fu">seq</span>(<span class="fu">min</span>(rf_yoy<span class="sc">$</span>SST_D30, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>                                           <span class="fu">max</span>(rf_yoy<span class="sc">$</span>SST_D30, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>                                           <span class="at">length.out =</span> <span class="dv">1000</span>),</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>                         <span class="at">beuti_30 =</span> <span class="fu">mean</span>(rf_yoy<span class="sc">$</span>beuti_30))</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="co"># reiterate through the boot 1000 times</span></span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>boot <span class="ot">&lt;-</span>  <span class="fu">map_dfr</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">1000</span>, \(i) {</span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># sample with replacement</span></span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>  boot_sample <span class="ot">&lt;-</span> <span class="fu">slice_sample</span>(rf_yoy, <span class="at">n=</span><span class="dv">432</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># run a beta regression on every single boot sample</span></span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>  boot_mod <span class="ot">&lt;-</span> <span class="fu">hurdle</span>(total_fish_collected <span class="sc">~</span> SST_D30 <span class="sc">*</span> beuti_30, </span>
-<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>                            <span class="at">data =</span> rf_yoy,</span>
-<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>                            <span class="at">dist =</span> <span class="st">"negbin"</span>,</span>
-<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>                            <span class="at">zero.dist =</span> <span class="st">"binomial"</span>)</span>
-<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># predict the boots values (the outcomes are best fit lines)</span></span>
-<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(pred_grid,</span>
-<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>         <span class="at">count =</span> <span class="fu">predict</span>(<span class="at">object =</span> boot_mod,</span>
-<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>                          <span class="at">newdata =</span> pred_grid,</span>
-<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>                          <span class="at">type =</span> <span class="st">"response"</span>),</span>
-<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>         <span class="at">boot =</span> i)</span>
-<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>boot <span class="sc">%&gt;%</span> </span>
-<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">count_lwr =</span> <span class="fu">quantile</span>(count, <span class="fl">0.025</span>),</span>
-<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a>            <span class="at">count_upr =</span> <span class="fu">quantile</span>(count, <span class="fl">0.975</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a>  kableExtra<span class="sc">::</span><span class="fu">kable</span>(<span class="at">caption =</span> <span class="st">"Confidence intervals of predictions"</span>,</span>
-<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a>                    )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>Confidence intervals of predictions</caption>
-<thead>
-<tr class="header">
-<th style="text-align: right;">count_lwr</th>
-<th style="text-align: right;">count_upr</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: right;">11.80859</td>
-<td style="text-align: right;">72.20558</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>pred_grid <span class="ot">&lt;-</span> <span class="fu">expand_grid</span>(<span class="at">SST_D30 =</span> <span class="fu">seq</span>(<span class="fu">min</span>(rf_yoy<span class="sc">$</span>SST_D30, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>                                           <span class="fu">max</span>(rf_yoy<span class="sc">$</span>SST_D30, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>                                           <span class="at">length.out =</span> <span class="dv">1000</span>),</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>                         <span class="at">beuti_30 =</span> <span class="fu">mean</span>(rf_yoy<span class="sc">$</span>beuti_30))</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="co"># reiterate through the boot 1000 times</span></span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>boot <span class="ot">&lt;-</span>  <span class="fu">map_dfr</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">1000</span>, \(i) {</span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># sample with replacement</span></span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>  boot_sample <span class="ot">&lt;-</span> <span class="fu">slice_sample</span>(rf_yoy, <span class="at">n=</span><span class="dv">432</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># run a beta regression on every single boot sample</span></span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>  boot_mod <span class="ot">&lt;-</span> <span class="fu">hurdle</span>(total_fish_collected <span class="sc">~</span> SST_D30 <span class="sc">*</span> beuti_30, </span>
-<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>                            <span class="at">data =</span> rf_yoy,</span>
-<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>                            <span class="at">dist =</span> <span class="st">"negbin"</span>,</span>
-<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>                            <span class="at">zero.dist =</span> <span class="st">"binomial"</span>)</span>
-<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># predict the boots values (the outcomes are best fit lines)</span></span>
-<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(pred_grid,</span>
-<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>         <span class="at">count =</span> <span class="fu">predict</span>(<span class="at">object =</span> boot_mod,</span>
-<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>                          <span class="at">newdata =</span> pred_grid,</span>
-<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>                          <span class="at">type =</span> <span class="st">"response"</span>),</span>
-<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>         <span class="at">boot =</span> i)</span>
-<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a>boot <span class="sc">%&gt;%</span> </span>
-<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">count_lwr =</span> <span class="fu">quantile</span>(count, <span class="fl">0.025</span>),</span>
-<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a>            <span class="at">count_upr =</span> <span class="fu">quantile</span>(count, <span class="fl">0.975</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a>  kableExtra<span class="sc">::</span><span class="fu">kable</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<thead>
-<tr class="header">
-<th style="text-align: right;">count_lwr</th>
-<th style="text-align: right;">count_upr</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: right;">11.80859</td>
-<td style="text-align: right;">72.20558</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>pred_hurdle_model <span class="ot">&lt;-</span> <span class="fu">mutate</span>(pred_grid,</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>                            <span class="at">count =</span> <span class="fu">predict</span>(<span class="at">object =</span> true_hurdle_model,</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>                                            <span class="at">newdata =</span> pred_grid,</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>                                            <span class="at">type =</span> <span class="st">"response"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>                            <span class="at">zero.dist =</span> <span class="st">"binomial"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>lower_ci <span class="ot">=</span> <span class="fu">quantile</span>(boot<span class="sc">$</span>count, <span class="fl">0.025</span>)</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>upper_ci <span class="ot">=</span> <span class="fu">quantile</span>(boot<span class="sc">$</span>count, <span class="fl">0.975</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>pred_hurdle_model2 <span class="ot">&lt;-</span> <span class="fu">mutate</span>(pred_grid2,</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>                            <span class="at">count =</span> <span class="fu">predict</span>(<span class="at">object =</span> true_hurdle_model2,</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>                                            <span class="at">newdata =</span> pred_grid2,</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>                                            <span class="at">type =</span> <span class="st">"response"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(boot, <span class="fu">aes</span>(SST_D30, count)) <span class="sc">+</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">color =</span> <span class="st">"lightblue"</span>, <span class="at">alpha =</span> <span class="fl">0.05</span>) <span class="sc">+</span></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">data =</span> pred_hurdle_model, <span class="fu">aes</span>(SST_D30, count), <span class="at">color =</span> <span class="st">"navy"</span>) <span class="sc">+</span></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"SST degrees C"</span>,</span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Rockfish YOY abundance"</span>,</span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Hurdle model prediction of YOY abundance"</span>) <span class="sc">+</span></span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_light</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(boot2, <span class="fu">aes</span>(SST_D30, count)) <span class="sc">+</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">color =</span> <span class="st">"lightblue"</span>, <span class="at">alpha =</span> <span class="fl">0.1</span>) <span class="sc">+</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">data =</span> pred_hurdle_model2, <span class="fu">aes</span>(SST_D30, count), <span class="at">color =</span> <span class="st">"navy"</span>) <span class="sc">+</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"SST degrees C"</span>,</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Rockfish YOY abundance"</span>,</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Hurdle model prediction of YOY abundance"</span>) <span class="sc">+</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_light</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -1269,10 +993,9 @@ log(\mu) = \beta_3 + \beta_4 SST + \beta_5 BEUTI\]</span></p>
 </div>
 </div>
 </div>
-<p>The confidence intervals are visualized through the bootstrapped values. According to the predictions, at an SST of 11.5 degrees C, we 95% confident the mean count of YOY’s would fall between 25 and 175. On the higher end of the temperature range, around 16.5 degrees C, we are 95% confident the mean abundance of YOY’s would fall between 0 and 60. The narrowest CI occurs around 14 degrees celsius, where we are 95% confident the</p>
+<p>Without upwelling, temperature appears to have less of an effect on YOY abundance. Additionally, the CI at both tail ends are noticebly larger than in the model including upwelling. While no definititve conclusions can be made from the data about impacts of SST and upwelling, there does appear to be a negative relationship between temperature and YOY abundance, with that relationship increasing with the addition of upwelling.</p>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->
