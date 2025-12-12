@@ -1,6 +1,6 @@
 ---
 title: "Analyzing the impacts of temperature on rockfish recruitment in the Channel Islands"
-date: 12/11/2025
+date: 12/12/2025
 format: html
 execute:
   warning: false
