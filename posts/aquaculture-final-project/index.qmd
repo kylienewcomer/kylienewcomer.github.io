@@ -21,7 +21,7 @@ Marine aquaculture is a growing source of food in many areas around the world, y
 
 [^3]: Gentry, R. R., Froehlich, H. E., Grimm, D., Kareiva, P., Parke, M., Rust, M., Gaines, S. D., & Halpern, B. S. Mapping the global potential for marine aquaculture. Nature Ecology & Evolution, 1, 1317-1324 (2017).
 
-In this project, I aim to visualize suitable areas for aquaculture of Oysters and Red Abalone along the west coast. Additionally, I created a function that will produce a suitability map for any species with habitat depth and temperature ranges.
+In this project, I aim to visualize suitable areas for aquaculture of Oysters and Red Abalone along the west coast. Additionally, I created a function that will produce a suitability map for any species with habitat depth and temperature ranges. This project can help provide data to support future aquaculture along the west coast.
 
 ## Data
 
@@ -45,7 +45,7 @@ Depth data comes from General Bathymetric Chart of the Oceans (GEBCO)[^6].
 
 ### Exclusive Economic Zones
 
-The West Coast Exclusive Economic Zone data is maritime boundaries come marineregions.org[^7].
+The West Coast Exclusive Economic Zone data represents designated coastal areas designating state control over the natural resources. These maritime boundaries come from marineregions.org[^7].
 
 [^7]: Flanders Marine Institute (2025): MarineRegions.org. Available online at www.marineregions.org. Consulted on 2025-11-29.
 
@@ -128,9 +128,9 @@ rcl_temp <- matrix(c(-Inf, 11, 0,
 temp_reclass <- classify(mean_sst, rcl = rcl_temp)
 ```
 
-To determine the suitable habitat, the temperature and depth rasters of 0’s and 1’s are multiplied, resulting in 1’s only in cells that had a suitable depth and temperature range and 0’s in all other cells.
+To determine the suitable habitat, the reclassified temperature and depth rasters of 0’s and 1’s are multiplied together, resulting in 1’s only in cells that had a suitable depth and temperature range and 0’s in all other cells.
 
-```{r, include=FALSE}
+```{r}
 # Reclassify depth data
 rcl_depth <- matrix(c(-Inf, -70, 0,
          -70, 0, 1,
@@ -139,12 +139,9 @@ rcl_depth <- matrix(c(-Inf, -70, 0,
 
 depth_reclass <- classify(depth, rcl = rcl_depth)
 
-depth_reclass
 ```
 
-Need to update depth raster to match temperature raster
-
-```{r, include=FALSE}
+```{r}
 # If-else statement to check/update CRS
 if (crs(depth_reclass) == crs(temp_reclass)){
   print("Projections match!")
@@ -163,21 +160,22 @@ temp_depth <- c(temp_reclass, cropped_depth)
 
 ```
 
-```{r, include=FALSE}
+```{r}
 # Multiply temperature and depth rasters together
 ocean <- temp_reclass * cropped_depth
 ```
 
 ```{r, include=FALSE}
-# Check new raster to make sure multiplcation worked
+# Check new raster to make sure multipilcation worked
 ocean[[1]]
+names(ocean) <- 'cells'
 ```
 
-# Mapping suitable habitat from multiplied rasters
+# Map suitable habitat from multiplied rasters
 
 Once the suitable habitat is found, it can be visualized to see the areas along the west coast.
 
-```{r, include=FALSE}
+```{r}
 # Looking at suitable habitat based on new raster
 tm_shape(ocean) +
   tm_raster(col.scale = tm_scale(
@@ -225,15 +223,12 @@ cell_area <- cellSize(ocean_mask, unit="km")[1]
 
 # Calculate total area of suitable habitat per region
 suitable_cell_area <- suitable_cells %>%
-  rename(cells = mean) %>%
-  mutate(cell_area = cell_area$area,
-        suitable_habitat = cells * cell_area) %>% 
-  select(-cell_area)
+  mutate(suitable_habitat = cells * cell_area$area)
 
 # Table with calculated cells and area per region
 suitable_cell_area %>% 
   arrange(desc(cells)) %>% 
-  kable(col.names = c("Region", "Number of cells with suitable habitat", "Area of suitable habitat")) %>%
+  kable(col.names = c("Region", "Number of cells with suitable habitat", "Area of suitable habitat (sq km)"), caption = "Suitable habitat by EEZ region") %>%
   kable_styling(bootstrap_options = "striped", full_width = FALSE)
 ```
 
@@ -246,7 +241,7 @@ suitable_habitat <- left_join(eez, suitable_cell_area, by = "rgn")
 
 Now that there is a calculated area of suitable habitat for each region, I can visualize it. My results show that the Central California region, followed by Southern California is the most suitable for Oyster aquaculture.
 
-```{r, echo=FALSE}
+```{r}
 # Map the results
 tm_shape(ocean) +                                      
   tm_raster(col.legend = tm_legend(show = FALSE)) +
@@ -257,7 +252,7 @@ tm_shape(suitable_habitat) +
               fill.legend = tm_legend(title  = "Suitable habitat (sq km)")) + 
   tm_text(text = "rgn", # Add labels for each region
           col = "white",
-          size = 0.35,
+          size = 0.6,
           xmod = 4,
           ymod = 1,
           bgcol = "black",
@@ -337,7 +332,7 @@ aquaculture_zones <- function(species, min_depth, max_depth, min_temp, max_temp)
                 fill.legend = tm_legend(title  = "Suitable habitat (sq km)")) + 
     tm_text(text = "rgn",
             col = "white",
-            size = 0.35,
+            size = 0.6,
             xmod = 4,
             ymod = 1,
             bgcol = "black",
@@ -357,5 +352,5 @@ Red Abalone were previously a popular fishery across the west coast, however the
 ```{r}
 aquaculture_zones(species = "Red Abalone", min_depth = -24, max_depth = 0, min_temp =  8, max_temp = 18)
 ```
-
+## Conclusion
 There are some limitations to the map. While it does provide areas of suitable habitat, it does not factor in species natural habitat, as my results show that Washington has the most suitable habitat for Red Abalone but are not part of Red Abalone’s natural range. It should also be pointed out that these are a subtidal species, and the temperature data used was sea surface temperature. This means that the temperature data may not be representative of true habitat ranges for species, especially those that live at deeper depths.
