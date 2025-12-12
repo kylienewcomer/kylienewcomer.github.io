@@ -40,7 +40,6 @@ library(pscl)
 library(modelsummary)
 library(MASS)
 
-
 smurf <- read_csv("data/PISCO_UCSB_subtidal_recruitment_fish_data.1.2.csv")
 
 smurf_sp <- read_csv("data/PISCO_UCSB_subtidal_recruitment_fish_spp_list.1.2.csv")
@@ -134,11 +133,12 @@ for(i in 1:nrow(rf_yoy)){
 ## Statistical analysis
 ### Hurdle Model
 In order to analyze this data, I selected a hurdle model because the data contains many 0's. Hurdle models are a type of hierarchical model that first tests presence and absence (0 and 1) with a predictor variable, then tests abundance. For these steps 
-$$FishPresence \sim Binomial(1, p) \\ 
-logit(p) = \beta_0 + \beta_1 SST + \beta_2 BEUTI$$
+$$FishPresence \sim Binomial(1, p) $$
 
-$$Fishcount \sim NegativeBinomial(\mu, \theta) \\ 
-log(\mu) = \beta_3 + \beta_4 SST + \beta_5 BEUTI$$
+$$logit(p) = \beta_0 + \beta_1 SST + \beta_2 BEUTI$$
+
+$$Fishcount \sim NegativeBinomial(\mu, \theta)$$
+$$log(\mu) = \beta_3 + \beta_4 SST + \beta_5 BEUTI$$
 
 For simplicity in understanding the model, I only selected temperature as predictor variable to simulate data and get my beta values returned to me. To begin simulating data, I need to generate x values based on the SST lag 30 days variable from the original data. From there I can use those temperatures and beta values I selected to run the binomial equation to find `logit(p)`. I think take the inverse logit of those values to generate p which represents the probability of success. Using that probability, I simulated a success variable with `rbinom()` to generate 0's and 1's. 
 
@@ -300,23 +300,21 @@ boot %>%
 ```
 
 ```{r}
-count_lwr = quantile(boot$count, 0.025)
-count_upr = quantile(boot$count, 0.975)
+pred_hurdle_model <- mutate(pred_grid,
+                            count = predict(object = true_hurdle_model,
+                                            newdata = pred_grid,
+                                            type = "response"))
+```
 
-ggplot(boot, aes(count)) +
-  geom_histogram() +
-  geom_vline(xintercept = count_lwr, 
-             color = "firebrick",
-             linetype = "dotted",
-             linewidth = 1.5) +
-   geom_vline(xintercept = count_upr, 
-             color = "firebrick",
-             linetype = "dotted",
-             linewidth = 1.5) +
-  labs(x = "Predicted fish count")
+
+```{r}
+ggplot(boot, aes(SST_D30, count)) +
+  geom_line(color = "lightblue", alpha = 0.05) +
+  geom_line(data = pred_hurdle_model, aes(SST_D30, count), color = "navy") +
+  labs(x = "SST degrees C",
+       y = "Rockfish YOY abundance",
+       title = "Hurdle model prediction of YOY abundance") +
   theme_light()
 ```
-```{r}
 
-```
-
+The confidence intervals are visualized through the bootstrapped values. According to the predictions, at an SST of 11.5 degrees C, we 95% confident the mean count of YOY's would fall between 25 and 175. On the higher end of the temperature range, around 16.5 degrees C, we are 95% confident the mean abundance of YOY's would fall between 0 and 60. The narrowest CI occurs around 14 degrees C, where we are 95% confident the 
