@@ -260,8 +260,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="import-necessary-packages">Import necessary packages</h2>
 <p>We start by importing <code>geopandas</code> and <code>xarray</code> which are necessary reading geopsatial data. We will also use <code>matplotlib.pyplot</code> for visualization.</p>
 <div id="4516dfd1" class="cell" data-execution_count="1">
-<details class="code-fold">
-<summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Import packages</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -269,7 +267,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> xarray <span class="im">as</span> xr</span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
 </div>
 </section>
 <section id="fire-perimeter-data-and-exploration" class="level2">
@@ -277,8 +274,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>We use known fire perimeter data for the Palisades and Eaton fires from the ArcGIS hub.</p>
 <p>Before we start working with the data, it’s important to understand what the data actually looks like and represents. The fire perimeter data is imported and explored to understand the type of data and approaches for visualization. We will look at the CRS and data types in each column.</p>
 <div id="b51d2754-a848-4129-82dc-bd6fbf652450" class="cell" data-tags="[]" data-execution_count="2">
-<details class="code-fold">
-<summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Read in Palisades perimeter data</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>fp <span class="op">=</span> os.path.join(<span class="st">'data/Palisades_perm_20250121/Palisades_Perimeter_20250121.shp'</span>)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>pal_perm <span class="op">=</span> gpd.read_file(fp)</span>
@@ -286,26 +281,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Read in Eaton perimeter data</span></span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>fp <span class="op">=</span> os.path.join(<span class="st">'data/Eaton_perm_20250121/Eaton_Perimeter_20250121.shp'</span>)</span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>eat_perm <span class="op">=</span> gpd.read_file(fp)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
 </div>
 <div id="b12f0fde-a258-4d0a-9c89-e0ab571ec919" class="cell" data-tags="[]" data-execution_count="3">
-<details class="code-fold">
-<summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Look at CRS of perimeter datasets</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Palisades perimeter CRS:'</span>, pal_perm.crs)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Eaton perimeter CRS:'</span>, eat_perm.crs)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Palisades perimeter CRS: EPSG:3857
 Eaton perimeter CRS: EPSG:3857</code></pre>
 </div>
 </div>
 <div id="4f2a6fd1-7de2-4cfe-813d-77d46b0b183f" class="cell" data-tags="[]" data-execution_count="4">
-<details class="code-fold">
-<summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Look at column types</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Palisades perimeter dtypes:</span><span class="ch">\n</span><span class="st">'</span>, pal_perm.dtypes)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Palisades perimeter dtypes:
  OBJECTID         int64
@@ -317,10 +305,7 @@ dtype: object</code></pre>
 </div>
 </div>
 <div id="1ab0a2da" class="cell" data-execution_count="5">
-<details class="code-fold">
-<summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Eaton perimeter dtypes:</span><span class="ch">\n</span><span class="st">'</span>, eat_perm.dtypes)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Eaton perimeter dtypes:
  OBJECTID         int64
@@ -338,16 +323,10 @@ dtype: object</code></pre>
 <p>To actually visualize the fire scars, we utilized reflectance satellite imagery of the Los Angeles area following the fires. This data comes from Microsof Planetary Computer data catalogue and was collected by the Earth Resources Observation and Science (EROS) Center. This data is multi-dimensional, containing a collection of bands (red, green, blue, near-infrared and shortwave infrared) from the Landsat 8 satellite.</p>
 <p>The landsat data is analyzed using the Network Common Data Form (NetCDF). NetCDF data is imported and explored to determine the ways it can be visualized and paired with the perimeter datasets. We explore the data in a similar way to the perimeter data,</p>
 <div id="086b64a9-7379-472c-ad0e-01b2f0937306" class="cell" data-tags="[]" data-execution_count="6">
-<details class="code-fold">
-<summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>landsat <span class="op">=</span> xr.open_dataset(<span class="st">'data/landsat8-2025-02-23-palisades-eaton.nc'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
 </div>
 <div id="348c36af-9596-4671-b548-f542a1847535" class="cell" data-tags="[]" data-execution_count="7">
-<details class="code-fold">
-<summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>landsat.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
 <div class="cell-output cell-output-display" data-execution_count="7">
 <div><svg style="position: absolute; width: 0; height: 0; overflow: hidden">
 <defs>
@@ -739,8 +718,6 @@ Data variables:
 <h2 class="anchored" data-anchor-id="restoring-geospatial-information">Restoring geospatial information</h2>
 <p>Upon exploration, we determined that the landsat data is not a geospatial object. Using <code>NetCDF</code> with data does not present geospatial in the same way as we would expect from <code>geopandas</code> dataframes. In order to work with both the <code>landsat</code> data and the perimeter data, we need to standarized the geographic projections to visualize the data together. This can be done by accessing the spatial reference variable to determine the projection.</p>
 <div id="87707c3c-55cd-4643-8a3b-e21c5161cd7d" class="cell" data-tags="[]" data-execution_count="8">
-<details class="code-fold">
-<summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Use `spatial_ref.crs_wkt` to access spatial reference variable</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>landsat_crs <span class="op">=</span> landsat.spatial_ref.crs_wkt</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -749,19 +726,15 @@ Data variables:
 <span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'The CRS of the landsat data is </span><span class="sc">{</span>landsat<span class="sc">.</span>rio<span class="sc">.</span>crs<span class="sc">}</span><span class="ss">'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>The CRS of the landsat data is EPSG:32611</code></pre>
 </div>
 </div>
 <p>We need to determine if there are any NA’s in any of the band variables.</p>
 <div id="61118b3e-7bb2-4358-930a-cc53ef489e11" class="cell" data-tags="[]" data-execution_count="9">
-<details class="code-fold">
-<summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> band <span class="kw">in</span> landsat.data_vars:</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(band, landsat[band].isnull().<span class="bu">any</span>().item())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>red False
 green True
@@ -771,26 +744,18 @@ swir22 False</code></pre>
 </div>
 </div>
 <div id="759bf9bd-a140-4a4e-9cfa-03d7f9a93b30" class="cell" data-tags="[]" data-execution_count="10">
-<details class="code-fold">
-<summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>landsat <span class="op">=</span> landsat.fillna(<span class="dv">0</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
 </div>
 </section>
 <section id="false-color-map-with-fire-perimeters" class="level2">
 <h2 class="anchored" data-anchor-id="false-color-map-with-fire-perimeters">False color map with fire perimeters</h2>
 <p>A false colored image displaying inrafred and near infrared false color images with the fire perimeters is created. In this image there is a clear distinction of vegetation and other land coverage between places that did and did not experience fires.</p>
 <div id="d763ec0f" class="cell" data-execution_count="11">
-<details class="code-fold">
-<summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Need to fix CRS's of perimeters</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>pal_perm <span class="op">=</span> pal_perm.to_crs(landsat_crs)</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>eat_perm <span class="op">=</span> eat_perm.to_crs(landsat_crs)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
 </div>
 <div id="801b5914-ff81-42f6-a656-f0fd99224657" class="cell" data-tags="[]" data-execution_count="12">
-<details class="code-fold">
-<summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>fig, (ax) <span class="op">=</span> plt.subplots( figsize<span class="op">=</span>(<span class="dv">22</span>, <span class="dv">10</span>))</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot false color image</span></span>
@@ -817,7 +782,6 @@ swir22 False</code></pre>
 <span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a>            wrap <span class="op">=</span> <span class="va">True</span>)</span>
 <span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a>    </span>
 <span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -832,14 +796,9 @@ swir22 False</code></pre>
 <p>We use the Environmental Justice Index (EJI) from Centers for Disease Control and Prevention and Agency for Toxic Substances Disease Registry to visualize the socioeconmic demographics within the fire perimeters.</p>
 <p>To use the EJI data with the fire perimeter data, the projections must be transformed to combine and visualize the data</p>
 <div id="b418ef4b" class="cell" data-execution_count="13">
-<details class="code-fold">
-<summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>eji <span class="op">=</span> gpd.read_file(<span class="st">"data/EJI_2024_United_States/EJI_2024_United_States.gdb"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
 </div>
 <div id="f18a05f0" class="cell" data-execution_count="14">
-<details class="code-fold">
-<summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>eji.columns <span class="op">=</span> eji.columns.<span class="bu">str</span>.lower()</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>eat_perm <span class="op">=</span> eat_perm.to_crs(eji.crs)</span>
@@ -849,15 +808,12 @@ swir22 False</code></pre>
 <span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>eji_eat <span class="op">=</span> gpd.clip(eji, eat_perm)</span>
 <span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>eji_pal <span class="op">=</span> gpd.clip(eji, pal_perm)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
 </div>
 </section>
 <section id="create-an-image-of-uninsured-homes-within-fire-perimeters" class="level2">
 <h2 class="anchored" data-anchor-id="create-an-image-of-uninsured-homes-within-fire-perimeters">Create an image of uninsured homes within fire perimeters</h2>
 <p>We are interested in analyzing socioeconomic demographics of the homes in the fire perimeters. With such extreme damage to many homes in the fires, looking at the amount of uninsured homes within the fire perimeters will represent how deterimental these fires were to so many homes.</p>
 <div id="27d4134f" class="cell" data-execution_count="15">
-<details class="code-fold">
-<summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>fig, (ax1, ax2) <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">20</span>, <span class="dv">10</span>))</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="co"># UPDATE WITH YOU EJI VARIABLE FROM STEP 1</span></span>
@@ -897,7 +853,6 @@ swir22 False</code></pre>
 <span id="cb20-37"><a href="#cb20-37" aria-hidden="true" tabindex="-1"></a>cbar.set_label(<span class="st">'Uninsured (%)'</span>)</span>
 <span id="cb20-38"><a href="#cb20-38" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-39"><a href="#cb20-39" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
