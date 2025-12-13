@@ -216,7 +216,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#data-processing" id="toc-data-processing" class="nav-link" data-scroll-target="#data-processing">Data Processing</a>
   <ul class="collapse">
   <li><a href="#cleaning" id="toc-cleaning" class="nav-link" data-scroll-target="#cleaning">Cleaning</a></li>
-  <li><a href="#process-data" id="toc-process-data" class="nav-link" data-scroll-target="#process-data">Process data</a></li>
   <li><a href="#find-suitable-locations" id="toc-find-suitable-locations" class="nav-link" data-scroll-target="#find-suitable-locations">Find suitable locations</a></li>
   </ul></li>
   <li><a href="#map-suitable-habitat-from-multiplied-rasters" id="toc-map-suitable-habitat-from-multiplied-rasters" class="nav-link" data-scroll-target="#map-suitable-habitat-from-multiplied-rasters">Map suitable habitat from multiplied rasters</a></li>
@@ -268,16 +267,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h1>Data Processing</h1>
 <section id="cleaning" class="level2">
 <h2 class="anchored" data-anchor-id="cleaning">Cleaning</h2>
-<p>Because I am working with geospatial data, there is a lot data wrangling and transforming that needs to be done. I have to ensure that the raster data is compatible to be stacked. This includes matching the projections, resolution and extent. Additionally, the non-raster data needs to transformed so it can be used with the temperature and depth rasters.</p>
-<p>Find suitable habitat Suitability was determined using depth and temperature ranges for species. These values were taken from the Sea Surface Temperature (SST) and Bathymetry rasters. This was done by assigning 0’s and 1’s to the original depth and temperature rasters based on suitable ranges.</p>
-</section>
-<section id="process-data" class="level2">
-<h2 class="anchored" data-anchor-id="process-data">Process data</h2>
-<p>All temperature rasters from 2008 to 2012 are stacked. The mean of all temperature rasters is taken to determine the average sea surface temperature. The temperature is converted from Kelvins to degrees celsius.</p>
+<p>Because I am working with geospatial data, there is a lot data wrangling and transforming that needs to be done. I have to ensure that the raster data is compatible to be stacked. This includes matching the projections, resolution and extent. Additionally, the non-raster data needs to transformed so it can be used with the temperature and depth rasters. All temperature rasters from 2008 to 2012 are stacked. The mean of all temperature rasters is taken to determine the average sea surface temperature. The temperature is converted from Kelvins to degrees Celsius.</p>
 </section>
 <section id="find-suitable-locations" class="level2">
 <h2 class="anchored" data-anchor-id="find-suitable-locations">Find suitable locations</h2>
-<p>In order to determine suitable areas of habitat, reclassification matrices are created to assign 1’s to areas within the suitable temperature and depth ranges for Oysters. Areas without suitable depth and temperature ranges get assigned a 0. The CRS, extent, and resolution of the reclassified depth raster are updated to match the reclassified temperature raster. The updated depth and temperature rasters are multiplied together to determine which areas are suitable in both temperature and depth requirements. Any cell with a 1 in both temperature and depth will remain 1, while any cell without suitable depth or temperature ranges, or both, will be 0.</p>
+<p>In order to determine suitable areas of habitat, reclassification matrices are created to assign 1’s to areas within the suitable temperature and depth ranges for Oysters. Areas without suitable depth and temperature ranges are assigned a 0. The CRS, extent, and resolution of the reclassified depth raster are updated to match the reclassified temperature raster. The updated depth and temperature rasters are multiplied together to determine which areas are suitable in both temperature and depth requirements. Any cell with a 1 in both temperature and depth will remain 1, while any cell without suitable depth or temperature ranges, or both, will be 0.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>

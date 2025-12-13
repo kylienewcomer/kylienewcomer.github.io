@@ -350,3 +350,4 @@ aquaculture_zones(species = "Red Abalone", min_depth = -24, max_depth = 0, min_t
 ## Conclusion
 
 There are some limitations to the map. While it does provide areas of suitable habitat, it does not factor in species natural habitat, as my results show that Washington has the most suitable habitat for Red Abalone but are not part of Red Abalone’s natural range. It should also be pointed out that these are a subtidal species, and the temperature data used was sea surface temperature. This means that the temperature data may not be representative of true habitat ranges for species of interest, especially those that live at deeper depths.
+
