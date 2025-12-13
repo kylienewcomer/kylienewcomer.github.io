@@ -167,20 +167,6 @@ modelsummary(sim_hurdle_model)
 ```
 I successfully simulated data, applied the hurdle model, and got my beta values back!
 
-
-
-## Hurdle Model Application
-After completing a simulation of data and running a hurdle model, I can apply it to my data. I will add my upwelling variable back in to test my hypothesis
-```{r}
-true_hurdle_model <- hurdle(total_fish_collected ~ SST_D30 * beuti_30, 
-                            data = rf_yoy,
-                            dist = "negbin",
-                            zero.dist = "binomial")
-
-modelsummary(true_hurdle_model)
-```
-
-
 ## Generate predictions with hurdle model
 After completing a simulation of data and running a hurdle model, I can apply it to my data. I will add my upwelling variable back in to test my hypothesis
 ```{r}
@@ -192,7 +178,7 @@ true_hurdle_model <- hurdle(total_fish_collected ~ SST_D30 * beuti_30,
 modelsummary(true_hurdle_model)
 ```
 
-
+I can create a prediction grid using my SST ranges, and keeping the upwelling index constant by taking the mean. While the upwelling index often seasonally fluxtuates in the real world, I will assume a constant value because I am only looking at recruitment during a short period during the year. Keeping it constant will create simplicity while interpreting the model predictions. I will use bootstrapping to resample the original data set with replacement and apply the hurdle model to then make predictions for the YOY abundance.
 ```{r}
 pred_grid <- expand_grid(SST_D30 = seq(min(rf_yoy$SST_D30, na.rm = TRUE),
                                            max(rf_yoy$SST_D30, na.rm = TRUE),
@@ -218,7 +204,7 @@ boot <-  map_dfr(1:1000, \(i) {
 })
 ```
 
-
+I also can predict the YOY abundance using the entire population to create a best fit line for the model.
 ```{r}
 pred_hurdle_model <- mutate(pred_grid,
                             count = predict(object = true_hurdle_model,
@@ -239,6 +225,8 @@ ggplot(boot, aes(SST_D30, count)) +
 
 The confidence intervals are visualized through the bootstrapped values. According to the predictions, at an SST of 11.5 degrees C, we 95% confident the mean count of YOY's would fall between 25 and 175. On the higher end of the temperature range, around 16.5 degrees C, we are 95% confident the mean abundance of YOY's would fall between 0 and 60. The narrowest CI occurs around 14 degrees C, where we are 95% confident the mean value falls between 20 and 45 YOY. Additionally, there appears to be a negative relationship between SST and rockfish YOY abundance, leading me to fail to reject my null hypothesis.
 
+## Removing upwelling predictor variable
+To determine the influence of the upwelling index on the model, I can rerun the previous bootstrapping and true population model fit to observe how only temperature influences YOY abundance predictions.
 ```{r}
 pred_grid2 <- expand_grid(SST_D30 = seq(min(rf_yoy$SST_D30, na.rm = TRUE),
                                            max(rf_yoy$SST_D30, na.rm = TRUE),
@@ -262,8 +250,6 @@ boot2 <-  map_dfr(1:1000, \(i) {
 })
 
 ```
-## Using a hurdle model without upwelling predictor variable
-Because of the hurdle model structure it is hard to visualize how confounding variables influence the response. I removed upwelling from the model and bootstrapped to determine how upwelling impacts the relationship between SST and YOY abundance. 
 
 ```{r}
 true_hurdle_model2 <- hurdle(total_fish_collected ~ SST_D30, 
@@ -288,4 +274,4 @@ ggplot(boot2, aes(SST_D30, count)) +
        title = "Hurdle model prediction of YOY abundance") +
   theme_light()
 ```
-Without upwelling, temperature appears to have less of an effect on YOY abundance. Additionally, the CI at both tail ends are noticebly larger than in the model including upwelling. While no definititve conclusions can be made from the data about impacts of SST and upwelling, there does appear to be a negative relationship between temperature and YOY abundance, with that relationship increasing with the addition of upwelling.
+Without upwelling, temperature appears to have less of an effect on YOY abundance. Additionally, the CI at both tail ends are noticebly larger than in the model that includes upwelling. While no definitive conclusions can be made from the data visualization about the impacts of SST and upwelling, there does appear to be a negative relationship between temperature and YOY abundance, with that relationship strengthening with the addition of upwelling.
