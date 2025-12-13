@@ -218,13 +218,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#cleaning" id="toc-cleaning" class="nav-link" data-scroll-target="#cleaning">Cleaning</a></li>
   <li><a href="#find-suitable-locations" id="toc-find-suitable-locations" class="nav-link" data-scroll-target="#find-suitable-locations">Find suitable locations</a></li>
   </ul></li>
-  <li><a href="#map-suitable-habitat-from-multiplied-rasters" id="toc-map-suitable-habitat-from-multiplied-rasters" class="nav-link" data-scroll-target="#map-suitable-habitat-from-multiplied-rasters">Map suitable habitat from multiplied rasters</a></li>
-  <li><a href="#find-suitable-habitat-in-eezs" id="toc-find-suitable-habitat-in-eezs" class="nav-link" data-scroll-target="#find-suitable-habitat-in-eezs">Find suitable habitat in EEZ’s</a></li>
-  <li><a href="#map-suitable-area-by-west-coast-eezs" id="toc-map-suitable-area-by-west-coast-eezs" class="nav-link" data-scroll-target="#map-suitable-area-by-west-coast-eezs">Map suitable area by west coast EEZ’s</a>
+  <li><a href="#map-suitable-habitat" id="toc-map-suitable-habitat" class="nav-link" data-scroll-target="#map-suitable-habitat">Map Suitable Habitat</a></li>
+  <li><a href="#find-suitable-habitat-in-eezs" id="toc-find-suitable-habitat-in-eezs" class="nav-link" data-scroll-target="#find-suitable-habitat-in-eezs">Find Suitable habitat in EEZ’s</a></li>
+  <li><a href="#map-suitable-area-by-west-coast-eezs" id="toc-map-suitable-area-by-west-coast-eezs" class="nav-link" data-scroll-target="#map-suitable-area-by-west-coast-eezs">Map suitable Area by West Coast EEZ’s</a>
   <ul class="collapse">
-  <li><a href="#create-function" id="toc-create-function" class="nav-link" data-scroll-target="#create-function">Create function</a></li>
+  <li><a href="#create-function" id="toc-create-function" class="nav-link" data-scroll-target="#create-function">Create Function</a></li>
   </ul></li>
-  <li><a href="#use-function-for-new-species-of-interest" id="toc-use-function-for-new-species-of-interest" class="nav-link" data-scroll-target="#use-function-for-new-species-of-interest">Use function for new species of interest</a>
+  <li><a href="#suitable-habitat-for-red-abalone" id="toc-suitable-habitat-for-red-abalone" class="nav-link" data-scroll-target="#suitable-habitat-for-red-abalone">Suitable Habitat for Red Abalone</a>
   <ul class="collapse">
   <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
   </ul></li>
@@ -271,7 +271,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="find-suitable-locations" class="level2">
 <h2 class="anchored" data-anchor-id="find-suitable-locations">Find suitable locations</h2>
-<p>In order to determine suitable areas of habitat, reclassification matrices are created to assign 1’s to areas within the suitable temperature and depth ranges for Oysters. Areas without suitable depth and temperature ranges are assigned a 0. The CRS, extent, and resolution of the reclassified depth raster are updated to match the reclassified temperature raster. The updated depth and temperature rasters are multiplied together to determine which areas are suitable in both temperature and depth requirements. Any cell with a 1 in both temperature and depth will remain 1, while any cell without suitable depth or temperature ranges, or both, will be 0.</p>
+<p>In order to determine suitable areas of habitat, reclassification matrices are created to assign 1’s to areas within the suitable temperature and depth ranges for Oysters. Areas without suitable depth and temperature ranges are assigned a 0. The CRS, extent, and resolution of the reclassified depth raster are updated to match the reclassified temperature raster. The updated depth and temperature rasters are multiplied together to determine which areas are suitable in both temperature and depth requirements. Any cell with a 1 in both temperature and depth will remain 1, while any cell without suitable depth or temperature ranges, or both, will become 0.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -285,7 +285,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>temp_reclass <span class="ot">&lt;-</span> <span class="fu">classify</span>(mean_sst, <span class="at">rcl =</span> rcl_temp)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<p>To determine the suitable habitat, the reclassified temperature and depth rasters of 0’s and 1’s are multiplied together, resulting in 1’s only in cells that had a suitable depth and temperature range and 0’s in all other cells.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -327,9 +326,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </section>
 </section>
-<section id="map-suitable-habitat-from-multiplied-rasters" class="level1">
-<h1>Map suitable habitat from multiplied rasters</h1>
-<p>Once the suitable habitat is found, it can be visualized to see the areas along the west coast.</p>
+<section id="map-suitable-habitat" class="level1">
+<h1>Map Suitable Habitat</h1>
+<p>Once the suitable cells are found, it can be visualized along the west coast.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -355,8 +354,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </section>
 <section id="find-suitable-habitat-in-eezs" class="level1">
-<h1>Find suitable habitat in EEZ’s</h1>
-<p>While I found the cells within the raster that have suitable habitat, raster data is in a cell by cell format, which does not give an actual size of suitable habitat. I want to see the bigger picture of these suitable cells and how that reflects in the Exclusive Economic Zones (EEZ) on the coast. This can be done through combining the EEZ data with the suitability raster and calculating the number of suitable cells in each region. Once the amount of cells per region is quantified, I can calculate the total area of the suitable by finding the cell size in km^2 and multiplying that by the number of cells.</p>
+<h1>Find Suitable habitat in EEZ’s</h1>
+<p>While I found the cells within the raster that have suitable habitat, raster data is in a cell by cell format, which does not give an actual size of suitable habitat. I want to see the bigger picture of these suitable cells and how that reflects in the Exclusive Economic Zones (EEZ) on the coast. This can be done through combining the EEZ data with the suitability raster and calculating the number of suitable cells in each region. Once the amount of cells per region is quantified, I can calculate the total area of suitable habitat by finding individual cell size in km^2 and multiplying that by the number of cells in each region.</p>
 <div class="cell">
 <div class="cell-output-display">
 <table class="table table-striped caption-top table-sm small">
@@ -400,8 +399,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </section>
 <section id="map-suitable-area-by-west-coast-eezs" class="level1">
-<h1>Map suitable area by west coast EEZ’s</h1>
-<p>Now that there is a calculated area of suitable habitat for each region, I can visualize it. My results show that the Central California region, followed by Southern California is the most suitable for Oyster aquaculture.</p>
+<h1>Map suitable Area by West Coast EEZ’s</h1>
+<p>Now that I have a calculated area of suitable habitat for each region, I can visualize it within the EEZ’s. My results show that the Central California region, followed by Southern California are the most suitable for Oyster aquaculture.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -432,7 +431,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <section id="create-function" class="level2">
-<h2 class="anchored" data-anchor-id="create-function">Create function</h2>
+<h2 class="anchored" data-anchor-id="create-function">Create Function</h2>
 <p>After successfully determining aquaculture habitats for Oysters, I can generalize my code into a function, which will produce a habitat suitability map for any species with specified depth and temperature ranges.</p>
 <div class="cell">
 <details class="code-fold">
@@ -513,10 +512,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </section>
 </section>
-<section id="use-function-for-new-species-of-interest" class="level1">
-<h1>Use function for new species of interest</h1>
+<section id="suitable-habitat-for-red-abalone" class="level1">
+<h1>Suitable Habitat for Red Abalone</h1>
+<p>After streamlining my code and creating a function, I can use it to determine sutiable habitat for a new species of interest.</p>
 <p><img src="images/halruf.jpeg" class="img-fluid"></p>
-<p>Red Abalone were previously a popular fishery across the west coast, however the fishery closed in 2018 due to declining populations. The only source of Red Abalone on the west coast is currently through aquaculture. Because this species was a popular fishery and still has demand across the west coast, utilizing aquaculture zones along the coast would increase supply for this sought after mollusk. The depth range for Red Abalone is 0-24m and the temperature range is 8-18 ºC.</p>
+<p>Red Abalone were a historically popular fishery across the west coast, however the fishery closed in 2018 due to declining populations. The only source of Red Abalone on the west coast is currently through aquaculture. Because this species was a popular fishery and still has demand across the west coast, utilizing aquaculture zones along the coast would increase supply for this sought after mollusk. The depth range for Red Abalone is 0-24 m and the temperature range is 8-18 ºC.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -532,7 +532,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <section id="conclusion" class="level2">
 <h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
-<p>There are some limitations to the map. While it does provide areas of suitable habitat, it does not factor in species natural habitat, as my results show that Washington has the most suitable habitat for Red Abalone but are not part of Red Abalone’s natural range. It should also be pointed out that these are a subtidal species, and the temperature data used was sea surface temperature. This means that the temperature data may not be representative of true habitat ranges for species, especially those that live at deeper depths.</p>
+<p>There are some limitations to the map. While it does provide areas of suitable habitat, it does not factor in species natural habitat, as my results show that Washington has the most suitable habitat for Red Abalone but are not part of Red Abalone’s natural range. It should also be pointed out that these are a subtidal species, and the temperature data used was sea surface temperature. This means that the temperature data may not be representative of true habitat ranges for species of interest, especially those that live at deeper depths.</p>
 
 
 </section>
