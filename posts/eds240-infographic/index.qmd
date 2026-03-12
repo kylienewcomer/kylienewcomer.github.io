@@ -10,7 +10,7 @@ code-fold: true
 image: GPTempDownload.png
 ---
 
-![](infographic-v2.jpg){fig-align="center"}
+![](infographic-updated.jpg){fig-align="center"}
 
 ## Introduction
 
@@ -26,7 +26,7 @@ While patterns of species richness show the number of unique species seen at any
 
 ## Common fishery targets
 
-While species diversity is interesting to me, I wanted my infographic to reach a broader audience by including a fishing portion. I quantified the number of observations of the 10 most common targeted fish species using a diverging bar chart to represent sights seen in kelp vs. “no” kelp. No kelp was classified as less than 5% kelp coverage, as that was the cut off for the data collectors when determining when to complete canopy transects. For this figure I added silhouettes of the species using Affinity to help give a visual aid for viewers who may not recognize the species name.
+While species diversity is interesting to me, I wanted my infographic to reach a broader audience by including a fishing portion. I quantified the number of observations of the 10 most common targeted fish species using a diverging bar chart to represent sights seen in kelp vs. “no” kelp. No kelp was classified as less than 5% kelp coverage, as that was the cut off for the data collectors when determining when to complete canopy transects. For this figure I added silhouettes of the species using Affinity to help give a visual aid for viewers who may not recognize the species name. I added a more fun, easy going theme to all my figures as the results are not to be taken too seriously. No solid ecological conclusions can be made from these figures.
 
 ```{r}
 library(tidyverse)
@@ -244,7 +244,7 @@ fish_kelp %>%
   labs(fill = "",
        x = "Number of observations",
        y = "",
-       title = "Most common targeted species are more often seen in kelp") +
+       title = "Most common targeted species are\nmore often seen in kelp") +
   theme_light() +
   theme(plot.title = element_markdown(family = "spectral"),
         axis.title = element_markdown(family = "spectral", size = 12),
