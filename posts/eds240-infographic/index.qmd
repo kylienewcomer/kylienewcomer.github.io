@@ -10,7 +10,7 @@ code-fold: true
 image: GPTempDownload.png
 ---
 
-![](infographic-updated.jpg){fig-align="center"}
+![](update-infographic.jpg){fig-align="center"}
 
 ## Introduction
 
