@@ -41,12 +41,13 @@ While species diversity is interesting to me, I wanted my infographic to reach a
 
 ```{r}
 #| code-fold: true
+#| fig-alt: "A bar chart representing the average number of species across kelp density bins of 10%, faceted by area in the water column that the survey was completed. Overall, number of species increased with increasing kelp, and the bottom water surveys saw the most species on average."
 library(tidyverse)
 library(here)
 library(vegan)
 library(ggtext)
 library(sysfonts)
-#| fig-alt: "A bar chart representing the average number of species across kelp density bins of 10%, faceted by area in the water column that the survey was completed. Overall, number of species increased with increasing kelp, and the bottom water surveys saw the most species on average."
+
 
 
 subtidal <- read_csv(here("posts", "eds240-infographic", "data", "ucsb_fish_clean_obs_1999-2024.csv"))
@@ -179,6 +180,7 @@ ggplot(unique_sp) +
 
 
 ```{r}
+#| code-fold: true
 #| fig-alt: "A heatmap representing the biodiversity index with depth zone from 0 to 50ft on the y-axis and kelp desnity bins of 10% from 0-100% on the x-axis. In general, biodiversity increased with depth and the highest biodiversity was found in the intermediate densities of kelp."
 fish_kelp %>% 
   mutate(depth_ft = round(depth * 3.28084, digits = 0), # convert depth from meters to feet
@@ -230,6 +232,7 @@ fish_kelp %>%
 
 
 ```{r}
+#| code-fold: true
 #| fig-alt: "A diverging bar plot comparing observations of the 10 most common fishery target species in kelp densities above and below 5%, with fish species on the y-axis and observations on the x-axis. Kelp bass were the most observed species and was significantly observed in kelp densities above 5%. Additional species were on average more often seen in kelp densities above 5% with the exception og Ocean Whitefish and some rockfish having equal observations."
 target <- fish_kelp %>% 
   filter(targeted == "Targeted") %>% 
