@@ -174,7 +174,7 @@ ggplot(unique_sp) +
        #color = "Family",
        #size = "Total observed fish",
        title = "On average, number of unique species observed increases\nwith kelp density and depth",
-       alt = "A bar chart representing the average number of species across kelp density bins of 10%, faceted by area in the water column that the survey was completed. Overall, number of species increased with increasing kelp, and the bottom water surveys saw the most species on average.")
+       alt_insight = "A bar chart representing the average number of species across kelp density bins of 10%, faceted by area in the water column that the survey was completed. Overall, number of species increased with increasing kelp, and the bottom water surveys saw the most species on average.")
 
 fish_kelp %>% 
   mutate(depth_ft = round(depth * 3.28084, digits = 0), # convert depth from meters to feet
@@ -207,7 +207,7 @@ fish_kelp %>%
        y = "Depth zone (ft)",
        fill = "Biodiversity\nIndex",
        title = "Biodiversity generally increases with\ndepth and intermediate kelp density",
-       alt = "A heatmap representing the biodiversity index with depth zone from 0 to 50ft on the y-axis and kelp desnity bins of 10% from 0-100% on the x-axis. In general, biodiversity increased with depth and the highest biodiversity was found in the intermediate densities of kelp.") +
+       alt_insight = "A heatmap representing the biodiversity index with depth zone from 0 to 50ft on the y-axis and kelp desnity bins of 10% from 0-100% on the x-axis. In general, biodiversity increased with depth and the highest biodiversity was found in the intermediate densities of kelp.") +
   scale_x_discrete(expand = c(0, 0)) + # Remove dead space
   scale_y_discrete(expand = c(0, 0)) +
   annotate("text", x = 9.5, y = 1, label = "No surveys\ncompleted below\n50ft at >80% kelp", size =2.9, color = "#001806", family = "inconsolata") +
@@ -257,7 +257,7 @@ fish_kelp %>%
        x = "Number of observations",
        y = "",
        title = "Most common targeted species are\nmore often seen in kelp",
-       alt = "A diverging bar plot comparing observations of the 10 most common fishery target species in kelp densities above and below 5%, with fish species on the y-axis and observations on the x-axis. Kelp bass were the most observed species and was significantly observed in kelp densities above 5%. Additional species were on average more often seen in kelp densities above 5% with the exception og Ocean Whitefish and some rockfish having equal observations.") +
+       alt_insight = "A diverging bar plot comparing observations of the 10 most common fishery target species in kelp densities above and below 5%, with fish species on the y-axis and observations on the x-axis. Kelp bass were the most observed species and was significantly observed in kelp densities above 5%. Additional species were on average more often seen in kelp densities above 5% with the exception og Ocean Whitefish and some rockfish having equal observations.") +
   theme_light() +
   theme(plot.title = element_markdown(family = "inconsolata"),
         axis.title = element_markdown(family = "inconsolata", size = 12),
