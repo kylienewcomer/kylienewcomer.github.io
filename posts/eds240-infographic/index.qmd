@@ -16,7 +16,7 @@ The Channel Islands off the coast of California are some of the most diverse are
 
 ## Species Richness
 
-To identify any patterns between species richness and kelp density, I created a bar chart that quantifies the total number of unique species observed at each kelp density bin across the three survey levels in the water column (canopy, midwater, and bottom). The survey levels were reordered to represent the water column, contextualizing the data better for the viewer. To account for the natural uneven sampling at the varying kelp densities, I calculated the average number of species by surveys at each level and kelp density. I selected the colors from a photo of kelp, using a dark blue-green to contrast to increase accessibility. As the density of kelp increases across the y axis, the column increases in opacity. My overall goal of this figure was to feel as though the viewer is completing a fish survey.
+To identify any patterns between species richness and kelp density, I created a bar chart that quantifies the total number of unique species observed at each kelp density bin across the three survey levels in the water column (canopy, midwater, and bottom). I chose a bar chart as my graphic form, because I wanted comparison across kelp densities to be straight forward for the viewer. The survey levels were reordered to represent the water column, contextualizing the data better for the viewer. To account for the natural uneven sampling at the varying kelp densities, I calculated the average number of species by surveys at each level and kelp density. I selected the colors from a photo of kelp, using a dark blue-green to contrast to increase accessibility. As the density of kelp increases across the y axis, the column increases in opacity. My overall goal of this figure was to feel as though the viewer is completing a fish survey.
 
 ## Biodiversity
 
@@ -24,12 +24,12 @@ While patterns of species richness show the number of unique species seen at any
 
 ## Common fishery targets
 
-While species diversity is interesting to me, I wanted my infographic to reach a broader audience by including a fishing portion. I quantified the number of observations of the 10 most common targeted fish species using a diverging bar chart to represent sights seen in kelp vs. “no” kelp. No kelp was classified as less than 5% kelp coverage, as that was the cut off for the data collectors when determining when to complete canopy transects. The x and y axis were flipped to make reading the species names easier, and to make the observations in the kelp densities more intuitive. I also added silhouettes of the species in the final inforgraphic using Affinity to help give a visual aid for viewers who may not recognize the species name.
+While species diversity is interesting to me, I wanted my infographic to reach a broader audience by including a fishing portion. I quantified the number of observations of the 10 most common targeted fish species using a diverging bar chart to represent sights seen in kelp vs. “no” kelp. No kelp was classified as less than 5% kelp coverage, as that was the cut off for the data collectors when determining when to complete canopy transects. The x and y axis were flipped to make reading the species names easier, and to make the observations in the kelp densities more intuitive. I also added silhouettes of the species in the final infographic using Affinity to help give a visual aid for viewers who may not recognize the species name.
 
 ## Overall design choices
 **Theme** Each plot was modified to create the easiest viewing. Axis were flipped or reversed when necessary it seemed more intuitive.
 
-**Text** Text colors and sizes were adjusted to increase readability, but avoid making things feel cramped. Many text adjustments (e.g. removing redundent axis titles, adding units to labels) were done using Affinity for the final inforgraphic. 
+**Text** Text colors and sizes were adjusted to increase readability, but avoid making things feel cramped. Many text adjustments (e.g. removing redundant axis titles, adding units to labels) were done using Affinity for the final infographic. 
 
 **Typography** For this project, I selected the fonts Spectral and Inconsolata to keep my figures fun and nice to look at. I wanted the text to lure the reader in, without being too distracting or hard to read. Overall, these figures aim to show patterns, but should not be used to make any ecological conclusions.
 
@@ -46,6 +46,7 @@ library(here)
 library(vegan)
 library(ggtext)
 library(sysfonts)
+#| fig-alt: "A bar chart representing the average number of species across kelp density bins of 10%, faceted by area in the water column that the survey was completed. Overall, number of species increased with increasing kelp, and the bottom water surveys saw the most species on average."
 
 
 subtidal <- read_csv(here("posts", "eds240-infographic", "data", "ucsb_fish_clean_obs_1999-2024.csv"))
@@ -173,9 +174,12 @@ ggplot(unique_sp) +
        y = "Number of observed species",
        #color = "Family",
        #size = "Total observed fish",
-       title = "On average, number of unique species observed increases\nwith kelp density and depth",
-       alt_insight = "A bar chart representing the average number of species across kelp density bins of 10%, faceted by area in the water column that the survey was completed. Overall, number of species increased with increasing kelp, and the bottom water surveys saw the most species on average.")
+       title = "On average, number of unique species observed increases \nwith kelp density and depth")
+```
 
+
+```{r}
+#| fig-alt: "A heatmap representing the biodiversity index with depth zone from 0 to 50ft on the y-axis and kelp desnity bins of 10% from 0-100% on the x-axis. In general, biodiversity increased with depth and the highest biodiversity was found in the intermediate densities of kelp."
 fish_kelp %>% 
   mutate(depth_ft = round(depth * 3.28084, digits = 0), # convert depth from meters to feet
     depth_zone = case_when(
@@ -206,8 +210,7 @@ fish_kelp %>%
   labs(x = "Kelp Density (%)",
        y = "Depth zone (ft)",
        fill = "Biodiversity\nIndex",
-       title = "Biodiversity generally increases with\ndepth and intermediate kelp density",
-       alt_insight = "A heatmap representing the biodiversity index with depth zone from 0 to 50ft on the y-axis and kelp desnity bins of 10% from 0-100% on the x-axis. In general, biodiversity increased with depth and the highest biodiversity was found in the intermediate densities of kelp.") +
+       title = "Biodiversity generally increases with \ndepth and intermediate kelp density" ) +
   scale_x_discrete(expand = c(0, 0)) + # Remove dead space
   scale_y_discrete(expand = c(0, 0)) +
   annotate("text", x = 9.5, y = 1, label = "No surveys\ncompleted below\n50ft at >80% kelp", size =2.9, color = "#001806", family = "inconsolata") +
@@ -223,7 +226,11 @@ fish_kelp %>%
         panel.grid.minor = element_blank(),
         text = element_text(color = "#001806"),
         axis.title.x = element_text(margin = margin(t = 5, r = 0, b = 0, l = 0, unit = "pt")))
+```
 
+
+```{r}
+#| fig-alt: "A diverging bar plot comparing observations of the 10 most common fishery target species in kelp densities above and below 5%, with fish species on the y-axis and observations on the x-axis. Kelp bass were the most observed species and was significantly observed in kelp densities above 5%. Additional species were on average more often seen in kelp densities above 5% with the exception og Ocean Whitefish and some rockfish having equal observations."
 target <- fish_kelp %>% 
   filter(targeted == "Targeted") %>% 
   group_by(classcode) %>% 
@@ -256,8 +263,7 @@ fish_kelp %>%
   labs(fill = "",
        x = "Number of observations",
        y = "",
-       title = "Most common targeted species are\nmore often seen in kelp",
-       alt_insight = "A diverging bar plot comparing observations of the 10 most common fishery target species in kelp densities above and below 5%, with fish species on the y-axis and observations on the x-axis. Kelp bass were the most observed species and was significantly observed in kelp densities above 5%. Additional species were on average more often seen in kelp densities above 5% with the exception og Ocean Whitefish and some rockfish having equal observations.") +
+       title = "Most common targeted species are \nmore often seen in kelp") +
   theme_light() +
   theme(plot.title = element_markdown(family = "inconsolata"),
         axis.title = element_markdown(family = "inconsolata", size = 12),
