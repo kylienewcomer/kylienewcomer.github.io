@@ -20,7 +20,7 @@ To identify any patterns between species richness and kelp density, I created a 
 
 ## Biodiversity
 
-While patterns of species richness show the number of unique species seen at any point, I quantified biodiversity using the standard equation to look at the biodiversity through the water column. I created a heatmap representing the biodiversity index at all depth and kelp density combinations. This figure aimed to identify any patterns in biodiversity of the water column through the kelp densities. In order to contextualize the data better, I reversed the y-axis to make viewing depth more intuitive. I also added a text label to explain why there were gaps in the visualization. 
+While patterns of species richness show the number of unique species seen at any point, I quantified biodiversity using the standard equation to look at the biodiversity through the water column. I created a heatmap representing the biodiversity index at all depth and kelp density combinations. This figure aimed to identify any patterns in biodiversity of the water column through the kelp densities. In order to contextualize the data better, I reversed the y-axis to make viewing depth more intuitive. I also added a text label to explain why there were gaps in the visualization.
 
 ## Common fishery targets
 
