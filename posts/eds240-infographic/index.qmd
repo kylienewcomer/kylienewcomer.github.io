@@ -3,32 +3,44 @@ title: "How does kelp density affect the fish communities in the Northern Channe
 format: html
 execute:
   eval: true
-  echo: false
   warning: false
   message: false
-code-fold: true
 image: GPTempDownload.png
 ---
 
-![](update-infographic.jpg){fig-align="center"}
+![](final-infographic.jpg){fig-align="center"}
 
 ## Introduction
 
-The Channel Islands off the coast of California are some of the most diverse areas of temperate marine ecosystems around the world. These rocky reefs host a plethora of fish, invertebrate, and algae species and are ideal for kelp forests. The primary producer and foundation of the habitat is Giant Kelp, *Macrocystis pyriferia*, which provide food and shelter to many species. Kelp forests face threats Kelp forest faces threats of increasing ocean temperatures, introductions of invasive species, and loss of keystone species through anthropogenic extraction. This infographic aims to explore the relationship between kelp density and fish community diversity and abundance using fish survey data collected by the Caselle lab of University California, Santa Barbara. I aim to identify patterns between fish diversity and abundance with kelp density through the water column.
+The Channel Islands off the coast of California are some of the most diverse areas of temperate marine ecosystems around the world. These rocky reefs host a plethora of fish, invertebrate, and algae species and are ideal for kelp forests. The primary producer and foundation of the habitat is Giant Kelp, *Macrocystis pyriferia*, which provide food and shelter to many species. Kelp forest faces threats of increasing ocean temperatures, introductions of invasive species, and loss of keystone species through anthropogenic extraction. This infographic aims to explore the relationship between kelp density and fish community diversity and abundance using fish survey data collected by the Caselle lab of University California, Santa Barbara. I aim to identify patterns between fish diversity and abundance with kelp density through the water column.
 
 ## Species Richness
 
-To identify any patterns between species richness and kelp density, I created a bar chart that quantifies the total number of unique species observed at each kelp density bin across the three survey levels in the water column (canopy, midwater, and bottom). To account for the natural uneven sampling at the varying kelp densities, I standardized the species by the number of completed surveys at each level and kelp density. I selected the colors from a photo of kelp, using a dark blue-green to contrast to increase accessibility. As the density of kelp increases across the y axis, the column increases in opacity. The kelp drawings seen in the infographic are representative of the part of the kelp seen at each survey level. My overall goal of this figure was to feel as though the viewer is completing a survey.
+To identify any patterns between species richness and kelp density, I created a bar chart that quantifies the total number of unique species observed at each kelp density bin across the three survey levels in the water column (canopy, midwater, and bottom). The survey levels were reordered to represent the water column, contextualizing the data better for the viewer. To account for the natural uneven sampling at the varying kelp densities, I calculated the average number of species by surveys at each level and kelp density. I selected the colors from a photo of kelp, using a dark blue-green to contrast to increase accessibility. As the density of kelp increases across the y axis, the column increases in opacity. My overall goal of this figure was to feel as though the viewer is completing a fish survey.
 
 ## Biodiversity
 
-While patterns of species richness show the number of unique species seen at any point, I quantified biodiversity using the standard equation to look at the biodiversity through the water column. I used the same color palette from the species richness figure, to create a heatmap representing the biodiversity index at all depth and kelp density combinations. This figure aimed to identify any patterns in biodiversity of the water column through the kelp densities. I also added a text label to explain why there were gaps in the visualization.
+While patterns of species richness show the number of unique species seen at any point, I quantified biodiversity using the standard equation to look at the biodiversity through the water column. I created a heatmap representing the biodiversity index at all depth and kelp density combinations. This figure aimed to identify any patterns in biodiversity of the water column through the kelp densities. In order to contextualize the data better, I reversed the y-axis to make viewing depth more intuitive. I also added a text label to explain why there were gaps in the visualization. 
 
 ## Common fishery targets
 
-While species diversity is interesting to me, I wanted my infographic to reach a broader audience by including a fishing portion. I quantified the number of observations of the 10 most common targeted fish species using a diverging bar chart to represent sights seen in kelp vs. “no” kelp. No kelp was classified as less than 5% kelp coverage, as that was the cut off for the data collectors when determining when to complete canopy transects. For this figure I added silhouettes of the species using Affinity to help give a visual aid for viewers who may not recognize the species name. I added a more fun, easy going theme to all my figures as the results are not to be taken too seriously. No solid ecological conclusions can be made from these figures.
+While species diversity is interesting to me, I wanted my infographic to reach a broader audience by including a fishing portion. I quantified the number of observations of the 10 most common targeted fish species using a diverging bar chart to represent sights seen in kelp vs. “no” kelp. No kelp was classified as less than 5% kelp coverage, as that was the cut off for the data collectors when determining when to complete canopy transects. The x and y axis were flipped to make reading the species names easier, and to make the observations in the kelp densities more intuitive. I also added silhouettes of the species in the final inforgraphic using Affinity to help give a visual aid for viewers who may not recognize the species name.
+
+## Overall design choices
+**Theme** Each plot was modified to create the easiest viewing. Axis were flipped or reversed when necessary it seemed more intuitive.
+
+**Text** Text colors and sizes were adjusted to increase readability, but avoid making things feel cramped. Many text adjustments (e.g. removing redundent axis titles, adding units to labels) were done using Affinity for the final inforgraphic. 
+
+**Typography** For this project, I selected the fonts Spectral and Inconsolata to keep my figures fun and nice to look at. I wanted the text to lure the reader in, without being too distracting or hard to read. Overall, these figures aim to show patterns, but should not be used to make any ecological conclusions.
+
+**Colors** To keep my colors consistent and true to a kelp forest, I used a photo (seen as the cover photo) of the kelp forest and selected contrasting colors to make the viewer feel as if they are in a kelp forest.
+
+**Centering the Primary Message** I wanted every figure to have a primary message that could be understood through the title. While additional patterns can be recognized through viewing the data, I wanted the audience to see my big picture takeaway at first glance.
+
+**Accessibility** To make my figures accessible, I used color-blind safe colors so the visuals could still be interpreted. I also added alt-text describing my figures and the main takeaway for each.
 
 ```{r}
+#| code-fold: true
 library(tidyverse)
 library(here)
 library(vegan)
@@ -110,7 +122,7 @@ species_sums <- fish_kelp %>%
 
 # Color palettes
 plot_palette = c("#001806", "#7F6F2B", "#9A7408", "#D4C569", "#AA9D52", "#EBF4F2", "#B6E5F0", "#96B8A9", "#1E6848", "#004B5D", "#002B2B")
-fish = c("#8C6E56", "#4761B4", "#F7CE7B", "#E38023", "#F15739", "#823E57", "#CFCDCB")
+
 
 
 # fonts
@@ -125,18 +137,16 @@ level_labs <- c(CAN = "Canopy",
                 MID = "Midwater", 
                 BOT = "Bottom")
 
-species_sums %>% 
-  #filter(island == "Anacapa") %>%
-  group_by(cnpy_pct, level) %>% 
-  summarize(total_fish = sum(count),
-            mean_obs = mean(count),
-            unique_species = length(unique(classcode)),
-            sp_per_surv = unique_species / n()) %>%
+unique_sp <- species_sums %>% 
+  group_by(year, cnpy_pct, level, side, zone, site) %>% 
+  summarize(transects = max(transect),
+            unique_species = length(unique(classcode))) %>% 
   ungroup() %>% 
-  #mutate(cnpy_pct = as.factor(cnpy_pct, 0.3)) %>% 
-  filter(total_fish >= 20) %>% 
-  ggplot() +
-  geom_col(aes(cnpy_pct, unique_species, alpha = cnpy_pct), fill = "#D4C569", color = NA, show.legend = FALSE) +
+  group_by(cnpy_pct, level) %>% 
+  summarize(av_sp = round(mean(unique_species), 0))
+
+ggplot(unique_sp) +
+  geom_col(aes(cnpy_pct, av_sp, alpha = cnpy_pct), fill = "#D4C569", color = NA, show.legend = FALSE) +
   #geom_jitter(aes(cnpy_pct, unique_species, color = fish_family, size = total_fish), alpha = 0.9) +
   #theme(legend.position = "none") +
   scale_color_manual(values = fish) +
@@ -146,10 +156,10 @@ species_sums %>%
              ncol = 1, 
              labeller = labeller(level = level_labs)) +
   theme_light() +
-  theme(plot.title = element_markdown(family = "spectral"),
-        axis.title = element_markdown(family = "spectral", size = 12),
-        axis.text = element_markdown(family = "inconsolata", size = 10),
-        strip.text = element_markdown(family = "spectral", color = "#002B2B", size = 12),
+  theme(plot.title = element_markdown(family = "inconsolata"),
+        axis.title = element_markdown(family = "inconsolata", size = 12),
+        axis.text = element_markdown(family = "spectral", size = 10),
+        strip.text = element_markdown(family = "inconsolata", color = "#002B2B", size = 12),
         panel.background = element_rect(fill = "#002B2B"), 
         panel.grid.major = element_line(linewidth = 0),
         panel.grid.minor = element_line(linewidth = 0),
@@ -163,7 +173,8 @@ species_sums %>%
        y = "Number of observed species",
        #color = "Family",
        #size = "Total observed fish",
-       title = "Fish diversity through the water column under varying kelp density")
+       title = "On average, number of unique species observed increases\nwith kelp density and depth",
+       alt = "A bar chart representing the average number of species across kelp density bins of 10%, faceted by area in the water column that the survey was completed. Overall, number of species increased with increasing kelp, and the bottom water surveys saw the most species on average.")
 
 fish_kelp %>% 
   mutate(depth_ft = round(depth * 3.28084, digits = 0), # convert depth from meters to feet
@@ -195,14 +206,15 @@ fish_kelp %>%
   labs(x = "Kelp Density (%)",
        y = "Depth zone (ft)",
        fill = "Biodiversity\nIndex",
-       title = "Biodiversity generally increases with depth and intermediate kelp density") +
+       title = "Biodiversity generally increases with\ndepth and intermediate kelp density",
+       alt = "A heatmap representing the biodiversity index with depth zone from 0 to 50ft on the y-axis and kelp desnity bins of 10% from 0-100% on the x-axis. In general, biodiversity increased with depth and the highest biodiversity was found in the intermediate densities of kelp.") +
   scale_x_discrete(expand = c(0, 0)) + # Remove dead space
   scale_y_discrete(expand = c(0, 0)) +
   annotate("text", x = 9.5, y = 1, label = "No surveys\ncompleted below\n50ft at >80% kelp", size =2.9, color = "#001806", family = "inconsolata") +
   theme_light() +
-  theme(plot.title = element_markdown(family = "spectral"),
-        axis.title = element_markdown(family = "spectral", size = 12),
-        axis.text = element_markdown(family = "inconsolata", size = 10),
+  theme(plot.title = element_markdown(family = "inconsolata"),
+        axis.title = element_markdown(family = "inconsolata", size = 12),
+        axis.text = element_markdown(family = "spectral", size = 10),
         panel.background = element_rect(fill = "#EBF4F2"),
         plot.background = element_rect(fill = "#EBF4F2"),
         legend.background = element_rect(fill = "#EBF4F2"), 
@@ -238,18 +250,19 @@ fish_kelp %>%
   )) %>% 
   ggplot() +
   geom_col(aes(count_dif, common_name, fill = kelp_dens)) +
-  scale_fill_manual(labels = c("No Kelp", "5% or more kelp coverage"), values = c("#823E57", "#004B5D")) +
+  scale_fill_manual(labels = c("No Kelp", "5% or more kelp coverage"), values = c("#002B2B", "#D4C569")) +
  scale_x_continuous(breaks = c(-5000,-2500,0,2500,5000,7500,10000,15000),
                    labels = c(breaks = c(5000,2500,0,2500,5000,7500,10000,15000))) +
   labs(fill = "",
        x = "Number of observations",
        y = "",
-       title = "Most common targeted species are\nmore often seen in kelp") +
+       title = "Most common targeted species are\nmore often seen in kelp",
+       alt = "A diverging bar plot comparing observations of the 10 most common fishery target species in kelp densities above and below 5%, with fish species on the y-axis and observations on the x-axis. Kelp bass were the most observed species and was significantly observed in kelp densities above 5%. Additional species were on average more often seen in kelp densities above 5% with the exception og Ocean Whitefish and some rockfish having equal observations.") +
   theme_light() +
-  theme(plot.title = element_markdown(family = "spectral"),
-        axis.title = element_markdown(family = "spectral", size = 12),
-        axis.text = element_markdown(family = "inconsolata", size = 10),
-        legend.text = element_markdown(family = "inconsolata", size = 10),
+  theme(plot.title = element_markdown(family = "inconsolata"),
+        axis.title = element_markdown(family = "inconsolata", size = 12),
+        axis.text = element_markdown(family = "spectral", size = 10),
+        legend.text = element_markdown(family = "spectral", size = 10),
         panel.background = element_rect(fill = "#EBF4F2"),
         plot.background = element_rect(fill = "#EBF4F2"),
         legend.background = element_rect(fill = "#EBF4F2"),
