@@ -1,0 +1,1807 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.25">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Kylie Newcomer">
+<meta name="author" content="Joaquin Sandoval">
+<meta name="author" content="Grace Bryan">
+<meta name="dcterms.date" content="2026-03-20">
+
+<title>Replicating the Aquaculture Impact Analysis on Minnow Communities – Kylie Newcomer</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-707d8167ce6003fca903bfe2be84ab7f.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-445ff30f473745a4b54dfab4fb13ee75.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>
+
+      .quarto-title-block .quarto-title-banner h1,
+      .quarto-title-block .quarto-title-banner h2,
+      .quarto-title-block .quarto-title-banner h3,
+      .quarto-title-block .quarto-title-banner h4,
+      .quarto-title-block .quarto-title-banner h5,
+      .quarto-title-block .quarto-title-banner h6
+      {
+        color: light;
+      }
+
+      .quarto-title-block .quarto-title-banner {
+        color: light;
+      }
+</style>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    </a>
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Kylie Newcomer</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../posts.html"> 
+<span class="menu-text">Blog Posts</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Replicating the Aquaculture Impact Analysis on Minnow Communities</h1>
+                      </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Authors</div>
+      <div class="quarto-title-meta-contents">
+               <p>Kylie Newcomer </p>
+               <p>Joaquin Sandoval </p>
+               <p>Grace Bryan </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">March 20, 2026</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#data-preparation" id="toc-data-preparation" class="nav-link" data-scroll-target="#data-preparation">Data Preparation</a>
+  <ul class="collapse">
+  <li><a href="#data-wrangling" id="toc-data-wrangling" class="nav-link" data-scroll-target="#data-wrangling">Data Wrangling</a></li>
+  </ul></li>
+  <li><a href="#exploratory-time-series" id="toc-exploratory-time-series" class="nav-link" data-scroll-target="#exploratory-time-series">Exploratory Time Series</a></li>
+  <li><a href="#baci-analysis" id="toc-baci-analysis" class="nav-link" data-scroll-target="#baci-analysis">BACI Analysis</a>
+  <ul class="collapse">
+  <li><a href="#spring-baci-model" id="toc-spring-baci-model" class="nav-link" data-scroll-target="#spring-baci-model">Spring BACI Model</a></li>
+  <li><a href="#fall-baci-model" id="toc-fall-baci-model" class="nav-link" data-scroll-target="#fall-baci-model">Fall BACI Model</a></li>
+  <li><a href="#limitations-of-baci" id="toc-limitations-of-baci" class="nav-link" data-scroll-target="#limitations-of-baci">Limitations of BACI</a></li>
+  </ul></li>
+  <li><a href="#did-testing-assumptions" id="toc-did-testing-assumptions" class="nav-link" data-scroll-target="#did-testing-assumptions">DiD: Testing Assumptions</a>
+  <ul class="collapse">
+  <li><a href="#parallel-trends-test" id="toc-parallel-trends-test" class="nav-link" data-scroll-target="#parallel-trends-test">Parallel Trends Test</a></li>
+  </ul></li>
+  <li><a href="#difference-in-differences-analysis" id="toc-difference-in-differences-analysis" class="nav-link" data-scroll-target="#difference-in-differences-analysis">Difference-in-Differences Analysis</a>
+  <ul class="collapse">
+  <li><a href="#before-and-during" id="toc-before-and-during" class="nav-link" data-scroll-target="#before-and-during">Before and During</a></li>
+  <li><a href="#before-and-after" id="toc-before-and-after" class="nav-link" data-scroll-target="#before-and-after">Before and After</a></li>
+  </ul></li>
+  <li><a href="#rennie-et-al.-2019-critical-evaluation" id="toc-rennie-et-al.-2019-critical-evaluation" class="nav-link" data-scroll-target="#rennie-et-al.-2019-critical-evaluation">Rennie et al.&nbsp;2019 Critical Evaluation</a></li>
+  <li><a href="#addition-of-difference-in-differences" id="toc-addition-of-difference-in-differences" class="nav-link" data-scroll-target="#addition-of-difference-in-differences">Addition of Difference-in-Differences</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/aquaculture.jpeg" class="img-fluid figure-img"></p>
+<figcaption>Photo from Canadian Aquaculture Industry Alliance</figcaption>
+</figure>
+</div>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>Freshwater aquaculture can influence lake ecosystems through nutrient enrichment, increased primary productivity, and shifts in food web structure. These ecosystem-level changes may cascade to affect fish communities, including small-bodied species such as minnows.</p>
+<p>This report replicates and extends part of the analysis presented in “Impacts of freshwater aquaculture on fish communities: A whole-ecosystem experimental approach” by Rennie et al.&nbsp;(2019), which examined ecosystem responses to an experimental rainbow trout aquaculture operation conducted at the Experimental Lakes Area in Ontario, Canada. While the original study evaluates broad ecosystem responses, including nutrient dynamics and food web interactions, the present analysis focuses specifically on whether aquaculture activity influenced the abundance of minnows measured as catch-per-unit-effort (CPUE).</p>
+<p>The study uses a Before-After Control-Impact (BACI) design comparing a treated lake, where aquaculture was implemented, with a nearby control lake. Minnow CPUE is observed across three experimental periods: before aquaculture began, during the period of active aquaculture operations, and after operations ended.</p>
+<p>While BACI designs are widely used in ecological impact studies, they rely on the assumption that the control site provides a valid counterfactual for the treated site. In this replication, we extend the standard BACI framework by explicitly evaluating this assumption using a Difference-in-Differences (DiD) analysis. This approach allows for a more transparent assessment of whether observed changes in minnow abundance can plausibly be attributed to aquaculture activity. Because the original study focuses on ecosystem-level responses, changes in minnow abundance should be interpreted as one component of broader ecological dynamics rather than a complete measure of aquaculture impacts.</p>
+</section>
+<section id="data-preparation" class="level2">
+<h2 class="anchored" data-anchor-id="data-preparation">Data Preparation</h2>
+<p>The dataset contains fish sampling observations collected from lakes within the Experimental Lakes Area. Each observation corresponds to a specific lake, year, and sampling season, and includes CPUE measurements for several fish species.</p>
+<p>Two lakes are used in this analysis:</p>
+<ul>
+<li><p>Lake 375, which served as the treatment lake where aquaculture operations were introduced</p></li>
+<li><p>Lake 373, which served as a control lake</p></li>
+</ul>
+<p>Minnow CPUE values are aggregated by lake, year, and season to produce an average abundance estimate for each sampling period. Because abundance data are often right-skewed, the CPUE values are square-root transformed prior to analysis to stabilize variance and better satisfy model assumptions.</p>
+<p>The following code imports the dataset and constructs the variables used in the analysis.</p>
+<section id="data-wrangling" class="level3">
+<h3 class="anchored" data-anchor-id="data-wrangling">Data Wrangling</h3>
+<p>Key variables include:</p>
+<ul>
+<li><p>treat - This variable was our predictor variable, assigned as a binary value indicating whether the lake experience aquaculture</p></li>
+<li><p>period - A categorical value indicating the period of time within the study: before, during, and after aquaculture</p></li>
+<li><p>season - Another catagorical variable used to differentiate sampling season between spring and fall</p></li>
+</ul>
+<p>The combination of these variables allows us to analyze how treatment during different periods of the study influenced minnow CPUE. Additionally, separating the regressions by seasons allows for seasonal patterns to be present and not mask overall results.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(janitor)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(performance)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(jtools)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gt)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gtsummary)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(interactions)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(car)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>minnows <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"posts"</span>, <span class="st">"eds241-final-project"</span>, <span class="st">"data"</span>, <span class="st">"Minnows_Aquaculture_Rennie19.csv"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  janitor<span class="sc">::</span><span class="fu">clean_names</span>()</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>aquaculture <span class="ot">&lt;-</span> minnows <span class="sc">%&gt;%</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Adding fish sp names to ambiguous columns </span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">redbell_dace   =</span> f182,</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">finescale_dace =</span> f183,</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">fathead_minnow =</span> f209,</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">pearl_dace     =</span> f214,</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">slimy_sculpin  =</span> f382</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>  )  <span class="sc">%&gt;%</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Drop na values from minnow column </span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>(minnows) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Adding treatment column</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">treat =</span> <span class="fu">case_when</span>(lake <span class="sc">==</span> <span class="dv">375</span> <span class="sc">~</span> <span class="dv">1</span>, <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span>),</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Add period column </span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">period =</span> <span class="fu">case_when</span>(</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>      year <span class="sc">&lt;</span> <span class="dv">2003</span>  <span class="sc">~</span> <span class="st">"Before"</span>,</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>      year <span class="sc">&lt;=</span> <span class="dv">2007</span> <span class="sc">~</span> <span class="st">"During"</span>,</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span>         <span class="sc">~</span> <span class="st">"After"</span>),</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Reordering levels; default is alphabetical </span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>  <span class="at">period =</span> <span class="fu">fct_relevel</span>(period, <span class="st">"Before"</span>, <span class="st">"During"</span>, <span class="st">"After"</span>), </span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Renaming season row names to be cleaner </span></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">season =</span> <span class="fu">case_when</span>(season <span class="sc">==</span> <span class="st">"aSpring"</span> <span class="sc">~</span> <span class="st">"Spring"</span>,</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>                       season <span class="sc">==</span> <span class="st">"zFall"</span> <span class="sc">~</span> <span class="st">"Fall"</span>),</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Always order from Fall to Spring </span></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>    <span class="at">season =</span> <span class="fu">fct_relevel</span>(season, <span class="st">"Fall"</span>, <span class="st">"Spring"</span>),</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>  <span class="at">sqrt_cpue =</span> <span class="fu">sqrt</span>(minnows))</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="co"># Mean cpue per lake/year/season, sqrt-transformed</span></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>mean_cpue <span class="ot">&lt;-</span> aquaculture <span class="sc">%&gt;%</span></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(treat, year, season, period) <span class="sc">%&gt;%</span></span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_cpue =</span> <span class="fu">mean</span>(minnows),</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>    <span class="at">sqrt_cpue =</span> <span class="fu">mean</span>(sqrt_cpue),</span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a><span class="co"># Prepare plot data</span></span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>plot_data <span class="ot">&lt;-</span> aquaculture <span class="sc">%&gt;%</span></span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(treat, year, season) <span class="sc">%&gt;%</span></span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_cpue =</span> <span class="fu">mean</span>(minnows),</span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>    <span class="at">se_cpue   =</span> <span class="fu">sd</span>(minnows) <span class="sc">/</span> <span class="fu">sqrt</span>(<span class="fu">n</span>()),</span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups   =</span> <span class="st">"drop"</span></span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+</section>
+<section id="exploratory-time-series" class="level2">
+<h2 class="anchored" data-anchor-id="exploratory-time-series">Exploratory Time Series</h2>
+<p>Before estimating statistical models, it is useful to visualize how the minnow abundance changes over time in both lakes. This provides a preliminary view of whether the two lakes appear to respond differently during the aquaculture period.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(plot_data, <span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">y =</span> mean_cpue, <span class="at">color =</span> <span class="fu">factor</span>(treat))) <span class="sc">+</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"rect"</span>, <span class="at">xmin =</span> <span class="dv">2003</span>, <span class="at">xmax =</span> <span class="dv">2007</span>, <span class="co"># Highlight aquaculture period</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">ymin =</span> <span class="sc">-</span><span class="cn">Inf</span>, <span class="at">ymax =</span> <span class="cn">Inf</span>, <span class="at">fill =</span> <span class="st">"grey80"</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x =</span> <span class="dv">1996</span>, <span class="at">label =</span> <span class="st">"Aquaculture period"</span>,</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> <span class="dv">400</span>, <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"rect"</span>, <span class="at">ymin =</span> <span class="dv">399</span>, <span class="at">ymax =</span> <span class="dv">401</span>, <span class="at">xmin =</span> <span class="dv">2001</span>, <span class="at">xmax =</span> <span class="dv">2004</span>) <span class="sc">+</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">linetype =</span> <span class="fu">factor</span>(treat))) <span class="sc">+</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> mean_cpue <span class="sc">-</span> se_cpue,</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>                    <span class="at">ymax =</span> mean_cpue <span class="sc">+</span> se_cpue), <span class="at">width =</span> <span class="fl">0.3</span>) <span class="sc">+</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_linetype_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"dashed"</span>, <span class="st">"solid"</span>),</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>                        <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Control"</span>, <span class="st">"Treated"</span>)) <span class="sc">+</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"black"</span>, <span class="st">"red"</span>),</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>                     <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Control"</span>, <span class="st">"Treated"</span>)) <span class="sc">+</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> season) <span class="sc">+</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Year"</span>, <span class="at">y =</span> <span class="st">"Average catch per unit effort"</span>,</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>       <span class="at">linetype =</span> <span class="st">""</span>, <span class="at">color =</span> <span class="st">""</span>,</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">"Figure 1: Time series of average minnow CPUE for the treatment and control lakes."</span>) <span class="sc">+</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>In spring sampling, the treated and control lakes follow broadly similar trajectories over time, suggesting limited divergence associated with aquaculture. In contrast, fall observations exhibit greater variability with the treated lake showing more pronounced fluctuations during the aquaculture period.</p>
+<p>These patterns suggest that potential treatment effects may be season-dependent and motivate separate analyses for spring and fall observations. They also highlight the importance of formally evaluating whether post-treatment differences reflect aquaculture impacts or pre-existing difference between lakes.</p>
+</section>
+<section id="baci-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="baci-analysis">BACI Analysis</h2>
+<p>A standard Before-After Control-Impact (BACI) analysis evaluates whether the treated site changes differently over time relative to a control site. Statistically, this is implemented using an interaction between treatment status and time period. The interaction term captures whether the change in the treated lake differs from the change observed in the control lake following the intervention.</p>
+<p>In this framework, a significant interaction term is often interpreted as evidence of a treatment effect. However, this interpretation depends on the assumption that the control lake provides a valid counterfactual trajectory for the treated lake.</p>
+<section id="spring-baci-model" class="level3">
+<h3 class="anchored" data-anchor-id="spring-baci-model">Spring BACI Model</h3>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>spring <span class="ot">&lt;-</span> mean_cpue <span class="sc">%&gt;%</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(season <span class="sc">==</span> <span class="st">"Spring"</span>) <span class="sc">%&gt;%</span> <span class="co"># Select only spring sampling</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">treat =</span> <span class="fu">as.factor</span>(treat), <span class="at">period =</span> <span class="fu">as.factor</span>(period))</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>mod_spring <span class="ot">&lt;-</span> <span class="fu">aov</span>(sqrt_cpue <span class="sc">~</span> treat <span class="sc">*</span> period, <span class="at">data =</span> spring)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod_spring)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>             Df Sum Sq Mean Sq F value Pr(&gt;F)
+treat         1   0.03   0.029   0.009  0.924
+period        2  13.81   6.906   2.238  0.123
+treat:period  2   0.72   0.361   0.117  0.890
+Residuals    33 101.82   3.085               </code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">TukeyHSD</span>(mod_spring)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Tukey multiple comparisons of means
+    95% family-wise confidence level
+
+Fit: aov(formula = sqrt_cpue ~ treat * period, data = spring)
+
+$treat
+           diff       lwr      upr     p adj
+1-0 -0.05507311 -1.218461 1.108315 0.9238561
+
+$period
+                     diff       lwr       upr     p adj
+During-Before -1.15849661 -2.827814 0.5108212 0.2192154
+After-Before  -1.22403578 -2.954076 0.5060042 0.2071375
+After-During  -0.06553917 -2.045921 1.9148427 0.9963713
+
+$`treat:period`
+                          diff       lwr      upr     p adj
+1:Before-0:Before -0.259309534 -2.683401 2.164782 0.9994828
+0:During-0:Before -1.271731117 -4.098683 1.555221 0.7496423
+1:During-0:Before -1.263724352 -4.090676 1.563228 0.7544823
+0:After-0:Before  -1.474880722 -4.130340 1.180578 0.5544095
+1:After-0:Before  -1.022502710 -4.450686 2.405680 0.9432905
+0:During-1:Before -1.012421582 -4.040111 2.015268 0.9109378
+1:During-1:Before -1.004414817 -4.032104 2.023274 0.9136161
+0:After-1:Before  -1.215571188 -4.083795 1.652652 0.7927870
+1:After-1:Before  -0.763193176 -4.358702 2.832315 0.9868511
+1:During-0:During  0.008006765 -3.350913 3.366926 1.0000000
+0:After-0:During  -0.203149606 -3.419070 3.012771 0.9999612
+1:After-0:During   0.249228407 -3.629318 4.127775 0.9999578
+0:After-1:During  -0.211156371 -3.427077 3.004764 0.9999530
+1:After-1:During   0.241221642 -3.637324 4.119768 0.9999641
+1:After-0:After    0.452378012 -3.303008 4.207764 0.9990798</code></pre>
+</div>
+</div>
+<p>The spring BACI model shows no statistically significant effects of treatment, period, or their interaction. This indicates that, during spring sampling, minnow abundance in the treated lake does not change in a way that differs meaningfully from the control lake. Post-hoc comparisons from the Tukey test also fail to detect significant differences across periods. From an ecological perspective, these results provide little evidence that aquaculture activity influenced minnow abundance during the spring season.</p>
+</section>
+<section id="fall-baci-model" class="level3">
+<h3 class="anchored" data-anchor-id="fall-baci-model">Fall BACI Model</h3>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>fall <span class="ot">&lt;-</span> mean_cpue <span class="sc">%&gt;%</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(season <span class="sc">==</span> <span class="st">"Fall"</span>) <span class="sc">%&gt;%</span> <span class="co"># Select only fall sampling</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">treat =</span> <span class="fu">as.factor</span>(treat), <span class="at">period =</span> <span class="fu">as.factor</span>(period))</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>mod_fall <span class="ot">&lt;-</span> <span class="fu">aov</span>(sqrt_cpue <span class="sc">~</span> treat <span class="sc">*</span> period, <span class="at">data =</span> fall)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod_fall)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>             Df Sum Sq Mean Sq F value  Pr(&gt;F)   
+treat         1  65.06   65.06   6.930 0.01280 * 
+period        2 102.46   51.23   5.457 0.00896 **
+treat:period  2  79.63   39.82   4.241 0.02295 * 
+Residuals    33 309.81    9.39                   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">TukeyHSD</span>(mod_fall)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Tukey multiple comparisons of means
+    95% family-wise confidence level
+
+Fit: aov(formula = sqrt_cpue ~ treat * period, data = fall)
+
+$treat
+        diff       lwr      upr     p adj
+1-0 2.604591 0.5915739 4.617608 0.0127963
+
+$period
+                   diff       lwr       upr     p adj
+During-Before  3.944354  1.007041 6.8816682 0.0064908
+After-Before   1.483456 -1.453858 4.4207698 0.4390600
+After-During  -2.460898 -5.823250 0.9014534 0.1866112
+
+$`treat:period`
+                        diff        lwr        upr     p adj
+1:Before-0:Before  0.5701233  -3.734546  4.8747927 0.9985471
+0:During-0:Before  0.7708930  -4.225804  5.7675897 0.9969932
+1:During-0:Before  8.0091708   3.012474 13.0058675 0.0003876
+0:After-0:Before   1.3197265  -3.381994  6.0214473 0.9557988
+1:After-0:Before   2.1920963  -3.216987  7.6011792 0.8213920
+0:During-1:Before  0.2007697  -5.080593  5.4821328 0.9999969
+1:During-1:Before  7.4390475   2.157684 12.7204105 0.0020506
+0:After-1:Before   0.7496032  -4.253595  5.7528018 0.9973829
+1:After-1:Before   1.6219730  -4.051121  7.2950670 0.9522996
+1:During-0:During  7.2382778   1.379131 13.0974240 0.0085019
+0:After-0:During   0.5488335  -5.060872  6.1585389 0.9996654
+1:After-0:During   1.4212033  -4.793360  7.6357664 0.9816651
+0:After-1:During  -6.6894443 -12.299150 -1.0797388 0.0119355
+1:After-1:During  -5.8170745 -12.031638  0.3974886 0.0773119
+1:After-0:After    0.8723698  -5.107596  6.8523360 0.9976943</code></pre>
+</div>
+</div>
+<p>In contrast, the fall BACI model yields statistically significant effects for treatment, period, and their interaction. The significant interaction indicates that minnow abundance in the treated lake changed differently over time relative to the control lake. Post-hoc comparisons suggest that this divergence is driven primarily by increases in CPUE during the aquaculture period in the treated lake. This pattern is consistent with a potential response of minnow populations to aquaculture-related changes in the lake environment, such as increased nutrient availability or altered food resources. However, this interpretation depends critically on the assumption that the treated and control lakes were following similar trajectories prior to treatment.</p>
+<p>The fall ANOVA results can be summarized as follows:</p>
+<ul>
+<li><code>treat</code>: The treated lake had significantly higher fall minnow CPUE overall (treated lake was 2.60 sqrt CPUE units higher than control, p = 0.013).</li>
+<li><code>period</code>: Fall minnow abundance changed significantly over time across both lakes. During was significantly higher than Before (p = 0.006); After did not differ significantly from Before (p = 0.439).</li>
+<li><code>treat:period</code>: Lake 375 responded differently than Lake 373 across periods. The treated lake during aquaculture was significantly higher than: the control lake before aquaculture (<code>1:During-0:Before</code>, p &lt; 0.001), the treated lake before aquaculture (<code>1:During-1:Before</code>, p = 0.002), and the control lake during aquaculture (<code>1:During-0:During</code>, p = 0.009). The comparison <code>0:After-1:During</code> was also significant (p = 0.012), indicating a decline in the treated lake once operations ended.</li>
+</ul>
+</section>
+<section id="limitations-of-baci" class="level3">
+<h3 class="anchored" data-anchor-id="limitations-of-baci">Limitations of BACI</h3>
+<p>One limitation of the traditional BACI framework is that it assumes the control site provides a valid counterfactual for the treated site. In other words, the design assumes that the treated and control lakes would have followed similar trajectories in the absence of treatment. If this assumption is violated, for example, if the lakes were already trending differently before aquaculture began, then the estimated BACI interaction could reflect those pre-existing differences rather than the effect of the intervention. Difference-in-Differences approaches make this assumption explicit through the parallel trends assumption, which requires that treated and control units exhibit similar trends prior to treatment.</p>
+</section>
+</section>
+<section id="did-testing-assumptions" class="level2">
+<h2 class="anchored" data-anchor-id="did-testing-assumptions">DiD: Testing Assumptions</h2>
+<p>In order to complete a Difference-in-differences analysis, a few assumptions must be met - No spillover: Because these lakes are separated, there is no concern of aquaculture in the treated lake affecting the control lake. - Parallel trends: The control and treatment lakes must have a similar trend of minnow CPUE prior to treatment.</p>
+<section id="parallel-trends-test" class="level3">
+<h3 class="anchored" data-anchor-id="parallel-trends-test">Parallel Trends Test</h3>
+<p>Restricting to the Before period only, we test whether the two lakes were already trending differently prior to aquaculture. A significant <code>treat:year</code> interaction would indicate diverging pre-treatment trends, violating the parallel trends assumption.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>pre_only <span class="ot">&lt;-</span> mean_cpue <span class="sc">%&gt;%</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(period <span class="sc">==</span> <span class="st">"Before"</span>)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>mod_pt <span class="ot">&lt;-</span> <span class="fu">lm</span>(sqrt_cpue <span class="sc">~</span> treat <span class="sc">*</span> <span class="fu">factor</span>(year) <span class="sc">+</span> season, <span class="at">data =</span> pre_only)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod_pt)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = sqrt_cpue ~ treat * factor(year) + season, data = pre_only)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-4.6090 -0.6913  0.0000  0.6913  4.6090 
+
+Coefficients: (4 not defined because of singularities)
+                       Estimate Std. Error t value Pr(&gt;|t|)   
+(Intercept)             6.60869    1.73399   3.811  0.00154 **
+treat                   2.83381    2.38315   1.189  0.25175   
+factor(year)1989       -2.18335    2.38315  -0.916  0.37318   
+factor(year)1990       -3.78133    2.38315  -1.587  0.13214   
+factor(year)1991       -3.87029    2.38315  -1.624  0.12390   
+factor(year)1992       -4.37006    2.38315  -1.834  0.08536 . 
+factor(year)1993       -5.01627    2.38315  -2.105  0.05146 . 
+factor(year)1994       -0.70081    2.38315  -0.294  0.77248   
+factor(year)1995       -1.15006    2.38315  -0.483  0.63593   
+factor(year)1996       -5.63358    2.94722  -1.911  0.07402 . 
+factor(year)1998        0.54971    2.38315   0.231  0.82050   
+factor(year)1999       -5.35024    2.94722  -1.815  0.08826 . 
+factor(year)2001       -5.51362    2.94722  -1.871  0.07978 . 
+factor(year)2002       -5.09343    2.38315  -2.137  0.04836 * 
+seasonSpring           -0.34266    0.81741  -0.419  0.68064   
+treat:factor(year)1989 -1.90928    3.37028  -0.567  0.57891   
+treat:factor(year)1990 -3.28652    3.37028  -0.975  0.34400   
+treat:factor(year)1991 -0.48383    3.37028  -0.144  0.88764   
+treat:factor(year)1992 -1.31633    3.37028  -0.391  0.70127   
+treat:factor(year)1993 -2.24063    3.37028  -0.665  0.51563   
+treat:factor(year)1994       NA         NA      NA       NA   
+treat:factor(year)1995       NA         NA      NA       NA   
+treat:factor(year)1996  0.59276    4.20789   0.141  0.88973   
+treat:factor(year)1998       NA         NA      NA       NA   
+treat:factor(year)1999 -0.02259    3.79019  -0.006  0.99532   
+treat:factor(year)2001 -1.59834    4.12773  -0.387  0.70369   
+treat:factor(year)2002       NA         NA      NA       NA   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 2.383 on 16 degrees of freedom
+Multiple R-squared:  0.5844,    Adjusted R-squared:  0.013 
+F-statistic: 1.023 on 22 and 16 DF,  p-value: 0.4908</code></pre>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>pre_only <span class="sc">%&gt;%</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">y =</span> mean_cpue,</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">color =</span> <span class="fu">factor</span>(treat), <span class="at">linetype =</span> <span class="fu">factor</span>(treat))) <span class="sc">+</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"black"</span>, <span class="st">"red"</span>),</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>                     <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Control"</span>, <span class="st">"Treated"</span>)) <span class="sc">+</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_linetype_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"dashed"</span>, <span class="st">"solid"</span>),</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>                        <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Control"</span>, <span class="st">"Treated"</span>)) <span class="sc">+</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> season, <span class="at">scales =</span> <span class="st">"free_y"</span>) <span class="sc">+</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Year"</span>, <span class="at">y =</span> <span class="st">"Mean cpue (fish per net days)"</span>,</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">"Lake"</span>, <span class="at">linetype =</span> <span class="st">"Lake"</span>,</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Pre-treatment trends (parallel trends check)"</span>,</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">"Figure 2: Time series of pre-treatment CPUE trends between the treated and control lakes."</span>) <span class="sc">+</span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The coefficient of interest is the treatment-by-year interaction, which tests whether the treated lake was already trending differently before aquaculture began. In this context, the parallel trends assumption states that, in the absence of treatment, the treated lake would have followed the same trajectory as the control lake. This assumption underlies that causal interpretation of both BACI and Difference-in-Differences analysis.</p>
+<p>The interaction between treatment and year is not statistically significant. This indicates that we fail to reject the parallel trends assumption. The accompanying time series plot (Figure 2) provides a visual check of this assumption, as the treated and control lakes appear to move in broadly similar directions before aquaculture begins. Taken together, these results provide some support for the use of the control lake as a counterfactual.</p>
+</section>
+</section>
+<section id="difference-in-differences-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="difference-in-differences-analysis">Difference-in-Differences Analysis</h2>
+<p>Following the evaluation of parallel trends, treatment effects are estimated using a Difference-in-Differences framework. Models are estimated separately by season to account for seasonal variation in ecological responses. Unlike BACI, which compares average differences before and after treatment, the DiD approach explicitly models changes over time between treated and control units. The interaction between treatment and period represents the estimated treatment effect, capturing whether the treated lake experienced a different change in CPUE relative to the control. Separating the analysis into Before-During and Before-During-After comparisons allows us to distinguish between immediate effects of aquaculture and potential legacy effects after operations cease.</p>
+<section id="before-and-during" class="level3">
+<h3 class="anchored" data-anchor-id="before-and-during">Before and During</h3>
+<section id="fall" class="level4">
+<h4 class="anchored" data-anchor-id="fall">Fall</h4>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>pre_aqua_fall <span class="ot">&lt;-</span> aquaculture <span class="sc">%&gt;%</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(period <span class="sc">!=</span> <span class="st">"After"</span>,</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>         season <span class="sc">==</span> <span class="st">"Fall"</span>)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>mod_did_pre_fall <span class="ot">&lt;-</span> <span class="fu">lm</span>(sqrt_cpue <span class="sc">~</span> treat <span class="sc">*</span> period <span class="sc">+</span> <span class="fu">factor</span>(year), <span class="at">data =</span> pre_aqua_fall)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod_did_pre_fall)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = sqrt_cpue ~ treat * period + factor(year), data = pre_aqua_fall)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-13.5857  -2.0914  -0.4574   0.9579  23.7357 
+
+Coefficients: (1 not defined because of singularities)
+                   Estimate Std. Error t value Pr(&gt;|t|)  
+(Intercept)         1.99967    3.57848   0.559   0.5777  
+treat               2.47479    1.93544   1.279   0.2042  
+periodDuring        4.90326    4.01048   1.223   0.2246  
+factor(year)1989    2.09314    4.59219   0.456   0.6496  
+factor(year)1990   -0.73068    5.10169  -0.143   0.8864  
+factor(year)1991    1.05524    5.10169   0.207   0.8366  
+factor(year)1992   -0.96435    4.48829  -0.215   0.8304  
+factor(year)1993   -2.02694    4.26968  -0.475   0.6361  
+factor(year)1994    6.14593    4.73388   1.298   0.1974  
+factor(year)1995    3.52301    7.15696   0.492   0.6237  
+factor(year)1996   -0.07277    5.97994  -0.012   0.9903  
+factor(year)1998    7.59200    7.15696   1.061   0.2916  
+factor(year)1999    0.60837    4.32884   0.141   0.8885  
+factor(year)2002    0.10463    4.30628   0.024   0.9807  
+factor(year)2003   -6.95595    2.80880  -2.476   0.0151 *
+factor(year)2004   -5.84793    2.43429  -2.402   0.0183 *
+factor(year)2005   -0.75653    2.70196  -0.280   0.7801  
+factor(year)2006   -3.26386    2.24396  -1.455   0.1492  
+factor(year)2007         NA         NA      NA       NA  
+treat:periodDuring  6.11921    2.55321   2.397   0.0186 *
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 6.198 on 92 degrees of freedom
+Multiple R-squared:  0.3891,    Adjusted R-squared:  0.2695 
+F-statistic: 3.255 on 18 and 92 DF,  p-value: 0.000105</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mod_did_pre_fall, <span class="at">which =</span> <span class="dv">1</span>)  <span class="co"># Residuals vs fitted</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mod_did_pre_fall, <span class="at">which =</span> <span class="dv">2</span>)  <span class="co"># QQ-plot</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">durbinWatsonTest</span>(mod_did_pre_fall) <span class="co"># Autocorrelation</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code> lag Autocorrelation D-W Statistic p-value
+   1      -0.1203524      2.230921   0.906
+ Alternative hypothesis: rho != 0</code></pre>
+</div>
+</div>
+<p><strong>Diagnostics:</strong> The residuals vs.&nbsp;fitted plot shows increasing spread at higher fitted values, driven by the extreme CPUE spike during aquaculture — the sqrt transformation did not fully stabilize variance. The QQ plot confirms a heavy right tail from these outlier years. The Durbin-Watson test indicates no autocorrelation (DW = 2.23, p = 0.984).</p>
+<p>The interaction coefficient in this model is positive and marginally significant, suggesting that minnow CPUE increased in the treated lake during aquaculture operations relative to the control lake.</p>
+</section>
+<section id="spring" class="level4">
+<h4 class="anchored" data-anchor-id="spring">Spring</h4>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>pre_aqua_spring <span class="ot">&lt;-</span> aquaculture <span class="sc">%&gt;%</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(period <span class="sc">!=</span> <span class="st">"After"</span>,</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>         season <span class="sc">==</span> <span class="st">"Spring"</span>)</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>mod_did_pre_spring <span class="ot">&lt;-</span> <span class="fu">lm</span>(sqrt_cpue <span class="sc">~</span> treat <span class="sc">*</span> period <span class="sc">+</span> <span class="fu">factor</span>(year), <span class="at">data =</span> pre_aqua_spring)</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod_did_pre_spring)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = sqrt_cpue ~ treat * period + factor(year), data = pre_aqua_spring)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-3.7609 -1.0945 -0.4564  0.9555  6.0714 
+
+Coefficients: (1 not defined because of singularities)
+                    Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)         10.87506    1.34479   8.087 3.47e-13 ***
+treat                0.83532    0.54539   1.532 0.128016    
+periodDuring        -8.17150    1.43414  -5.698 7.55e-08 ***
+factor(year)1989    -7.04426    1.60607  -4.386 2.34e-05 ***
+factor(year)1990    -8.24017    1.47534  -5.585 1.28e-07 ***
+factor(year)1991    -8.37095    1.55638  -5.378 3.31e-07 ***
+factor(year)1992    -7.88904    1.60607  -4.912 2.62e-06 ***
+factor(year)1993    -9.16325    1.49818  -6.116 1.01e-08 ***
+factor(year)1994    -7.54756    1.59118  -4.743 5.38e-06 ***
+factor(year)1995    -5.82314    1.59118  -3.660 0.000364 ***
+factor(year)1996   -10.24260    2.32925  -4.397 2.23e-05 ***
+factor(year)1998    -6.49257    1.59118  -4.080 7.74e-05 ***
+factor(year)1999    -9.67131    1.61945  -5.972 2.04e-08 ***
+factor(year)2001    -9.92257    1.66945  -5.944 2.34e-08 ***
+factor(year)2002    -9.11274    1.52806  -5.964 2.13e-08 ***
+factor(year)2003    -0.04582    0.70970  -0.065 0.948625    
+factor(year)2004    -0.27698    0.72811  -0.380 0.704250    
+factor(year)2005    -1.48769    0.65345  -2.277 0.024416 *  
+factor(year)2006    -0.87121    0.61827  -1.409 0.161159    
+factor(year)2007          NA         NA      NA       NA    
+treat:periodDuring  -0.95195    0.69777  -1.364 0.174803    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.902 on 132 degrees of freedom
+Multiple R-squared:  0.3654,    Adjusted R-squared:  0.2741 
+F-statistic: 4.001 on 19 and 132 DF,  p-value: 9.902e-07</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mod_did_pre_spring, <span class="at">which =</span> <span class="dv">1</span>)  <span class="co"># Residuals vs fitted</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mod_did_pre_spring, <span class="at">which =</span> <span class="dv">2</span>)  <span class="co"># QQ-plot</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">durbinWatsonTest</span>(mod_did_pre_spring) <span class="co"># Autocorrelation</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code> lag Autocorrelation D-W Statistic p-value
+   1      0.09870169      1.794782   0.014
+ Alternative hypothesis: rho != 0</code></pre>
+</div>
+</div>
+<p><strong>Diagnostics:</strong> The residuals vs.&nbsp;fitted plot shows reasonably even spread. The QQ plot is approximately normal with minor right-tail deviation from a few high-leverage observations. The Durbin-Watson test detects mild positive autocorrelation (DW = 1.79, p = 0.01), which may slightly inflate standard error precision; however, given the non-significant treatment effect, this does not change the substantive conclusion.</p>
+<p>The spring DiD model shows no significant treatment effect during the aquaculture period (<code>treat:periodDuring</code>, p = 0.175), consistent with the spring BACI result. This supports the conclusion that aquaculture did not alter minnow abundance in spring, likely due to high overwinter mortality resetting abundance before spring sampling each year.</p>
+</section>
+<section id="robustness-check" class="level4">
+<h4 class="anchored" data-anchor-id="robustness-check">Robustness Check</h4>
+<section id="adjusting-the-window" class="level5">
+<h5 class="anchored" data-anchor-id="adjusting-the-window">Adjusting the window</h5>
+<p>The robustness check shifts the period boundaries (Before: pre-1996, During: 1996–2004) to assess sensitivity to the period definition.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>pre_aqua_fall_mod <span class="ot">&lt;-</span> aquaculture <span class="sc">%&gt;%</span> </span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">period =</span> <span class="fu">case_when</span>(</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>      year <span class="sc">&lt;</span> <span class="dv">1996</span>  <span class="sc">~</span> <span class="st">"Before"</span>,</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>      year <span class="sc">&lt;=</span> <span class="dv">2004</span> <span class="sc">~</span> <span class="st">"During"</span>,</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">"After"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(period <span class="sc">!=</span> <span class="st">"After"</span>,</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>         season <span class="sc">==</span> <span class="st">"Fall"</span>) </span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>mod_did_pre_fall_mod <span class="ot">&lt;-</span> <span class="fu">lm</span>(sqrt_cpue <span class="sc">~</span> treat <span class="sc">*</span> period <span class="sc">+</span> <span class="fu">factor</span>(year), <span class="at">data =</span> pre_aqua_fall_mod)</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod_did_pre_fall_mod)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = sqrt_cpue ~ treat * period + factor(year), data = pre_aqua_fall_mod)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-7.7676 -1.5664 -0.6158  0.4748 18.5138 
+
+Coefficients: (1 not defined because of singularities)
+                   Estimate Std. Error t value Pr(&gt;|t|)  
+(Intercept)          1.9997     2.7198   0.735   0.4653  
+treat                0.9902     1.8835   0.526   0.6012  
+periodDuring         1.3070     3.1557   0.414   0.6803  
+factor(year)1989     2.6870     3.5219   0.763   0.4487  
+factor(year)1990    -0.2358     3.8973  -0.061   0.9520  
+factor(year)1991     1.5501     3.8973   0.398   0.6923  
+factor(year)1992    -0.2220     3.4617  -0.064   0.9491  
+factor(year)1993    -1.2022     3.3103  -0.363   0.7179  
+factor(year)1994     6.1459     3.5980   1.708   0.0931 .
+factor(year)1995     3.5230     5.4397   0.648   0.5199  
+factor(year)1996    -2.5453     3.7277  -0.683   0.4975  
+factor(year)1998     6.2850     4.9753   1.263   0.2117  
+factor(year)1999    -1.4756     2.1451  -0.688   0.4944  
+factor(year)2002    -1.7851     2.1902  -0.815   0.4185  
+factor(year)2003    -0.5290     2.2856  -0.231   0.8178  
+factor(year)2004         NA         NA      NA       NA  
+treat:periodDuring   2.6501     2.4853   1.066   0.2909  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 4.711 on 56 degrees of freedom
+Multiple R-squared:  0.2197,    Adjusted R-squared:  0.01071 
+F-statistic: 1.051 on 15 and 56 DF,  p-value: 0.4205</code></pre>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>pre_aqua_spring_mod <span class="ot">&lt;-</span> aquaculture <span class="sc">%&gt;%</span> </span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">period =</span> <span class="fu">case_when</span>(</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>      year <span class="sc">&lt;</span> <span class="dv">1996</span>  <span class="sc">~</span> <span class="st">"Before"</span>,</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>      year <span class="sc">&lt;=</span> <span class="dv">2004</span> <span class="sc">~</span> <span class="st">"During"</span>,</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">"After"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(period <span class="sc">!=</span> <span class="st">"After"</span>,</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>         season <span class="sc">==</span> <span class="st">"Spring"</span>) </span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>mod_did_pre_spring_mod <span class="ot">&lt;-</span> <span class="fu">lm</span>(sqrt_cpue <span class="sc">~</span> treat <span class="sc">*</span> period <span class="sc">+</span> <span class="fu">factor</span>(year), <span class="at">data =</span> pre_aqua_spring_mod)</span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod_did_pre_spring_mod)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = sqrt_cpue ~ treat * period + factor(year), data = pre_aqua_spring_mod)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-3.7609 -1.1512 -0.4247  1.1120  5.4117 
+
+Coefficients: (1 not defined because of singularities)
+                   Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)         10.8751     1.4165   7.677 3.23e-11 ***
+treat                0.8488     0.6619   1.282 0.203388    
+periodDuring        -8.9034     1.5841  -5.620 2.62e-07 ***
+factor(year)1989    -7.0496     1.6968  -4.155 8.02e-05 ***
+factor(year)1990    -8.2451     1.5586  -5.290 1.02e-06 ***
+factor(year)1991    -8.3786     1.6501  -5.078 2.39e-06 ***
+factor(year)1992    -7.8944     1.6968  -4.653 1.26e-05 ***
+factor(year)1993    -9.1700     1.5866  -5.780 1.34e-07 ***
+factor(year)1994    -7.5476     1.6760  -4.503 2.22e-05 ***
+factor(year)1995    -5.8231     1.6760  -3.474 0.000825 ***
+factor(year)1996    -1.3392     2.1251  -0.630 0.530350    
+factor(year)1998     2.4109     1.1426   2.110 0.037946 *  
+factor(year)1999    -0.6500     1.0169  -0.639 0.524474    
+factor(year)2001    -0.9602     1.1700  -0.821 0.414252    
+factor(year)2002    -0.1504     0.9313  -0.161 0.872130    
+factor(year)2003     0.1996     0.8366   0.239 0.812053    
+factor(year)2004         NA         NA      NA       NA    
+treat:periodDuring  -0.1313     0.9499  -0.138 0.890401    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 2.003 on 81 degrees of freedom
+Multiple R-squared:  0.3989,    Adjusted R-squared:  0.2801 
+F-statistic: 3.359 on 16 and 81 DF,  p-value: 0.0001612</code></pre>
+</div>
+</div>
+<p>Under this alternative window, the fall treatment effect (<code>treat:periodDuring</code>) is no longer significant (p = 0.291), and the spring effect remains non-significant (p = 0.890). Results are therefore sensitive to how the aquaculture window is defined, which warrants caution in interpretation.</p>
+</section>
+<section id="buffer" class="level5">
+<h5 class="anchored" data-anchor-id="buffer">Buffer</h5>
+<p>Remove observations of transition years between starting and stopping aquaculture.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>pre_aqua_fall_buff <span class="ot">&lt;-</span> aquaculture <span class="sc">%&gt;%</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(period <span class="sc">!=</span> <span class="st">"After"</span>,</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>         season <span class="sc">==</span> <span class="st">"Fall"</span>,</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>         year <span class="sc">!=</span> <span class="dv">2003</span> <span class="sc">&amp;</span> year <span class="sc">!=</span> <span class="dv">2008</span>) <span class="co"># Remove year aquaculture began and ended</span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>mod_did_pre_fall_buff <span class="ot">&lt;-</span> <span class="fu">lm</span>(sqrt_cpue <span class="sc">~</span> treat <span class="sc">*</span> period <span class="sc">+</span> <span class="fu">factor</span>(year), <span class="at">data =</span> pre_aqua_fall_buff)</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod_did_pre_fall_buff)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = sqrt_cpue ~ treat * period + factor(year), data = pre_aqua_fall_buff)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-14.5942  -1.8385  -0.2952   1.2572  22.7675 
+
+Coefficients: (1 not defined because of singularities)
+                   Estimate Std. Error t value Pr(&gt;|t|)   
+(Intercept)         1.99967    3.45622   0.579  0.56439   
+treat               2.47479    1.86931   1.324  0.18904   
+periodDuring        3.99557    3.88835   1.028  0.30703   
+factor(year)1989    2.09314    4.43529   0.472  0.63817   
+factor(year)1990   -0.73068    4.92739  -0.148  0.88246   
+factor(year)1991    1.05524    4.92739   0.214  0.83093   
+factor(year)1992   -0.96435    4.33495  -0.222  0.82448   
+factor(year)1993   -2.02694    4.12381  -0.492  0.62431   
+factor(year)1994    6.14593    4.57215   1.344  0.18242   
+factor(year)1995    3.52301    6.91244   0.510  0.61159   
+factor(year)1996   -0.07277    5.77564  -0.013  0.98998   
+factor(year)1998    7.59200    6.91244   1.098  0.27513   
+factor(year)1999    0.60837    4.18095   0.146  0.88465   
+factor(year)2002    0.10463    4.15916   0.025  0.97999   
+factor(year)2004   -5.67373    2.35203  -2.412  0.01798 * 
+factor(year)2005   -0.45396    2.61211  -0.174  0.86244   
+factor(year)2006   -3.00164    2.16952  -1.384  0.17008   
+factor(year)2007         NA         NA      NA       NA   
+treat:periodDuring  7.73287    2.53896   3.046  0.00308 **
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 5.986 on 86 degrees of freedom
+Multiple R-squared:  0.4463,    Adjusted R-squared:  0.3369 
+F-statistic: 4.078 on 17 and 86 DF,  p-value: 6.897e-06</code></pre>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>pre_aqua_spring_buff <span class="ot">&lt;-</span> aquaculture <span class="sc">%&gt;%</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(period <span class="sc">!=</span> <span class="st">"After"</span>,</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>         season <span class="sc">==</span> <span class="st">"Spring"</span>,</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>         year <span class="sc">!=</span> <span class="dv">2003</span> <span class="sc">&amp;</span> year <span class="sc">!=</span> <span class="dv">2008</span>)</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>mod_did_pre_spring_buff <span class="ot">&lt;-</span> <span class="fu">lm</span>(sqrt_cpue <span class="sc">~</span> treat <span class="sc">*</span> period <span class="sc">+</span> <span class="fu">factor</span>(year), <span class="at">data =</span> pre_aqua_spring_buff)</span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod_did_pre_spring_buff)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = sqrt_cpue ~ treat * period + factor(year), data = pre_aqua_spring_buff)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-3.7609 -1.0906 -0.4911  1.0705  6.1234 
+
+Coefficients: (1 not defined because of singularities)
+                   Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)         10.8751     1.3528   8.039 6.89e-13 ***
+treat                0.8353     0.5486   1.523 0.130477    
+periodDuring        -8.2235     1.4456  -5.688 9.09e-08 ***
+factor(year)1989    -7.0443     1.6156  -4.360 2.75e-05 ***
+factor(year)1990    -8.2402     1.4841  -5.552 1.70e-07 ***
+factor(year)1991    -8.3709     1.5656  -5.347 4.29e-07 ***
+factor(year)1992    -7.8890     1.6156  -4.883 3.23e-06 ***
+factor(year)1993    -9.1633     1.5071  -6.080 1.44e-08 ***
+factor(year)1994    -7.5476     1.6006  -4.715 6.52e-06 ***
+factor(year)1995    -5.8231     1.6006  -3.638 0.000405 ***
+factor(year)1996   -10.2426     2.3431  -4.371 2.63e-05 ***
+factor(year)1998    -6.4926     1.6006  -4.056 8.87e-05 ***
+factor(year)1999    -9.6713     1.6291  -5.937 2.85e-08 ***
+factor(year)2001    -9.9226     1.6794  -5.909 3.26e-08 ***
+factor(year)2002    -9.1127     1.5371  -5.928 2.96e-08 ***
+factor(year)2004    -0.2817     0.7325  -0.385 0.701213    
+factor(year)2005    -1.4877     0.6573  -2.263 0.025404 *  
+factor(year)2006    -0.8764     0.6220  -1.409 0.161405    
+factor(year)2007         NA         NA      NA       NA    
+treat:periodDuring  -0.8480     0.7261  -1.168 0.245142    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.913 on 121 degrees of freedom
+Multiple R-squared:  0.3828,    Adjusted R-squared:  0.291 
+F-statistic: 4.169 on 18 and 121 DF,  p-value: 9.516e-07</code></pre>
+</div>
+</div>
+<p>Excluding the transition years 2003 and 2008, the buffer specification strengthens the fall treatment effect (<code>treat:periodDuring</code>, p = 0.003), while the spring result remains non-significant (p = 0.245). This suggests the fall effect is robust to the inclusion of transition-year noise.</p>
+</section>
+</section>
+</section>
+<section id="before-and-after" class="level3">
+<h3 class="anchored" data-anchor-id="before-and-after">Before and After</h3>
+<section id="fall-1" class="level4">
+<h4 class="anchored" data-anchor-id="fall-1">Fall</h4>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>all_aqua_fall <span class="ot">&lt;-</span> aquaculture <span class="sc">%&gt;%</span> </span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(season <span class="sc">==</span> <span class="st">"Fall"</span>)</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>mod_did_all_fall <span class="ot">&lt;-</span> <span class="fu">lm</span>(sqrt_cpue <span class="sc">~</span> treat <span class="sc">*</span> period, <span class="at">data =</span> all_aqua_fall)</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod_did_all_fall)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = sqrt_cpue ~ treat * period, data = all_aqua_fall)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-12.574  -3.073  -1.380   2.557  23.395 
+
+Coefficients:
+                   Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)          3.1287     0.9993   3.131 0.001993 ** 
+treat                1.1544     1.4989   0.770 0.442086    
+periodDuring         0.8038     1.4132   0.569 0.570103    
+periodAfter          1.8677     1.2081   1.546 0.123629    
+treat:periodDuring   7.4872     2.0868   3.588 0.000416 ***
+treat:periodAfter   -0.7597     1.8697  -0.406 0.684925    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 5.473 on 208 degrees of freedom
+Multiple R-squared:  0.2089,    Adjusted R-squared:  0.1899 
+F-statistic: 10.99 on 5 and 208 DF,  p-value: 2.12e-09</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))  <span class="co"># 1 row, 2 columns</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mod_did_all_fall, <span class="at">which =</span> <span class="dv">1</span>)</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mod_did_all_fall, <span class="at">which =</span> <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">durbinWatsonTest</span>(mod_did_all_fall)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code> lag Autocorrelation D-W Statistic p-value
+   1      0.01530469      1.964652   0.546
+ Alternative hypothesis: rho != 0</code></pre>
+</div>
+</div>
+<p><strong>Diagnostics:</strong> The residuals vs.&nbsp;fitted plot shows heteroscedasticity at higher fitted values, consistent with the extreme aquaculture-period CPUE values. The QQ plot has a heavy right tail from these same observations. The Durbin-Watson test indicates no autocorrelation (DW = 1.96, p = 0.488).</p>
+<p>The fall Before and After model shows a significant treatment effect during aquaculture (<code>treat:periodDuring</code>, p &lt; 0.001), consistent with the Before and During results. The post-aquaculture interaction (<code>treat:periodAfter</code>, p = 0.685) is not significant, suggesting that any treatment effect did not persist after operations ended.</p>
+</section>
+<section id="spring-1" class="level4">
+<h4 class="anchored" data-anchor-id="spring-1">Spring</h4>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>all_aqua_spring <span class="ot">&lt;-</span> aquaculture <span class="sc">%&gt;%</span> </span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(season <span class="sc">==</span> <span class="st">"Spring"</span>)</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>mod_did_all_spring <span class="ot">&lt;-</span> <span class="fu">lm</span>(sqrt_cpue <span class="sc">~</span> treat <span class="sc">*</span> period <span class="sc">+</span> <span class="fu">factor</span>(year), <span class="at">data =</span> all_aqua_spring)</span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod_did_all_spring)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = sqrt_cpue ~ treat * period + factor(year), data = all_aqua_spring)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-3.7609 -1.0652 -0.3948  0.7467  6.0714 
+
+Coefficients: (2 not defined because of singularities)
+                    Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)         10.87506    1.27869   8.505 4.23e-15 ***
+treat                0.83532    0.51858   1.611  0.10881    
+periodDuring        -8.17150    1.36365  -5.992 9.48e-09 ***
+periodAfter         -9.11371    1.38114  -6.599 3.64e-10 ***
+factor(year)1989    -7.04426    1.52712  -4.613 7.08e-06 ***
+factor(year)1990    -8.24017    1.40282  -5.874 1.75e-08 ***
+factor(year)1991    -8.37095    1.47987  -5.657 5.29e-08 ***
+factor(year)1992    -7.88904    1.52712  -5.166 5.77e-07 ***
+factor(year)1993    -9.16325    1.42453  -6.432 9.07e-10 ***
+factor(year)1994    -7.54756    1.51297  -4.989 1.32e-06 ***
+factor(year)1995    -5.82314    1.51297  -3.849  0.00016 ***
+factor(year)1996   -10.24260    2.21476  -4.625 6.73e-06 ***
+factor(year)1998    -6.49257    1.51297  -4.291 2.77e-05 ***
+factor(year)1999    -9.67131    1.53985  -6.281 2.06e-09 ***
+factor(year)2001    -9.92257    1.58739  -6.251 2.42e-09 ***
+factor(year)2002    -9.11274    1.45294  -6.272 2.16e-09 ***
+factor(year)2003    -0.04582    0.67481  -0.068  0.94594    
+factor(year)2004    -0.27698    0.69232  -0.400  0.68953    
+factor(year)2005    -1.48769    0.62133  -2.394  0.01757 *  
+factor(year)2006    -0.87121    0.58788  -1.482  0.13993    
+factor(year)2007          NA         NA      NA       NA    
+factor(year)2008     0.25096    0.77315   0.325  0.74583    
+factor(year)2009    -0.76346    0.70680  -1.080  0.28137    
+factor(year)2010     0.93905    0.72790   1.290  0.19851    
+factor(year)2011    -0.66631    0.96256  -0.692  0.48960    
+factor(year)2012     1.07331    0.90417   1.187  0.23661    
+factor(year)2013          NA         NA      NA       NA    
+treat:periodDuring  -0.95195    0.66347  -1.435  0.15291    
+treat:periodAfter   -0.43854    0.72330  -0.606  0.54500    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.808 on 200 degrees of freedom
+Multiple R-squared:  0.3365,    Adjusted R-squared:  0.2503 
+F-statistic: 3.902 on 26 and 200 DF,  p-value: 1.833e-08</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mod_did_all_spring, <span class="at">which =</span> <span class="dv">1</span>)</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mod_did_all_spring, <span class="at">which =</span> <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">durbinWatsonTest</span>(mod_did_all_spring)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code> lag Autocorrelation D-W Statistic p-value
+   1       0.1460512      1.699108       0
+ Alternative hypothesis: rho != 0</code></pre>
+</div>
+</div>
+<p><strong>Diagnostics:</strong> The residuals vs.&nbsp;fitted plot shows roughly constant spread. The QQ plot shows slight right-tail deviation. The Durbin-Watson test detects positive autocorrelation (DW = 1.70, p &lt; 0.001), which may modestly inflate standard error precision; this is noted further in the Critical Evaluation, and does not alter the non-significant results.</p>
+<p>Neither the during-aquaculture (<code>treat:periodDuring</code>, p = 0.153) nor post-aquaculture (<code>treat:periodAfter</code>, p = 0.545) interaction terms are significant in spring, consistent with all prior spring results.</p>
+</section>
+<section id="robustness-check-1" class="level4">
+<h4 class="anchored" data-anchor-id="robustness-check-1">Robustness Check</h4>
+<section id="adjusting-the-window-1" class="level5">
+<h5 class="anchored" data-anchor-id="adjusting-the-window-1">Adjusting the window</h5>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>all_aqua_fall_mod <span class="ot">&lt;-</span> aquaculture <span class="sc">%&gt;%</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(season <span class="sc">==</span> <span class="st">"Fall"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">period =</span> <span class="fu">case_when</span>(</span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>      year <span class="sc">&lt;</span> <span class="dv">1996</span>  <span class="sc">~</span> <span class="st">"Before"</span>,</span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>      year <span class="sc">&lt;=</span> <span class="dv">2004</span> <span class="sc">~</span> <span class="st">"During"</span>,</span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">"After"</span>))</span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a>mod_did_all_fall_mod <span class="ot">&lt;-</span> <span class="fu">lm</span>(sqrt_cpue <span class="sc">~</span> treat <span class="sc">*</span> period <span class="sc">+</span> <span class="fu">factor</span>(year), <span class="at">data =</span> all_aqua_fall_mod)</span>
+<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod_did_all_fall_mod)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = sqrt_cpue ~ treat * period + factor(year), data = all_aqua_fall_mod)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-11.035  -2.801  -1.005   1.681  26.184 
+
+Coefficients: (2 not defined because of singularities)
+                   Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)          5.6301     1.1954   4.710 4.81e-06 ***
+treat                4.5136     1.0562   4.273 3.06e-05 ***
+periodBefore        -3.6305     3.3812  -1.074  0.28433    
+periodDuring        -2.3235     2.2118  -1.051  0.29483    
+factor(year)1989     2.6870     4.0955   0.656  0.51258    
+factor(year)1990    -0.2358     4.5321  -0.052  0.95856    
+factor(year)1991     1.5501     4.5321   0.342  0.73271    
+factor(year)1992    -0.2220     4.0255  -0.055  0.95607    
+factor(year)1993    -1.2022     3.8495  -0.312  0.75517    
+factor(year)1994     6.1459     4.1841   1.469  0.14353    
+factor(year)1995     3.5230     6.3257   0.557  0.57823    
+factor(year)1996    -2.5453     4.3349  -0.587  0.55780    
+factor(year)1998     6.2850     5.7857   1.086  0.27873    
+factor(year)1999    -1.4756     2.4946  -0.592  0.55486    
+factor(year)2002    -1.7851     2.5470  -0.701  0.48424    
+factor(year)2003    -0.5290     2.6578  -0.199  0.84245    
+factor(year)2004         NA         NA      NA       NA    
+factor(year)2005     2.0464     2.3103   0.886  0.37686    
+factor(year)2006    -0.3589     1.8996  -0.189  0.85034    
+factor(year)2007     3.5680     1.9125   1.866  0.06365 .  
+factor(year)2008    -3.4467     1.9340  -1.782  0.07634 .  
+factor(year)2009    -5.4904     1.7121  -3.207  0.00158 ** 
+factor(year)2010    -2.1425     1.9626  -1.092  0.27636    
+factor(year)2011     0.6586     1.8931   0.348  0.72830    
+factor(year)2012    -0.9035     2.0390  -0.443  0.65818    
+factor(year)2013         NA         NA      NA       NA    
+treat:periodBefore  -3.5234     2.4317  -1.449  0.14901    
+treat:periodDuring  -0.8733     2.1612  -0.404  0.68661    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 5.478 on 188 degrees of freedom
+Multiple R-squared:  0.2837,    Adjusted R-squared:  0.1885 
+F-statistic: 2.979 on 25 and 188 DF,  p-value: 1.291e-05</code></pre>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>all_aqua_spring_mod <span class="ot">&lt;-</span> aquaculture <span class="sc">%&gt;%</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(season <span class="sc">==</span> <span class="st">"Spring"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">period =</span> <span class="fu">case_when</span>(</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>      year <span class="sc">&lt;</span> <span class="dv">1996</span>  <span class="sc">~</span> <span class="st">"Before"</span>,</span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>      year <span class="sc">&lt;=</span> <span class="dv">2004</span> <span class="sc">~</span> <span class="st">"During"</span>,</span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">"After"</span>))</span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a>mod_did_all_spring_mod <span class="ot">&lt;-</span> <span class="fu">lm</span>(sqrt_cpue <span class="sc">~</span> treat <span class="sc">*</span> period <span class="sc">+</span> <span class="fu">factor</span>(year), <span class="at">data =</span> all_aqua_spring_mod)</span>
+<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-10"><a href="#cb44-10" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod_did_all_spring_mod)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = sqrt_cpue ~ treat * period + factor(year), data = all_aqua_spring_mod)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-3.7609 -1.0808 -0.4441  0.8936  6.1118 
+
+Coefficients: (2 not defined because of singularities)
+                   Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)         1.76135    0.52190   3.375 0.000887 ***
+treat              -0.03581    0.35245  -0.102 0.919177    
+periodBefore        9.11371    1.38081   6.600 3.61e-10 ***
+periodDuring        0.21028    0.82584   0.255 0.799275    
+factor(year)1989   -7.04964    1.53136  -4.604 7.38e-06 ***
+factor(year)1990   -8.24506    1.40662  -5.862 1.87e-08 ***
+factor(year)1991   -8.37863    1.48920  -5.626 6.16e-08 ***
+factor(year)1992   -7.89442    1.53136  -5.155 6.07e-07 ***
+factor(year)1993   -9.16998    1.43190  -6.404 1.06e-09 ***
+factor(year)1994   -7.54756    1.51261  -4.990 1.31e-06 ***
+factor(year)1995   -5.82314    1.51261  -3.850 0.000159 ***
+factor(year)1996   -1.33917    1.91786  -0.698 0.485823    
+factor(year)1998    2.41086    1.03119   2.338 0.020378 *  
+factor(year)1999   -0.65001    0.91771  -0.708 0.479586    
+factor(year)2001   -0.96020    1.05596  -0.909 0.364279    
+factor(year)2002   -0.15038    0.84053  -0.179 0.858191    
+factor(year)2003    0.19957    0.75502   0.264 0.791800    
+factor(year)2004         NA         NA      NA       NA    
+factor(year)2005   -0.58588    0.71254  -0.822 0.411920    
+factor(year)2006    0.02656    0.68803   0.039 0.969245    
+factor(year)2007    0.90181    0.69643   1.295 0.196850    
+factor(year)2008    0.48389    0.74821   0.647 0.518551    
+factor(year)2009   -0.54717    0.68327  -0.801 0.424192    
+factor(year)2010    1.18949    0.69717   1.706 0.089528 .  
+factor(year)2011   -0.66631    0.96233  -0.692 0.489494    
+factor(year)2012    1.07331    0.90395   1.187 0.236498    
+factor(year)2013         NA         NA      NA       NA    
+treat:periodBefore  0.88457    0.69358   1.275 0.203660    
+treat:periodDuring  0.75326    0.70877   1.063 0.289165    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.808 on 200 degrees of freedom
+Multiple R-squared:  0.3369,    Adjusted R-squared:  0.2507 
+F-statistic: 3.908 on 26 and 200 DF,  p-value: 1.766e-08</code></pre>
+</div>
+</div>
+<p>Under the alternative period window, neither the fall nor spring treatment effects are significant across any period comparison, consistent with the Before and During robustness check.</p>
+</section>
+<section id="buffer-1" class="level5">
+<h5 class="anchored" data-anchor-id="buffer-1">Buffer</h5>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>all_aqua_fall_buff <span class="ot">&lt;-</span> aquaculture <span class="sc">%&gt;%</span></span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(period <span class="sc">!=</span> <span class="st">"After"</span>,</span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>         season <span class="sc">==</span> <span class="st">"Fall"</span>,</span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>         year <span class="sc">!=</span> <span class="dv">2003</span> <span class="sc">&amp;</span> year <span class="sc">!=</span> <span class="dv">2008</span>) <span class="co"># Remove year aquaculture began and ended</span></span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a>mod_did_all_fall_buff <span class="ot">&lt;-</span> <span class="fu">lm</span>(sqrt_cpue <span class="sc">~</span> treat <span class="sc">*</span> period <span class="sc">+</span> <span class="fu">factor</span>(year), <span class="at">data =</span> all_aqua_fall_buff)</span>
+<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod_did_all_fall_buff)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = sqrt_cpue ~ treat * period + factor(year), data = all_aqua_fall_buff)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-14.5942  -1.8385  -0.2952   1.2572  22.7675 
+
+Coefficients: (1 not defined because of singularities)
+                   Estimate Std. Error t value Pr(&gt;|t|)   
+(Intercept)         1.99967    3.45622   0.579  0.56439   
+treat               2.47479    1.86931   1.324  0.18904   
+periodDuring        3.99557    3.88835   1.028  0.30703   
+factor(year)1989    2.09314    4.43529   0.472  0.63817   
+factor(year)1990   -0.73068    4.92739  -0.148  0.88246   
+factor(year)1991    1.05524    4.92739   0.214  0.83093   
+factor(year)1992   -0.96435    4.33495  -0.222  0.82448   
+factor(year)1993   -2.02694    4.12381  -0.492  0.62431   
+factor(year)1994    6.14593    4.57215   1.344  0.18242   
+factor(year)1995    3.52301    6.91244   0.510  0.61159   
+factor(year)1996   -0.07277    5.77564  -0.013  0.98998   
+factor(year)1998    7.59200    6.91244   1.098  0.27513   
+factor(year)1999    0.60837    4.18095   0.146  0.88465   
+factor(year)2002    0.10463    4.15916   0.025  0.97999   
+factor(year)2004   -5.67373    2.35203  -2.412  0.01798 * 
+factor(year)2005   -0.45396    2.61211  -0.174  0.86244   
+factor(year)2006   -3.00164    2.16952  -1.384  0.17008   
+factor(year)2007         NA         NA      NA       NA   
+treat:periodDuring  7.73287    2.53896   3.046  0.00308 **
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 5.986 on 86 degrees of freedom
+Multiple R-squared:  0.4463,    Adjusted R-squared:  0.3369 
+F-statistic: 4.078 on 17 and 86 DF,  p-value: 6.897e-06</code></pre>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>all_aqua_spring_buff <span class="ot">&lt;-</span> aquaculture <span class="sc">%&gt;%</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(period <span class="sc">!=</span> <span class="st">"After"</span>,</span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>         season <span class="sc">==</span> <span class="st">"Spring"</span>,</span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>         year <span class="sc">!=</span> <span class="dv">2003</span> <span class="sc">&amp;</span> year <span class="sc">!=</span> <span class="dv">2008</span>) <span class="co"># Remove year aquaculture began and ended</span></span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a>mod_did_all_spring_buff <span class="ot">&lt;-</span> <span class="fu">lm</span>(sqrt_cpue <span class="sc">~</span> treat <span class="sc">*</span> period <span class="sc">+</span> <span class="fu">factor</span>(year), <span class="at">data =</span> all_aqua_spring_buff)</span>
+<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod_did_all_spring_buff)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = sqrt_cpue ~ treat * period + factor(year), data = all_aqua_spring_buff)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-3.7609 -1.0906 -0.4911  1.0705  6.1234 
+
+Coefficients: (1 not defined because of singularities)
+                   Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)         10.8751     1.3528   8.039 6.89e-13 ***
+treat                0.8353     0.5486   1.523 0.130477    
+periodDuring        -8.2235     1.4456  -5.688 9.09e-08 ***
+factor(year)1989    -7.0443     1.6156  -4.360 2.75e-05 ***
+factor(year)1990    -8.2402     1.4841  -5.552 1.70e-07 ***
+factor(year)1991    -8.3709     1.5656  -5.347 4.29e-07 ***
+factor(year)1992    -7.8890     1.6156  -4.883 3.23e-06 ***
+factor(year)1993    -9.1633     1.5071  -6.080 1.44e-08 ***
+factor(year)1994    -7.5476     1.6006  -4.715 6.52e-06 ***
+factor(year)1995    -5.8231     1.6006  -3.638 0.000405 ***
+factor(year)1996   -10.2426     2.3431  -4.371 2.63e-05 ***
+factor(year)1998    -6.4926     1.6006  -4.056 8.87e-05 ***
+factor(year)1999    -9.6713     1.6291  -5.937 2.85e-08 ***
+factor(year)2001    -9.9226     1.6794  -5.909 3.26e-08 ***
+factor(year)2002    -9.1127     1.5371  -5.928 2.96e-08 ***
+factor(year)2004    -0.2817     0.7325  -0.385 0.701213    
+factor(year)2005    -1.4877     0.6573  -2.263 0.025404 *  
+factor(year)2006    -0.8764     0.6220  -1.409 0.161405    
+factor(year)2007         NA         NA      NA       NA    
+treat:periodDuring  -0.8480     0.7261  -1.168 0.245142    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.913 on 121 degrees of freedom
+Multiple R-squared:  0.3828,    Adjusted R-squared:  0.291 
+F-statistic: 4.169 on 18 and 121 DF,  p-value: 9.516e-07</code></pre>
+</div>
+</div>
+<p>Excluding transition years, the fall treatment effect during aquaculture remains significant (<code>treat:periodDuring</code>, p = 0.003), while spring remains non-significant (p = 0.245). The post-aquaculture interaction is non-significant in both seasons, indicating no lasting legacy effect once operations ended.</p>
+</section>
+</section>
+</section>
+</section>
+<section id="rennie-et-al.-2019-critical-evaluation" class="level2">
+<h2 class="anchored" data-anchor-id="rennie-et-al.-2019-critical-evaluation">Rennie et al.&nbsp;2019 Critical Evaluation</h2>
+<p>Standard BACI designs test whether a treated site changes more than a control site following an intervention, but they rely on an implicit assumption that the control site provides a valid counterfactual trajectory. If the treated and control lakes were already diverging prior to aquaculture, the BACI interaction term could mistakenly attribute that divergence to the treatment effect.</p>
+<p>The results suggest that any treatment effect is both season-specific and temporally limited. Evidence of increased minnow abundance during aquaculture is observed in the fall but not in the spring, and this effect does not persist after aquaculture operations end. This seasonal asymmetry is ecologically plausible and aligns with the broader ecosystem responses documented by Rennie et al.&nbsp;(2019), where increased nutrient inputs during aquaculture altered productivity and food availability, potentially benefiting forage fish during certain time of year.</p>
+</section>
+<section id="addition-of-difference-in-differences" class="level2">
+<h2 class="anchored" data-anchor-id="addition-of-difference-in-differences">Addition of Difference-in-Differences</h2>
+<p>This analysis strengthens the traditional BACI framework by incorporating a Difference-in-Differences perspective and explicitly evaluating the assumptions required for causal interpretation. The parallel trends test makes this assumption explicit and allows it to be evaluated using pre-treatment data. The absence of a statistically significant treatment-by-year interaction suggests that we fail reject a violation in the parallel trends assumption, meaning there is no strong evidence of differential trends prior to aquaculture.</p>
+<p>Another important strength of this analysis is the separation of the aquaculture period into distinct phases. Traditional BACI approaches collapse all post-treatment observations into a single “after” category, which can obscure differences between short-term and longer term responses. By estimating separate DiD models for the during-treatment and post-treatment periods, this analysis distinguishes between immediate effects of aquaculture and potential legacy effects after operations cease.</p>
+<p>Finally, this analysis added robustness checks which were largely missing from the original analysis.</p>
+<p><strong>However, several important limitations remain:</strong></p>
+<ul>
+<li><p>The study includes only a single treated lake. With no replication at the treatment level, it is not possible to fully separate treatment effects from lake-specific dynamics. As a result, the findings should be interpreted as evidence consistent with an aquaculture effect rather than definitive causal proof. In addition, the limited number of observations reduces statistical power, making it more difficult to detect smaller or more gradual treatment effects.</p></li>
+<li><p>There are model-based limitations. Diagnostic tests indicate heteroscedasticity and occasional deviations from normality, particularly in fall models driven by extreme CPUE values during the aquaculture period. Evidence of mild autocorrelation in the spring models suggest that standard errors may be somewhat underestimated, which could affect inference, although this does not alter the substantive conclusions given the lack of significant effects in spring.</p></li>
+<li><p>Finally, the robustness checks demonstrate that results are sensitive to modeling choices, including the definition of treatment periods and the inclusion of transition years. While the fall treatment effect remains detectable under some specifications, it weakens or disappears under others, reinforcing the need for cautious interpretation.</p></li>
+</ul>
+<p>Despite these limitations, the combination of visualization, BACI modeling, parallel trends testing, and Difference-in-Differences analysis provides a coherent and transparent evaluation of the aquaculture experiment.</p>
+<p>Overall, the results illustrate how combining BACI designs with a DiD framework can strengthen causal interpretation in ecological impact studies. While the analysis is limited by the presence of only a single treatment lake, the parallel trends test and the separation of during- and post-treatment periods provide a more transparent evaluation of how aquaculture activity may influence fish community dynamics.</p>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>This analysis provides partial evidence that freshwater aquaculture influenced minnow abundance in the treatment lake, with increases observed during the aquaculture period in fall sampling but not in spring. These effects appear to be short-lived, as there is no strong evidence that difference between the treated and control lakes persist after aquaculture operations end. By extending the BACI framework with a Difference-in-Differences perspective and explicitly evaluating the parallel trends assumption, this study offers a more rigorous and transparent approach to causal inference than a standard BACI analysis alone. The results highlight the importance of testing underlying assumptions and considering temporal structure when interpreting ecological impact studies. At the same time, the findings should be interpreted in the broader context of the ecosystem-level experiment conducted by Rennie et al.&nbsp;(2019). Minnow abundance represents only one component of the lake food web, and observed changes likely reflect underlying shifts in nutrient dynamics and productivity associated with aquaculture activity.</p>
+<p>Overall, this analysis illustrates both the potential and the limitations of applying quasi-experimental methods in ecological systems. While the results are consistent with a short-term aquaculture effect on forage fish abundance, the lack of replication and sensitivity to modeling choices limit the strength of causal claims. Future work incorporating additional treated systems or longer time series would improve statistical power and strengthen inference and provide a more complete understanding of how aquaculture influences freshwater ecosystems.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
